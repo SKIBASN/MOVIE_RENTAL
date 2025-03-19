@@ -1,6 +1,6 @@
 ﻿namespace WinFormsApp1
 {
-    partial class EnterUP
+    partial class Window
     {
         /// <summary>
         ///  Required designer variable.
@@ -35,13 +35,14 @@
             password = new TextBox();
             employee = new RadioButton();
             cust = new RadioButton();
+            status = new Label();
             SuspendLayout();
             // 
             // label1
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 30F);
-            label1.Location = new Point(108, 134);
+            label1.Location = new Point(152, 69);
             label1.Name = "label1";
             label1.Size = new Size(200, 54);
             label1.TabIndex = 0;
@@ -51,7 +52,7 @@
             // 
             PasswordTitle.AutoSize = true;
             PasswordTitle.Font = new Font("Segoe UI", 30F);
-            PasswordTitle.Location = new Point(108, 202);
+            PasswordTitle.Location = new Point(152, 137);
             PasswordTitle.Name = "PasswordTitle";
             PasswordTitle.Size = new Size(188, 54);
             PasswordTitle.TabIndex = 1;
@@ -60,36 +61,38 @@
             // button1
             // 
             button1.Font = new Font("Segoe UI", 20F);
-            button1.Location = new Point(137, 374);
+            button1.Location = new Point(181, 309);
             button1.Name = "button1";
             button1.Size = new Size(109, 47);
             button1.TabIndex = 2;
             button1.Text = "Login";
             button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click;
+            button1.Click += login_Click;
             // 
             // user
             // 
             user.Font = new Font("Segoe UI", 20F);
-            user.Location = new Point(355, 152);
+            user.Location = new Point(399, 87);
             user.Name = "user";
             user.Size = new Size(192, 43);
             user.TabIndex = 3;
+            user.TextChanged += user_TextChanged;
             // 
             // password
             // 
             password.Font = new Font("Segoe UI", 20F);
-            password.Location = new Point(355, 213);
+            password.Location = new Point(399, 148);
             password.Name = "password";
             password.Size = new Size(192, 43);
             password.TabIndex = 4;
+            password.TextChanged += password_TextChanged;
             // 
             // employee
             // 
             employee.AutoSize = true;
             employee.Checked = true;
             employee.Font = new Font("Segoe UI", 20F);
-            employee.Location = new Point(126, 299);
+            employee.Location = new Point(166, 234);
             employee.Name = "employee";
             employee.Size = new Size(152, 41);
             employee.TabIndex = 5;
@@ -102,19 +105,33 @@
             // 
             cust.AutoSize = true;
             cust.Font = new Font("Segoe UI", 20F);
-            cust.Location = new Point(309, 299);
+            cust.Location = new Point(353, 234);
             cust.Name = "cust";
             cust.Size = new Size(149, 41);
             cust.TabIndex = 6;
             cust.Text = "Customer";
             cust.UseVisualStyleBackColor = true;
+            cust.CheckedChanged += cust_CheckedChanged;
             // 
-            // EnterUP
+            // status
+            // 
+            status.AutoSize = true;
+            status.Font = new Font("Segoe UI", 40F);
+            status.Location = new Point(399, 326);
+            status.Name = "status";
+            status.Size = new Size(308, 72);
+            status.TabIndex = 7;
+            status.Text = "LOADING ...";
+            status.Visible = false;
+            status.Click += label2_Click;
+            // 
+            // Window
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.Firebrick;
             ClientSize = new Size(800, 450);
+            Controls.Add(status);
             Controls.Add(cust);
             Controls.Add(employee);
             Controls.Add(password);
@@ -122,7 +139,7 @@
             Controls.Add(button1);
             Controls.Add(PasswordTitle);
             Controls.Add(label1);
-            Name = "EnterUP";
+            Name = "Window";
             Text = "Form1";
             Load += UserTitle_Load;
             ResumeLayout(false);
@@ -138,5 +155,6 @@
         private TextBox password;
         private RadioButton employee;
         private RadioButton cust;
+        private Label status;
     }
 }

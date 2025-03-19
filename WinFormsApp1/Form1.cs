@@ -1,10 +1,14 @@
+using System.IO.Pipes;
+
 namespace WinFormsApp1
 {
-    public partial class EnterUP : Form
+
+    public partial class Window : Form
     {
-        public EnterUP()
+        public Window()
         {
             InitializeComponent();
+            string user_type = "employee";
         }
 
         private void UserTitle_Load(object sender, EventArgs e)
@@ -12,14 +16,34 @@ namespace WinFormsApp1
 
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void employee_CheckedChanged(object sender, EventArgs e)
+        {
+            string user_type= "employee";
+        }
+
+        private void login_Click(object sender, EventArgs e)
+        {
+            status.Visible = true;
+        }
+
+        private void user_TextChanged(object sender, EventArgs e)
         {
 
         }
 
-        private void employee_CheckedChanged(object sender, EventArgs e)
+        private void password_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void cust_CheckedChanged(object sender, EventArgs e)
+        {
+            string user_type= "customer";
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+            
         }
     }
 }
