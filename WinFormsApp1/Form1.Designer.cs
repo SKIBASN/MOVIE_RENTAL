@@ -61,7 +61,7 @@
             // button1
             // 
             button1.Font = new Font("Segoe UI", 20F);
-            button1.Location = new Point(181, 309);
+            button1.Location = new Point(166, 309);
             button1.Name = "button1";
             button1.Size = new Size(109, 47);
             button1.TabIndex = 2;
@@ -116,10 +116,10 @@
             // status
             // 
             status.AutoSize = true;
-            status.Font = new Font("Segoe UI", 40F);
-            status.Location = new Point(399, 326);
+            status.Font = new Font("Segoe UI", 10F);
+            status.Location = new Point(379, 330);
             status.Name = "status";
-            status.Size = new Size(308, 72);
+            status.Size = new Size(83, 19);
             status.TabIndex = 7;
             status.Text = "LOADING ...";
             status.Visible = false;
