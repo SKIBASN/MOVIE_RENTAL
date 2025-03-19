@@ -1,96 +1,75 @@
-using System.IO.Pipes;
+using System;
+using System.Data.SQLite;
+using System.Windows.Forms;
 
 namespace WinFormsApp1
 {
-
-    public partial class Window : Form
+    public partial class Form1 : Form
     {
         private string user_type;
+        private string connectionString = "Data Source=MovieRentalDB.db;Version=3;";
 
-        public Window()
+        public Form1()
         {
             InitializeComponent();
-            string user_type = "employee";
-        }
-
-        private void UserTitle_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void employee_CheckedChanged(object sender, EventArgs e)
-        {
-            user_type= "employee";
+            user_type = "employee"; // Default user type
         }
 
         private void login_Click(object sender, EventArgs e)
         {
-            //example list of users-------------------------------------------
-            List<(string, string)> C_users = new List<(string, string)>
+            using (var conn = new SQLiteConnection(connectionString))
             {
-                ("userA", "passA"),
-                ("userB", "passB"),
-                ("userC", "passC")
-            };
-            List<(string, string)> E_users = new List<(string, string)>
-            {
-                ("empA", "passA"),
-                ("empB", "passB"),
-                ("empC", "passC")
-            };
-            //----------------------------------------------------------------
-
-            status.Visible = true;
-            //check user type
-            if (user_type == "customer")
-            {
-                foreach ((string, string) u in C_users)
+                conn.Open();
+                string query = "SELECT COUNT(*) FROM Users WHERE Username = @Username AND Password = @Password AND UserType = @UserType";
+                using (SQLiteCommand cmd = new SQLiteCommand(query, conn))
                 {
-                    if (u.Item1 == user.Text && u.Item2 == password.Text)
+                    cmd.Parameters.AddWithValue("@Username", user.Text);
+                    cmd.Parameters.AddWithValue("@Password", password.Text);
+                    cmd.Parameters.AddWithValue("@UserType", user_type);
+
+                    long userExists = (long)cmd.ExecuteScalar();
+
+                    status.Visible = true;
+
+                    if (userExists > 0)
                     {
-                        //open new window
                         status.Text = "Login Successful";
-                        return;
+                        OpenNewWindow();
+                    }
+                    else
+                    {
+                        status.Text = "Username or Password is incorrect";
                     }
                 }
             }
-            else
+        }
+
+        private void OpenNewWindow()
+        {
+            this.Hide();
+            using (MainAppWindow mainApp = new MainAppWindow(user_type))
             {
-                foreach ((string, string) emp in E_users)
-                {
-                    if (emp.Item1 == user.Text && emp.Item2 == password.Text)
-                    {
-                        //open new window
-                        status.Text = "Login Successful";
-                        return;
-                    }
-                }
+                mainApp.ShowDialog();
             }
-            //check for user in database
-            //check if password matches
-            //if all is good, open new window
-            //if not, display error message
-            status.Text = "Username or Password is incorrect";
+            this.Show();
         }
 
-        private void user_TextChanged(object sender, EventArgs e)
+        private void btnSignUp_Click(object sender, EventArgs e)
         {
-
+            using (SignUpWindow signUpForm = new SignUpWindow())
+            {
+                signUpForm.ShowDialog();
+            }
         }
 
-        private void password_TextChanged(object sender, EventArgs e)
+        private void employee_CheckedChanged(object sender, EventArgs e)
         {
-
+            user_type = "employee";
         }
 
         private void cust_CheckedChanged(object sender, EventArgs e)
         {
-            user_type= "customer";
-        }
-
-        private void label2_Click(object sender, EventArgs e)
-        {
-            
+            user_type = "customer";
         }
     }
 }
