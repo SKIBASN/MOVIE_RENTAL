@@ -42,6 +42,7 @@ namespace WinFormsApp1
         //if all is good, open new window
         //if not, display error message
         {
+
             status.Visible = true;
             
               try
@@ -91,9 +92,20 @@ namespace WinFormsApp1
         }
 
 
+
         private void label2_Click(object sender, EventArgs e)
         {
-            
+
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void PasswordTitle_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
