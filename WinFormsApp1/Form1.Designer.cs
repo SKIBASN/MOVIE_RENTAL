@@ -34,6 +34,17 @@
             user = new TextBox();
             password = new TextBox();
             status = new Label();
+            tabControl1 = new TabControl();
+            Customer = new TabPage();
+            Movie = new TabPage();
+            Rental = new TabPage();
+            Report = new TabPage();
+            tabControl2 = new TabControl();
+            tabPage1 = new TabPage();
+            tabPage5 = new TabPage();
+            tabControl1.SuspendLayout();
+            Customer.SuspendLayout();
+            tabControl2.SuspendLayout();
             SuspendLayout();
             // 
             // label1
@@ -56,7 +67,6 @@
             PasswordTitle.Size = new Size(188, 54);
             PasswordTitle.TabIndex = 1;
             PasswordTitle.Text = "Password";
-            PasswordTitle.Visible = false;
             PasswordTitle.Click += PasswordTitle_Click;
             // 
             // button1
@@ -86,7 +96,6 @@
             password.Name = "password";
             password.Size = new Size(192, 43);
             password.TabIndex = 4;
-            password.Visible = false;
             password.TextChanged += password_TextChanged;
             // 
             // status
@@ -101,15 +110,99 @@
             status.Visible = false;
             status.Click += label2_Click;
             // 
+            // tabControl1
+            // 
+            tabControl1.Controls.Add(Customer);
+            tabControl1.Controls.Add(Movie);
+            tabControl1.Controls.Add(Rental);
+            tabControl1.Controls.Add(Report);
+            tabControl1.Location = new Point(-1, 3);
+            tabControl1.Name = "tabControl1";
+            tabControl1.SelectedIndex = 0;
+            tabControl1.Size = new Size(801, 444);
+            tabControl1.TabIndex = 8;
+            // 
+            // Customer
+            // 
+            Customer.Controls.Add(tabControl2);
+            Customer.Location = new Point(4, 24);
+            Customer.Name = "Customer";
+            Customer.Padding = new Padding(3);
+            Customer.Size = new Size(793, 416);
+            Customer.TabIndex = 0;
+            Customer.Text = "Customer";
+            Customer.UseVisualStyleBackColor = true;
+            // 
+            // Movie
+            // 
+            Movie.AccessibleName = "Movie";
+            Movie.Location = new Point(4, 24);
+            Movie.Name = "Movie";
+            Movie.Padding = new Padding(3);
+            Movie.Size = new Size(793, 416);
+            Movie.TabIndex = 1;
+            Movie.Text = "Movie";
+            Movie.UseVisualStyleBackColor = true;
+            // 
+            // Rental
+            // 
+            Rental.Location = new Point(4, 24);
+            Rental.Name = "Rental";
+            Rental.Padding = new Padding(3);
+            Rental.Size = new Size(793, 416);
+            Rental.TabIndex = 2;
+            Rental.Text = "Rental";
+            Rental.UseVisualStyleBackColor = true;
+            // 
+            // Report
+            // 
+            Report.Location = new Point(4, 24);
+            Report.Name = "Report";
+            Report.Padding = new Padding(3);
+            Report.Size = new Size(793, 416);
+            Report.TabIndex = 3;
+            Report.Text = "Report";
+            Report.UseVisualStyleBackColor = true;
+            Report.Click += Report_Click;
+            // 
+            // tabControl2
+            // 
+            tabControl2.Controls.Add(tabPage1);
+            tabControl2.Controls.Add(tabPage5);
+            tabControl2.Location = new Point(765, 374);
+            tabControl2.Name = "tabControl2";
+            tabControl2.SelectedIndex = 0;
+            tabControl2.Size = new Size(200, 100);
+            tabControl2.TabIndex = 0;
+            // 
+            // tabPage1
+            // 
+            tabPage1.Location = new Point(4, 24);
+            tabPage1.Name = "tabPage1";
+            tabPage1.Padding = new Padding(3);
+            tabPage1.Size = new Size(192, 72);
+            tabPage1.TabIndex = 0;
+            tabPage1.Text = "tabPage1";
+            tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // tabPage5
+            // 
+            tabPage5.Location = new Point(4, 24);
+            tabPage5.Name = "tabPage5";
+            tabPage5.Padding = new Padding(3);
+            tabPage5.Size = new Size(192, 72);
+            tabPage5.TabIndex = 1;
+            tabPage5.Text = "tabPage5";
+            tabPage5.UseVisualStyleBackColor = true;
+            // 
             // Window
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.Firebrick;
             ClientSize = new Size(800, 450);
+            Controls.Add(tabControl1);
             Controls.Add(status);
-            Controls.Add(cust);
-            Controls.Add(employee);
             Controls.Add(password);
             Controls.Add(user);
             Controls.Add(button1);
@@ -118,6 +211,9 @@
             Name = "Window";
             Text = "Form1";
             Load += UserTitle_Load;
+            tabControl1.ResumeLayout(false);
+            Customer.ResumeLayout(false);
+            tabControl2.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -132,5 +228,13 @@
         private RadioButton employee;
         private RadioButton cust;
         private Label status;
+        private TabControl tabControl1;
+        private TabPage Customer;
+        private TabControl tabControl2;
+        private TabPage tabPage1;
+        private TabPage tabPage5;
+        private TabPage Movie;
+        private TabPage Rental;
+        private TabPage Report;
     }
 }
