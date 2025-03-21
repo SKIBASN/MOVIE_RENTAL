@@ -42,11 +42,12 @@
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 30F);
-            label1.Location = new Point(152, 69);
+            label1.Location = new Point(166, 76);
             label1.Name = "label1";
-            label1.Size = new Size(200, 54);
+            label1.Size = new Size(152, 54);
             label1.TabIndex = 0;
-            label1.Text = "Username";
+            label1.Text = "User ID";
+            label1.Click += label1_Click;
             // 
             // PasswordTitle
             // 
