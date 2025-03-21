@@ -1,3 +1,4 @@
+using System.Data.SqlClient;
 using System.IO.Pipes;
 
 namespace WinFormsApp1
@@ -5,12 +6,28 @@ namespace WinFormsApp1
 
     public partial class Window : Form
     {
-        private string user_type;
+        public SqlConnection myConnection;
+        public SqlCommand myCommand;
+        public SqlDataReader myReader;
 
         public Window()
         {
             InitializeComponent();
-            string user_type = "employee";
+
+            String connectionString = "Server = BRIGHT-THINKPAD; Database = TEAM4CMPT291DATABASE; Trusted_Connection = yes;";
+            SqlConnection myConnection = new SqlConnection(connectionString); // Timeout in seconds
+
+            try
+            {
+                myConnection.Open(); // Open connection
+                myCommand = new SqlCommand();
+                myCommand.Connection = myConnection; // Link the command stream to the connection
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString(), "Error");
+                this.Close();
+            }
         }
 
         private void UserTitle_Load(object sender, EventArgs e)
@@ -18,61 +35,51 @@ namespace WinFormsApp1
 
         }
 
-        private void employee_CheckedChanged(object sender, EventArgs e)
-        {
-            user_type= "employee";
-        }
-
+      
         private void login_Click(object sender, EventArgs e)
+        //check for user in database
+        //check if password matches
+        //if all is good, open new window
+        //if not, display error message
         {
-            //example list of users-------------------------------------------
-            List<(string, string)> C_users = new List<(string, string)>
-            {
-                ("userA", "passA"),
-                ("userB", "passB"),
-                ("userC", "passC")
-            };
-            List<(string, string)> E_users = new List<(string, string)>
-            {
-                ("empA", "passA"),
-                ("empB", "passB"),
-                ("empC", "passC")
-            };
-            //----------------------------------------------------------------
-
             status.Visible = true;
-            //check user type
-            if (user_type == "customer")
+            
+              try
             {
-                foreach ((string, string) u in C_users)
-                {
-                    if (u.Item1 == user.Text && u.Item2 == password.Text)
-                    {
-                        //open new window
-                        status.Text = "Login Successful";
-                        return;
-                    }
-                }
-            }
-            else
-            {
-                foreach ((string, string) emp in E_users)
-                {
-                    if (emp.Item1 == user.Text && emp.Item2 == password.Text)
-                    {
-                        //open new window
-                        status.Text = "Login Successful";
-                        return;
-                    }
-                }
-            }
-            //check for user in database
-            //check if password matches
-            //if all is good, open new window
-            //if not, display error message
-            status.Text = "Username or Password is incorrect";
-        }
+                myCommand.CommandText = "SELECT Username, firstName FROM Employee WHERE Username = @user AND password = @pass";
+                myCommand.Parameters.Clear();
+                myCommand.Parameters.AddWithValue("@user", user.Text);
+                myCommand.Parameters.AddWithValue("@pass", password.Text);
 
+                myReader = myCommand.ExecuteReader();
+
+                // Check if any row is returned
+                if (myReader.Read())
+                {
+                    //string empID = myReader["employeeID"].ToString();
+                    string empName = myReader["firstName"].ToString();
+                    //MessageBox.Show("Login successful for employee " + myReader["employeeID"].ToString());
+                    MessageBox.Show("Login successful for employee " + myReader["firstName"].ToString());
+                    // Continue with further actions, such as opening the main form
+                    status.Text = "Username or Password is correct";
+                }
+                else
+                {
+                    MessageBox.Show("Invalid employeeID or password.");
+                    status.Text = "Username or Password is incorrect";
+                }
+                                                                   
+                myReader.Close();
+
+            }
+            catch (Exception e3)
+            {
+                MessageBox.Show(e3.ToString(), "Error");
+                status.Text = "Username or Password is incorrect";
+            }
+        }
+            
+       
         private void user_TextChanged(object sender, EventArgs e)
         {
 
@@ -83,10 +90,6 @@ namespace WinFormsApp1
 
         }
 
-        private void cust_CheckedChanged(object sender, EventArgs e)
-        {
-            user_type= "customer";
-        }
 
         private void label2_Click(object sender, EventArgs e)
         {
