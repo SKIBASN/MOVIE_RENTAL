@@ -56,7 +56,7 @@
             PasswordTitle.Size = new Size(188, 54);
             PasswordTitle.TabIndex = 1;
             PasswordTitle.Text = "Password";
-            PasswordTitle.Visible = false;
+            PasswordTitle.Visible = true;
             PasswordTitle.Click += PasswordTitle_Click;
             // 
             // button1
@@ -86,7 +86,7 @@
             password.Name = "password";
             password.Size = new Size(192, 43);
             password.TabIndex = 4;
-            password.Visible = false;
+            password.Visible = true;
             password.TextChanged += password_TextChanged;
             // 
             // status
