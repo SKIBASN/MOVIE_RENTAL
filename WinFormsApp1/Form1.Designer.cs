@@ -33,8 +33,6 @@
             button1 = new Button();
             user = new TextBox();
             password = new TextBox();
-            employee = new RadioButton();
-            cust = new RadioButton();
             status = new Label();
             SuspendLayout();
             // 
@@ -58,6 +56,8 @@
             PasswordTitle.Size = new Size(188, 54);
             PasswordTitle.TabIndex = 1;
             PasswordTitle.Text = "Password";
+            PasswordTitle.Visible = false;
+            PasswordTitle.Click += PasswordTitle_Click;
             // 
             // button1
             // 
@@ -86,33 +86,8 @@
             password.Name = "password";
             password.Size = new Size(192, 43);
             password.TabIndex = 4;
+            password.Visible = false;
             password.TextChanged += password_TextChanged;
-            // 
-            // employee
-            // 
-            employee.AutoSize = true;
-            employee.Checked = true;
-            employee.Font = new Font("Segoe UI", 20F);
-            employee.Location = new Point(166, 234);
-            employee.Name = "employee";
-            employee.Size = new Size(152, 41);
-            employee.TabIndex = 5;
-            employee.TabStop = true;
-            employee.Text = "Employee";
-            employee.UseVisualStyleBackColor = true;
-            employee.CheckedChanged += employee_CheckedChanged;
-            // 
-            // cust
-            // 
-            cust.AutoSize = true;
-            cust.Font = new Font("Segoe UI", 20F);
-            cust.Location = new Point(353, 234);
-            cust.Name = "cust";
-            cust.Size = new Size(149, 41);
-            cust.TabIndex = 6;
-            cust.Text = "Customer";
-            cust.UseVisualStyleBackColor = true;
-            cust.CheckedChanged += cust_CheckedChanged;
             // 
             // status
             // 
