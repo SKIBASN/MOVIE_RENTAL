@@ -28,15 +28,15 @@ namespace WinFormsApp1
             //example list of users-------------------------------------------
             List<(string, string)> C_users = new List<(string, string)>
             {
-                ("userA", "passA"),
-                ("userB", "passB"),
-                ("userC", "passC")
+                ("userA", "password"),
+                ("userB", "password"),
+                ("userC", "password")
             };
             List<(string, string)> E_users = new List<(string, string)>
             {
-                ("empA", "passA"),
-                ("empB", "passB"),
-                ("empC", "passC")
+                ("empA", "password"),
+                ("empB", "password"),
+                ("empC", "password")
             };
             //----------------------------------------------------------------
 
@@ -46,7 +46,7 @@ namespace WinFormsApp1
             {
                 foreach ((string, string) u in C_users)
                 {
-                    if (u.Item1 == user.Text && u.Item2 == password.Text)
+                    if (u.Item1 == user.Text)
                     {
                         //open new window
                         status.Text = "Login Successful";
@@ -56,9 +56,9 @@ namespace WinFormsApp1
             }
             else
             {
-                foreach ((string, string) emp in E_users)
+                foreach ((string, string) emp in E_users)   
                 {
-                    if (emp.Item1 == user.Text && emp.Item2 == password.Text)
+                    if (emp.Item1 == user.Text)
                     {
                         //open new window
                         status.Text = "Login Successful";
@@ -94,6 +94,11 @@ namespace WinFormsApp1
         }
 
         private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void PasswordTitle_Click(object sender, EventArgs e)
         {
 
         }
