@@ -20,7 +20,7 @@ namespace WinFormsApp1
 
         private void employee_CheckedChanged(object sender, EventArgs e)
         {
-            user_type= "employee";
+            user_type = "employee";
         }
 
         private void login_Click(object sender, EventArgs e)
@@ -85,12 +85,17 @@ namespace WinFormsApp1
 
         private void cust_CheckedChanged(object sender, EventArgs e)
         {
-            user_type= "customer";
+            user_type = "customer";
         }
 
         private void label2_Click(object sender, EventArgs e)
         {
-            
+
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
