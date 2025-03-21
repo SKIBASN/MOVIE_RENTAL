@@ -14,7 +14,7 @@ namespace WinFormsApp1
         {
             InitializeComponent();
 
-            String connectionString = "Server = BRIGHT-THINKPAD; Database = TEAM4CMPT291DATABASE; Trusted_Connection = yes;";
+            String connectionString = "Server = DESKTOP-MNUPRSE; Database = TEAM4CMPT291DATABASE; Trusted_Connection = yes;";
             SqlConnection myConnection = new SqlConnection(connectionString); // Timeout in seconds
 
             try
@@ -35,7 +35,7 @@ namespace WinFormsApp1
 
         }
 
-      
+
         private void login_Click(object sender, EventArgs e)
         //check for user in database
         //check if password matches
@@ -44,8 +44,8 @@ namespace WinFormsApp1
         {
 
             status.Visible = true;
-            
-              try
+
+            try
             {
                 myCommand.CommandText = "SELECT Username, firstName FROM Employee WHERE Username = @user AND password = @pass";
                 myCommand.Parameters.Clear();
@@ -69,7 +69,7 @@ namespace WinFormsApp1
                     MessageBox.Show("Invalid employeeID or password.");
                     status.Text = "Username or Password is incorrect";
                 }
-                                                                   
+
                 myReader.Close();
 
             }
@@ -79,8 +79,8 @@ namespace WinFormsApp1
                 status.Text = "Username or Password is incorrect";
             }
         }
-            
-       
+
+
         private void user_TextChanged(object sender, EventArgs e)
         {
 
@@ -108,5 +108,10 @@ namespace WinFormsApp1
 
         }
 
+
+        private void Report_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
