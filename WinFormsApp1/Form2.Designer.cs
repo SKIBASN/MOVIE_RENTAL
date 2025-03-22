@@ -33,7 +33,16 @@
             Movie = new TabPage();
             Rental = new TabPage();
             Report = new TabPage();
+            DateSelect = new Label();
+            Enter = new Button();
+            cal = new MonthCalendar();
+            PickReportTitle = new Label();
+            result = new Label();
+            SpecifTitle = new Label();
+            Specif = new TextBox();
+            ReportSelection = new ComboBox();
             tabControl1.SuspendLayout();
+            Report.SuspendLayout();
             SuspendLayout();
             // 
             // tabControl1
@@ -85,6 +94,14 @@
             // Report
             // 
             Report.BackColor = Color.Firebrick;
+            Report.Controls.Add(DateSelect);
+            Report.Controls.Add(Enter);
+            Report.Controls.Add(cal);
+            Report.Controls.Add(PickReportTitle);
+            Report.Controls.Add(result);
+            Report.Controls.Add(SpecifTitle);
+            Report.Controls.Add(Specif);
+            Report.Controls.Add(ReportSelection);
             Report.Font = new Font("Segoe UI", 20F);
             Report.ForeColor = SystemColors.ActiveBorder;
             Report.Location = new Point(4, 46);
@@ -95,6 +112,95 @@
             Report.Text = "Report";
             Report.Click += Report_Click;
             // 
+            // DateSelect
+            // 
+            DateSelect.AutoSize = true;
+            DateSelect.BackColor = Color.White;
+            DateSelect.Font = new Font("Segoe UI", 15F);
+            DateSelect.ForeColor = SystemColors.ActiveCaptionText;
+            DateSelect.Location = new Point(45, 142);
+            DateSelect.Name = "DateSelect";
+            DateSelect.Size = new Size(164, 28);
+            DateSelect.TabIndex = 7;
+            DateSelect.Text = "No Date Selected";
+            DateSelect.Visible = false;
+            DateSelect.Click += DateSelect_Click;
+            // 
+            // Enter
+            // 
+            Enter.ForeColor = SystemColors.ActiveCaptionText;
+            Enter.Location = new Point(45, 250);
+            Enter.Name = "Enter";
+            Enter.Size = new Size(129, 51);
+            Enter.TabIndex = 6;
+            Enter.Text = "Enter";
+            Enter.UseVisualStyleBackColor = true;
+            Enter.Click += Enter_Click;
+            // 
+            // cal
+            // 
+            cal.Location = new Point(241, 139);
+            cal.Name = "cal";
+            cal.TabIndex = 5;
+            cal.Visible = false;
+            cal.DateChanged += cal_DateChanged;
+            cal.DateSelected += cal_DateSelected;
+            // 
+            // PickReportTitle
+            // 
+            PickReportTitle.AutoSize = true;
+            PickReportTitle.ForeColor = SystemColors.ActiveCaptionText;
+            PickReportTitle.Location = new Point(26, 8);
+            PickReportTitle.Name = "PickReportTitle";
+            PickReportTitle.Size = new Size(203, 37);
+            PickReportTitle.TabIndex = 4;
+            PickReportTitle.Text = "Select A Report:";
+            PickReportTitle.Click += label1_Click;
+            // 
+            // result
+            // 
+            result.AutoSize = true;
+            result.ForeColor = SystemColors.ActiveCaptionText;
+            result.Location = new Point(588, 135);
+            result.Name = "result";
+            result.Size = new Size(88, 37);
+            result.TabIndex = 3;
+            result.Text = "Result";
+            result.Visible = false;
+            // 
+            // SpecifTitle
+            // 
+            SpecifTitle.AutoSize = true;
+            SpecifTitle.Font = new Font("Segoe UI", 15F);
+            SpecifTitle.ForeColor = SystemColors.ActiveCaptionText;
+            SpecifTitle.Location = new Point(37, 108);
+            SpecifTitle.Name = "SpecifTitle";
+            SpecifTitle.Size = new Size(65, 28);
+            SpecifTitle.TabIndex = 2;
+            SpecifTitle.Text = "Specif";
+            SpecifTitle.Visible = false;
+            // 
+            // Specif
+            // 
+            Specif.Font = new Font("Segoe UI", 15F);
+            Specif.Location = new Point(45, 139);
+            Specif.Name = "Specif";
+            Specif.Size = new Size(184, 34);
+            Specif.TabIndex = 1;
+            Specif.Visible = false;
+            // 
+            // ReportSelection
+            // 
+            ReportSelection.Font = new Font("Segoe UI", 15F);
+            ReportSelection.FormattingEnabled = true;
+            ReportSelection.Items.AddRange(new object[] { "Which Customer has the most rentals?", "What Movies haven't been rented since a specific date?", "What movies has a specific employee rented?", "What Actors appear in a Movie?", "How many times has a movie with a specific actor been rented?" });
+            ReportSelection.Location = new Point(37, 48);
+            ReportSelection.Name = "ReportSelection";
+            ReportSelection.Size = new Size(692, 36);
+            ReportSelection.TabIndex = 0;
+            ReportSelection.Text = "Which Customer has the most rentals?";
+            ReportSelection.SelectedIndexChanged += comboBox1_SelectedIndexChanged;
+            // 
             // NavScreen
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -104,6 +210,8 @@
             Name = "NavScreen";
             Text = "NavScreen";
             tabControl1.ResumeLayout(false);
+            Report.ResumeLayout(false);
+            Report.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -114,5 +222,13 @@
         private TabPage Movie;
         private TabPage Rental;
         private TabPage Report;
+        private ComboBox ReportSelection;
+        private TextBox Specif;
+        private Label result;
+        private Label SpecifTitle;
+        private Label PickReportTitle;
+        private MonthCalendar cal;
+        private Button Enter;
+        private Label DateSelect;
     }
 }
