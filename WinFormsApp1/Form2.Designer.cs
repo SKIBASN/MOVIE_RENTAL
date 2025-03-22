@@ -33,6 +33,7 @@
             Movie = new TabPage();
             Rental = new TabPage();
             Report = new TabPage();
+            DateSelect = new Label();
             Enter = new Button();
             cal = new MonthCalendar();
             PickReportTitle = new Label();
@@ -40,7 +41,6 @@
             SpecifTitle = new Label();
             Specif = new TextBox();
             ReportSelection = new ComboBox();
-            DateSelect = new Label();
             tabControl1.SuspendLayout();
             Report.SuspendLayout();
             SuspendLayout();
@@ -112,6 +112,20 @@
             Report.Text = "Report";
             Report.Click += Report_Click;
             // 
+            // DateSelect
+            // 
+            DateSelect.AutoSize = true;
+            DateSelect.BackColor = Color.White;
+            DateSelect.Font = new Font("Segoe UI", 15F);
+            DateSelect.ForeColor = SystemColors.ActiveCaptionText;
+            DateSelect.Location = new Point(45, 142);
+            DateSelect.Name = "DateSelect";
+            DateSelect.Size = new Size(164, 28);
+            DateSelect.TabIndex = 7;
+            DateSelect.Text = "No Date Selected";
+            DateSelect.Visible = false;
+            DateSelect.Click += DateSelect_Click;
+            // 
             // Enter
             // 
             Enter.ForeColor = SystemColors.ActiveCaptionText;
@@ -121,7 +135,7 @@
             Enter.TabIndex = 6;
             Enter.Text = "Enter";
             Enter.UseVisualStyleBackColor = true;
-            Enter.Visible = false;
+            Enter.Click += Enter_Click;
             // 
             // cal
             // 
@@ -129,6 +143,8 @@
             cal.Name = "cal";
             cal.TabIndex = 5;
             cal.Visible = false;
+            cal.DateChanged += cal_DateChanged;
+            cal.DateSelected += cal_DateSelected;
             // 
             // PickReportTitle
             // 
@@ -178,23 +194,12 @@
             ReportSelection.Font = new Font("Segoe UI", 15F);
             ReportSelection.FormattingEnabled = true;
             ReportSelection.Items.AddRange(new object[] { "Which Customer has the most rentals? ", "What Movies haven't been rented since a specific date?", "What movies has a specific employee rented?", "What Actors appear in a Movie?", "How many times has a movie with a specific actor been rented?" });
-            ReportSelection.Location = new Point(37, 58);
+            ReportSelection.Location = new Point(37, 48);
             ReportSelection.Name = "ReportSelection";
             ReportSelection.Size = new Size(692, 36);
             ReportSelection.TabIndex = 0;
+            ReportSelection.Text = "Which Customer has the most rentals?";
             ReportSelection.SelectedIndexChanged += comboBox1_SelectedIndexChanged;
-            // 
-            // DateSelect
-            // 
-            DateSelect.AutoSize = true;
-            DateSelect.BackColor = Color.White;
-            DateSelect.Font = new Font("Segoe UI", 15F);
-            DateSelect.ForeColor = SystemColors.ActiveCaptionText;
-            DateSelect.Location = new Point(45, 135);
-            DateSelect.Name = "DateSelect";
-            DateSelect.Size = new Size(105, 28);
-            DateSelect.TabIndex = 7;
-            DateSelect.Text = "DateSelect";
             // 
             // NavScreen
             // 

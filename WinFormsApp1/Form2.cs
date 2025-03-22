@@ -36,38 +36,57 @@ namespace WinFormsApp1
         {
             if (ReportSelection.SelectedItem.ToString() == "What Movies haven't been rented since a specific date?")
             {
+                result.Visible = false;
                 cal.Visible = true;
+                Enter.Visible = false;
                 DateSelect.Visible = true;
                 Specif.Visible = false;
                 SpecifTitle.Visible = true;
-                SpecifTitle.Text = "Pick a Date";
+                SpecifTitle.Text = "Pick a Date: ";
             }
             else if (ReportSelection.SelectedItem.ToString() == "What movies has a specific employee rented?")
             {
+                result.Visible = false;
                 Specif.Visible = true;
+                Enter.Visible = false;
                 DateSelect.Visible = false;
                 cal.Visible = false;
                 SpecifTitle.Visible = true;
-                SpecifTitle.Text = "Enter an Employee ID";
+                SpecifTitle.Text = "Enter an Employee ID:";
             }
             else if (ReportSelection.SelectedItem.ToString() == "What Actors appear in a Movie?")
             {
+                result.Visible = false;
                 cal.Visible = false;
+                Enter.Visible = false;
                 DateSelect.Visible = false;
                 Specif.Visible = true;
                 SpecifTitle.Visible = true;
-                SpecifTitle.Text = "Enter a Movie ID";
+                SpecifTitle.Text = "Enter a Movie ID:";
             }
             else if (ReportSelection.SelectedItem.ToString() == "How many times has a movie with a specific actor been rented?")
             {
+                result.Visible = false;
                 cal.Visible = false;
+                Enter.Visible = false;
                 Specif.Visible = true;
                 DateSelect.Visible = false;
                 SpecifTitle.Visible = true;
-                SpecifTitle.Text = "Enter an Actor ID";
+                SpecifTitle.Text = "Enter an Actor ID: ";
+            }
+            else if (ReportSelection.SelectedItem.ToString() == "Which Customer has the most rentals?")
+            {
+                result.Visible = false;
+                cal.Visible = false;
+                Specif.Visible = false;
+                DateSelect.Visible = false;
+                SpecifTitle.Visible = false;
+                Enter.Visible = true;
+                result.Visible = true;
             }
             else
             {
+                Enter.Visible = false;
                 cal.Visible = false;
                 Specif.Visible = false;
                 DateSelect.Visible = false;
@@ -79,5 +98,24 @@ namespace WinFormsApp1
         {
 
         }
-    }      
+
+        private void DateSelect_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cal_DateSelected(object sender, DateRangeEventArgs e)
+        {
+            DateSelect.Text = cal.SelectionStart.ToShortDateString();
+        }
+        private void cal_DateChanged(object sender, DateRangeEventArgs e)
+        {
+            DateSelect.Text = cal.SelectionStart.ToShortDateString();
+        }
+
+        private void Enter_Click(object sender, EventArgs e)
+        {
+
+        }
+    }
 }
