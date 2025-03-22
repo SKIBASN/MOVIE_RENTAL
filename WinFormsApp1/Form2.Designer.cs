@@ -193,7 +193,7 @@
             // 
             ReportSelection.Font = new Font("Segoe UI", 15F);
             ReportSelection.FormattingEnabled = true;
-            ReportSelection.Items.AddRange(new object[] { "Which Customer has the most rentals? ", "What Movies haven't been rented since a specific date?", "What movies has a specific employee rented?", "What Actors appear in a Movie?", "How many times has a movie with a specific actor been rented?" });
+            ReportSelection.Items.AddRange(new object[] { "Which Customer has the most rentals?", "What Movies haven't been rented since a specific date?", "What movies has a specific employee rented?", "What Actors appear in a Movie?", "How many times has a movie with a specific actor been rented?" });
             ReportSelection.Location = new Point(37, 48);
             ReportSelection.Name = "ReportSelection";
             ReportSelection.Size = new Size(692, 36);

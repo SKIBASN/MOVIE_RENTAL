@@ -76,13 +76,14 @@ namespace WinFormsApp1
             }
             else if (ReportSelection.SelectedItem.ToString() == "Which Customer has the most rentals?")
             {
+                Enter.Visible = true;
+                result.Visible = true;
                 result.Visible = false;
                 cal.Visible = false;
                 Specif.Visible = false;
                 DateSelect.Visible = false;
                 SpecifTitle.Visible = false;
-                Enter.Visible = true;
-                result.Visible = true;
+
             }
             else
             {
