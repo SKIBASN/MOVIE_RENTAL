@@ -4,13 +4,14 @@ using System.IO.Pipes;
 namespace WinFormsApp1
 {
 
-    public partial class Window : Form
+    public partial class LoginScreen : Form
     {
         public SqlConnection myConnection;
         public SqlCommand myCommand;
         public SqlDataReader myReader;
+        
 
-        public Window()
+        public LoginScreen()
         {
             InitializeComponent();
 
@@ -60,14 +61,18 @@ namespace WinFormsApp1
                     //string empID = myReader["employeeID"].ToString();
                     string empName = myReader["firstName"].ToString();
                     //MessageBox.Show("Login successful for employee " + myReader["employeeID"].ToString());
-                    MessageBox.Show("Login successful for employee " + myReader["firstName"].ToString());
+                    //MessageBox.Show("Login successful for employee " + myReader["firstName"].ToString());
                     // Continue with further actions, such as opening the main form
                     status.Text = "Username or Password is correct";
+                    NavScreen f2 = new();
+                    f2.Show();
+                    this.Hide();
                 }
                 else
                 {
                     MessageBox.Show("Invalid employeeID or password.");
                     status.Text = "Username or Password is incorrect";
+                
                 }
 
                 myReader.Close();
@@ -110,6 +115,21 @@ namespace WinFormsApp1
 
 
         private void Report_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Customer_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Movie_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Rental_Click(object sender, EventArgs e)
         {
 
         }
