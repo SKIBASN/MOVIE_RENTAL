@@ -36,6 +36,8 @@ namespace WinFormsApp1
         {
             if (ReportSelection.SelectedItem.ToString() == "What Movies haven't been rented since a specific date?")
             {
+                Specif.Text = "";
+                DateSelect.Text = "No Date Selected";
                 result.Visible = false;
                 cal.Visible = true;
                 Enter.Visible = false;
@@ -43,9 +45,13 @@ namespace WinFormsApp1
                 Specif.Visible = false;
                 SpecifTitle.Visible = true;
                 SpecifTitle.Text = "Pick a Date: ";
+                Enter.Visible = true;
+
             }
             else if (ReportSelection.SelectedItem.ToString() == "What movies has a specific employee rented?")
             {
+                Specif.Text = "";
+                DateSelect.Text = "No Date Selected";
                 result.Visible = false;
                 Specif.Visible = true;
                 Enter.Visible = false;
@@ -53,9 +59,13 @@ namespace WinFormsApp1
                 cal.Visible = false;
                 SpecifTitle.Visible = true;
                 SpecifTitle.Text = "Enter an Employee ID:";
+                Enter.Visible = true;
+
             }
             else if (ReportSelection.SelectedItem.ToString() == "What Actors appear in a Movie?")
             {
+                Specif.Text = "";
+                DateSelect.Text = "No Date Selected";
                 result.Visible = false;
                 cal.Visible = false;
                 Enter.Visible = false;
@@ -63,9 +73,13 @@ namespace WinFormsApp1
                 Specif.Visible = true;
                 SpecifTitle.Visible = true;
                 SpecifTitle.Text = "Enter a Movie ID:";
+                Enter.Visible = true;
+
             }
             else if (ReportSelection.SelectedItem.ToString() == "How many times has a movie with a specific actor been rented?")
             {
+                Specif.Text = "";
+                DateSelect.Text = "No Date Selected";
                 result.Visible = false;
                 cal.Visible = false;
                 Enter.Visible = false;
@@ -73,9 +87,13 @@ namespace WinFormsApp1
                 DateSelect.Visible = false;
                 SpecifTitle.Visible = true;
                 SpecifTitle.Text = "Enter an Actor ID: ";
+                Enter.Visible = true;
+
             }
             else if (ReportSelection.SelectedItem.ToString() == "Which Customer has the most rentals?")
             {
+                Specif.Text = "";
+                DateSelect.Text = "No Date Selected";
                 Enter.Visible = true;
                 result.Visible = true;
                 result.Visible = false;
@@ -87,6 +105,8 @@ namespace WinFormsApp1
             }
             else
             {
+                Specif.Text = "";
+                DateSelect.Text = "No Date Selected";
                 Enter.Visible = false;
                 cal.Visible = false;
                 Specif.Visible = false;
@@ -116,7 +136,15 @@ namespace WinFormsApp1
 
         private void Enter_Click(object sender, EventArgs e)
         {
-
+            if ((Specif.Text == "") && (DateSelect.Text == "No Date Selected") && (ReportSelection.SelectedItem?.ToString() != "Which Customer has the most rentals?"))
+            {
+                result.Text = "Error: Missing Information";
+            }
+            else
+            {
+                result.Text = "RESULT EXECUTED";
+            }
+                result.Visible = true;
         }
     }
 }
