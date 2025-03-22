@@ -4,13 +4,13 @@ using System.IO.Pipes;
 namespace WinFormsApp1
 {
 
-    public partial class Window : Form
+    public partial class LoginScreen : Form
     {
         public SqlConnection myConnection;
         public SqlCommand myCommand;
         public SqlDataReader myReader;
 
-        public Window()
+        public LoginScreen()
         {
             InitializeComponent();
 
@@ -109,6 +109,21 @@ namespace WinFormsApp1
         }
 
         private void Report_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Customer_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Movie_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Rental_Click(object sender, EventArgs e)
         {
 
         }
