@@ -1,35 +1,26 @@
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.SqlClient;
 using System.IO.Pipes;
 
 namespace WinFormsApp1
 {
-
     public partial class LoginScreen : Form
     {
-        public SqlConnection myConnection;
-        public SqlCommand myCommand;
-        public SqlDataReader myReader;
-        
+        public Database db;
 
         public LoginScreen()
         {
             InitializeComponent();
+            db = new Database(); // Initialize the object and create the connection
 
-            String connectionString = "Server = DESKTOP-MNUPRSE; Database = TEAM4CMPT291DATABASE; Trusted_Connection = yes;";
-            SqlConnection myConnection = new SqlConnection(connectionString); // Timeout in seconds
-
-            try
-            {
-                myConnection.Open(); // Open connection
-                myCommand = new SqlCommand();
-                myCommand.Connection = myConnection; // Link the command stream to the connection
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.ToString(), "Error");
-                this.Close();
-            }
+            //ConvertExistingPasswordsToHash(db);
         }
+
+        // Convert existing users' passwords to hashes
+        //private void ConvertPasswordsToHash(Database db)
+        //{
+        //    string selectQuery = "SELECT User"
+        //}
 
         private void UserTitle_Load(object sender, EventArgs e)
         {
@@ -38,12 +29,7 @@ namespace WinFormsApp1
 
 
         private void login_Click(object sender, EventArgs e)
-        //check for user in database
-        //check if password matches
-        //if all is good, open new window
-        //if not, display error message
         {
-
             status.Visible = true;
 
             try
@@ -58,12 +44,10 @@ namespace WinFormsApp1
                 // Check if any row is returned
                 if (myReader.Read())
                 {
-                    //string empID = myReader["employeeID"].ToString();
-                    string empName = myReader["firstName"].ToString();
-                    //MessageBox.Show("Login successful for employee " + myReader["employeeID"].ToString());
+                    //string empName = myReader["firstName"].ToString();
                     //MessageBox.Show("Login successful for employee " + myReader["firstName"].ToString());
-                    // Continue with further actions, such as opening the main form
-                    status.Text = "Username or Password is correct";
+
+                    status.Text = "Login successful";
                     NavScreen f2 = new();
                     f2.Show();
                     this.Hide();
@@ -133,5 +117,7 @@ namespace WinFormsApp1
         {
 
         }
+
+
     }
 }
