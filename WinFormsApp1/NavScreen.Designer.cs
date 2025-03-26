@@ -58,7 +58,7 @@
             tabControl1.Size = new Size(801, 446);
             tabControl1.TabIndex = 0;
             // 
-            // Customer
+            // Customer tab
             // 
             Customer.BackColor = Color.Firebrick;
             Customer.Font = new Font("Segoe UI", 9F);
@@ -70,7 +70,7 @@
             Customer.Text = "Customer";
             Customer.Click += Customer_Click;
             // 
-            // Movie
+            // Movie tab
             // 
             Movie.BackColor = Color.Firebrick;
             Movie.Location = new Point(4, 46);
@@ -81,7 +81,7 @@
             Movie.Text = "Movie";
             Movie.Click += Movie_Click;
             // 
-            // Rental
+            // Rental tab
             // 
             Rental.BackColor = Color.Firebrick;
             Rental.Location = new Point(4, 46);
@@ -90,8 +90,11 @@
             Rental.Size = new Size(793, 396);
             Rental.TabIndex = 2;
             Rental.Text = "Rental";
+            
+            
+            
             // 
-            // Report
+            // Report tab
             // 
             Report.BackColor = Color.Firebrick;
             Report.Controls.Add(DateSelect);

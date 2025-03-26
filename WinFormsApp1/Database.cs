@@ -30,11 +30,11 @@ namespace WinFormsApp1
             }
         }
 
-        // Function to convert existing passwords to hash?
-        public static string HashPassword(string password)
-        {
+        //// Function to convert existing passwords to hash?
+        //public static string HashPassword(string password)
+        //{
 
-        }
+        //}
         
         // Functions for Customer and/or Movie screen(s)
   /*      public void insert(String insert_statement)
