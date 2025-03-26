@@ -34,15 +34,15 @@ namespace WinFormsApp1
 
             try
             {
-                myCommand.CommandText = "SELECT Username, firstName FROM Employee WHERE Username = @user AND password = @pass";
-                myCommand.Parameters.Clear();
-                myCommand.Parameters.AddWithValue("@user", user.Text);
-                myCommand.Parameters.AddWithValue("@pass", password.Text);
+                db.myCommand.CommandText = "SELECT Username, firstName FROM Employee WHERE Username = @user AND password = @pass";
+                db.myCommand.Parameters.Clear();
+                db.myCommand.Parameters.AddWithValue("@user", user.Text);
+                db.myCommand.Parameters.AddWithValue("@pass", password.Text);
 
-                myReader = myCommand.ExecuteReader();
+                db.myReader = db.myCommand.ExecuteReader();
 
                 // Check if any row is returned
-                if (myReader.Read())
+                if (db.myReader.Read())
                 {
                     //string empName = myReader["firstName"].ToString();
                     //MessageBox.Show("Login successful for employee " + myReader["firstName"].ToString());
@@ -59,7 +59,7 @@ namespace WinFormsApp1
                 
                 }
 
-                myReader.Close();
+                db.myReader.Close();
 
             }
             catch (Exception e3)
