@@ -49,6 +49,7 @@ namespace WinFormsApp1
 
                     status.Text = "Login successful";
                     NavScreen f2 = new();
+                    db.myReader.Close();
                     f2.Show();
                     this.Hide();
                 }
@@ -57,13 +58,14 @@ namespace WinFormsApp1
                     MessageBox.Show("Invalid employeeID or password.");
                     status.Text = "Username or Password is incorrect";
                     NavScreen f2 = new();
+                    db.myReader.Close();
                     f2.Show();
                     this.Hide();
 
 
                 }
 
-                db.myReader.Close();
+                //db.myReader.Close();
 
             }
             catch (Exception e3)

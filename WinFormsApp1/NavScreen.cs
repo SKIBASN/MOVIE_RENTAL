@@ -104,7 +104,7 @@ namespace WinFormsApp1
                 SpecifTitle.Visible = true;
                 SpecifTitle.Text = "Enter an Actor ID: ";
                 Enter.Visible = true;
-                choice = 5;
+                choice = 4;
             }
             else if (ReportSelection.SelectedItem.ToString() == "Which Customer has the most rentals?")
             {
@@ -160,7 +160,7 @@ namespace WinFormsApp1
                     //db.myCommand.CommandText = "SELECT Username, firstName FROM Employee WHERE Username = @user AND password = @pass";
                     //db.myCommand.Parameters.Clear();
                     //db.myCommand.Parameters.AddWithValue("@user", user.Text);
-                    db.myReader = db.myCommand.ExecuteReader();
+                    //db.myReader = db.myCommand.ExecuteReader();
 
                     // Check if any row is returned
                     if (db.myReader.Read())
@@ -188,7 +188,7 @@ namespace WinFormsApp1
                     //db.myCommand.CommandText = "SELECT Username, firstName FROM Employee WHERE Username = @user AND password = @pass";
                     //db.myCommand.Parameters.Clear();
                     //db.myCommand.Parameters.AddWithValue("@user", user.Text);
-                    db.myReader = db.myCommand.ExecuteReader();
+                    //db.myReader = db.myCommand.ExecuteReader();
 
                     // Check if any row is returned
                     if (db.myReader.Read())
@@ -216,7 +216,7 @@ namespace WinFormsApp1
                     //db.myCommand.CommandText = "SELECT Username, firstName FROM Employee WHERE Username = @user AND password = @pass";
                     //db.myCommand.Parameters.Clear();
                     //db.myCommand.Parameters.AddWithValue("@user", user.Text);
-                    db.myReader = db.myCommand.ExecuteReader();
+                    //db.myReader = db.myCommand.ExecuteReader();
 
                     // Check if any row is returned
                     if (db.myReader.Read())
@@ -244,7 +244,7 @@ namespace WinFormsApp1
                     //db.myCommand.CommandText = "SELECT Username, firstName FROM Employee WHERE Username = @user AND password = @pass";
                     //db.myCommand.Parameters.Clear();
                     //db.myCommand.Parameters.AddWithValue("@user", user.Text);
-                    db.myReader = db.myCommand.ExecuteReader();
+                    //db.myReader = db.myCommand.ExecuteReader();
 
                     // Check if any row is returned
                     if (db.myReader.Read())
@@ -267,30 +267,27 @@ namespace WinFormsApp1
             }
             else if (choice == 5)
             {
-                try
                 {
                     db.myCommand.CommandText = @"
-                            SELECT C.FirstName, C.LastName, R.Numb_of_rentals
-                            FROM Customer C
-                            INNER JOIN (
-                            SELECT CustomerID, COUNT(*) AS Numb_of_rentals
-                            FROM Rental
-                            GROUP BY CustomerID
-                            ) R ON C.CustomerID = R.CustomerID
-                            ORDER BY R.Numb_of_rentals DESC;
-                            ";
+                                                select *
+                                                from (SELECT R.CustomerID, C.FirstName, C.LastName, R.Numb_of_rentals
+		                                        FROM Customer c,
+		                                        (SELECT CustomerID, COUNT(*) AS Numb_of_rentals
+		                                        FROM Rental
+		                                        GROUP BY CustomerID) R
+		                                        WHERE R.customerID=C.customerID) CHOICE5
+                                                ORDER BY Numb_of_rentals DESC;";
 
                     db.myCommand.Parameters.Clear();
                     db.myReader = db.myCommand.ExecuteReader();
 
-                    // Display all results
                     if (db.myReader.HasRows)
                     {
                         StringBuilder output = new StringBuilder();
                         while (db.myReader.Read())
                         {
-                            string firstName = Convert.ToString(db.myReader["FirstName"]);
-                            string lastName = Convert.ToString(db.myReader["LastName"]);
+                            string firstName = db.myReader["FirstName"]?.ToString() ?? "Unknown";
+                            string lastName = db.myReader["LastName"]?.ToString() ?? "Unknown";
                             output.AppendLine($"{firstName} {lastName}");
                         }
 
@@ -299,19 +296,12 @@ namespace WinFormsApp1
                     }
                     else
                     {
-                        MessageBox.Show("No rental records found.");
+                        MessageBox.Show("No rental records found.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
-
-                    db.myReader.Close();
-                }
-                catch (Exception e3)
-                {
-                    MessageBox.Show(e3.ToString(), "Error");
                 }
             }
-
-
         }
+
 
         private void Result_TextChanged(object sender, EventArgs e)
         {
