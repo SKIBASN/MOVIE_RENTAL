@@ -26,7 +26,7 @@ namespace WinFormsApp1
         public NavScreen()
         {
             InitializeComponent();
-            db = new Database(); // Initialize the object and create the connection
+            //db = new Database(); // Initialize the object and create the connection
             // Initialize result with a TextBox instance
             this.Controls.Add(RepRes); // Add result to the form's controls
         }
@@ -111,7 +111,7 @@ namespace WinFormsApp1
                 Specif.Text = "";
                 DateSelect.Text = "No Date Selected";
                 Enter.Visible = true;
-                RepRes.Visible = false;
+                //RepRes.Visible = false;
                 cal.Visible = false;
                 Specif.Visible = false;
                 DateSelect.Visible = false;
@@ -121,7 +121,7 @@ namespace WinFormsApp1
             else
             {
                 Specif.Text = "";
-                RepRes.Visible = false;
+                //RepRes.Visible = false;
                 DateSelect.Text = "No Date Selected";
                 Enter.Visible = false;
                 cal.Visible = false;
@@ -267,8 +267,8 @@ namespace WinFormsApp1
             }
             else if (choice == 5)
             {
-                {
-                    db.myCommand.CommandText = @"
+                db = new Database();
+                db.myCommand.CommandText = @"
                                                 select *
                                                 from (SELECT R.CustomerID, C.FirstName, C.LastName, R.Numb_of_rentals
 		                                        FROM Customer c,
@@ -278,27 +278,30 @@ namespace WinFormsApp1
 		                                        WHERE R.customerID=C.customerID) CHOICE5
                                                 ORDER BY Numb_of_rentals DESC;";
 
-                    db.myCommand.Parameters.Clear();
-                    db.myReader = db.myCommand.ExecuteReader();
+                db.myCommand.Parameters.Clear();
+                db.myReader = db.myCommand.ExecuteReader();
 
-                    if (db.myReader.HasRows)
-                    {
-                        StringBuilder output = new StringBuilder();
-                        while (db.myReader.Read())
-                        {
-                            string firstName = db.myReader["FirstName"]?.ToString() ?? "Unknown";
-                            string lastName = db.myReader["LastName"]?.ToString() ?? "Unknown";
-                            output.AppendLine($"{firstName} {lastName}");
-                        }
 
-                        RepRes.Text = output.ToString().Trim();
-                        RepRes.Visible = true;
-                    }
-                    else
+                if (db.myReader.HasRows)
+                {
+                    Enter.BackColor = Color.Red;
+                    StringBuilder output = new StringBuilder();
+                    while (db.myReader.Read())
                     {
-                        MessageBox.Show("No rental records found.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        string firstName = db.myReader["FirstName"]?.ToString() ?? "Unknown";
+                        string lastName = db.myReader["LastName"]?.ToString() ?? "Unknown";
+                        output.AppendLine($"{firstName} {lastName}");
                     }
+                    Enter.BackColor = Color.Blue;
+                    RepRes.Text = output.ToString().Trim();
+                    RepRes.BorderStyle = BorderStyle.FixedSingle;
+                    RepRes.Visible = true;
                 }
+                Enter.BackColor = Color.Purple;
+            }
+            else
+            {
+                MessageBox.Show("No rental records found.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 

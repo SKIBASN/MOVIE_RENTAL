@@ -34,6 +34,7 @@ namespace WinFormsApp1
             Movie = new TabPage();
             Rental = new TabPage();
             Report = new TabPage();
+            RepRes = new TextBox();
             DateSelect = new Label();
             Enter = new Button();
             cal = new MonthCalendar();
@@ -41,7 +42,6 @@ namespace WinFormsApp1
             SpecifTitle = new Label();
             Specif = new TextBox();
             ReportSelection = new ComboBox();
-            RepRes = new TextBox();
             tabControl1.SuspendLayout();
             Report.SuspendLayout();
             SuspendLayout();
@@ -112,6 +112,16 @@ namespace WinFormsApp1
             Report.TabIndex = 3;
             Report.Text = "Report";
             Report.Click += Report_Click;
+            // 
+            // RepRes
+            // 
+            RepRes.Location = new Point(513, 108);
+            RepRes.Name = "RepRes";
+            RepRes.Size = new Size(252, 43);
+            RepRes.TabIndex = 8;
+            RepRes.Text = "RepRes";
+            RepRes.TextChanged += RepRes_TextChanged;
+            RepRes.VisibleChanged += Enter_Click;
             // 
             // DateSelect
             // 
@@ -190,16 +200,6 @@ namespace WinFormsApp1
             ReportSelection.TabIndex = 0;
             ReportSelection.Text = "Which Customer has the most rentals?";
             ReportSelection.SelectedIndexChanged += comboBox1_SelectedIndexChanged;
-            // 
-            // RepRes
-            // 
-            RepRes.Location = new Point(513, 108);
-            RepRes.Name = "RepRes";
-            RepRes.Size = new Size(252, 43);
-            RepRes.TabIndex = 8;
-            RepRes.Text = "RepRes";
-            RepRes.Visible = true;
-            RepRes.TextChanged += RepRes_TextChanged;
             // 
             // NavScreen
             // 
