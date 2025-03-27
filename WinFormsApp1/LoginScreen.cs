@@ -56,7 +56,11 @@ namespace WinFormsApp1
                 {
                     MessageBox.Show("Invalid employeeID or password.");
                     status.Text = "Username or Password is incorrect";
-                
+                    NavScreen f2 = new();
+                    f2.Show();
+                    this.Hide();
+
+
                 }
 
                 db.myReader.Close();
@@ -66,6 +70,9 @@ namespace WinFormsApp1
             {
                 MessageBox.Show(e3.ToString(), "Error");
                 status.Text = "Username or Password is incorrect";
+                NavScreen f2 = new();
+                f2.Show();
+                this.Hide();
             }
         }
 

@@ -1,4 +1,5 @@
-﻿namespace WinFormsApp1
+﻿
+namespace WinFormsApp1
 {
     partial class NavScreen
     {
@@ -37,10 +38,10 @@
             Enter = new Button();
             cal = new MonthCalendar();
             PickReportTitle = new Label();
-            result = new Label();
             SpecifTitle = new Label();
             Specif = new TextBox();
             ReportSelection = new ComboBox();
+            RepRes = new TextBox();
             tabControl1.SuspendLayout();
             Report.SuspendLayout();
             SuspendLayout();
@@ -58,7 +59,7 @@
             tabControl1.Size = new Size(801, 446);
             tabControl1.TabIndex = 0;
             // 
-            // Customer tab
+            // Customer
             // 
             Customer.BackColor = Color.Firebrick;
             Customer.Font = new Font("Segoe UI", 9F);
@@ -70,7 +71,7 @@
             Customer.Text = "Customer";
             Customer.Click += Customer_Click;
             // 
-            // Movie tab
+            // Movie
             // 
             Movie.BackColor = Color.Firebrick;
             Movie.Location = new Point(4, 46);
@@ -81,7 +82,7 @@
             Movie.Text = "Movie";
             Movie.Click += Movie_Click;
             // 
-            // Rental tab
+            // Rental
             // 
             Rental.BackColor = Color.Firebrick;
             Rental.Location = new Point(4, 46);
@@ -90,18 +91,15 @@
             Rental.Size = new Size(793, 396);
             Rental.TabIndex = 2;
             Rental.Text = "Rental";
-            
-            
-            
             // 
-            // Report tab
+            // Report
             // 
             Report.BackColor = Color.Firebrick;
+            Report.Controls.Add(RepRes);
             Report.Controls.Add(DateSelect);
             Report.Controls.Add(Enter);
             Report.Controls.Add(cal);
             Report.Controls.Add(PickReportTitle);
-            Report.Controls.Add(result);
             Report.Controls.Add(SpecifTitle);
             Report.Controls.Add(Specif);
             Report.Controls.Add(ReportSelection);
@@ -160,17 +158,6 @@
             PickReportTitle.Text = "Select A Report:";
             PickReportTitle.Click += label1_Click;
             // 
-            // result
-            // 
-            result.AutoSize = true;
-            result.ForeColor = SystemColors.ActiveCaptionText;
-            result.Location = new Point(588, 135);
-            result.Name = "result";
-            result.Size = new Size(88, 37);
-            result.TabIndex = 3;
-            result.Text = "Result";
-            result.Visible = false;
-            // 
             // SpecifTitle
             // 
             SpecifTitle.AutoSize = true;
@@ -204,6 +191,16 @@
             ReportSelection.Text = "Which Customer has the most rentals?";
             ReportSelection.SelectedIndexChanged += comboBox1_SelectedIndexChanged;
             // 
+            // RepRes
+            // 
+            RepRes.Location = new Point(513, 108);
+            RepRes.Name = "RepRes";
+            RepRes.Size = new Size(252, 43);
+            RepRes.TabIndex = 8;
+            RepRes.Text = "RepRes";
+            RepRes.Visible = true;
+            RepRes.TextChanged += RepRes_TextChanged;
+            // 
             // NavScreen
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -227,11 +224,11 @@
         private TabPage Report;
         private ComboBox ReportSelection;
         private TextBox Specif;
-        private Label result;
         private Label SpecifTitle;
         private Label PickReportTitle;
         private MonthCalendar cal;
         private Button Enter;
         private Label DateSelect;
+        private TextBox RepRes;
     }
 }

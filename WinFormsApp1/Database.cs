@@ -15,7 +15,7 @@ namespace WinFormsApp1
         
         public Database()
         {
-            String connectionString = "Server = BRIGHT-THINKPAD; Database = TEAM4CMPT291DATABASE; Trusted_Connection = yes;";
+            String connectionString = "Server = DESKTOP-MNUPRSE; Database = TEAM4CMPT291DATABASE; Trusted_Connection = yes;";
             this.myConnection = new SqlConnection(connectionString); // Timeout in seconds
 
             try
