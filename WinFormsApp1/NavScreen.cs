@@ -52,6 +52,13 @@ namespace WinFormsApp1
             {
                 EnterR.Visible = true;
                 RepRes.Visible = true;
+                Specif.Visible = false;
+                SpecifTitle1.Visible = false;
+                SpecifTitle2.Visible = false;
+                cal1.Visible = false;
+                cal2.Visible = false;
+                DateSelect1.Visible = false;
+                DateSelect2.Visible = false;
                 choice = 0;
             }
             else if (ReportSelection.SelectedIndex == 1)
