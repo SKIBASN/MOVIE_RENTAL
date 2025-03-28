@@ -19,7 +19,7 @@ namespace WinFormsApp1
     public partial class NavScreen : Form
     {
         public Database db;
-        private int choice = 5;
+        private int choice = 0;
         // Change the type of 'result' from 'object' to 'Control' to access the 'Visible' property
         private Control result;
 
@@ -52,8 +52,9 @@ namespace WinFormsApp1
             {
                 EnterR.Visible = true;
                 RepRes.Visible = true;
+                choice = 0;
             }
-            else if (ReportSelection.SelectedIndex==1)
+            else if (ReportSelection.SelectedIndex == 1)
             {
                 SpecifTitle1.Text = "Date 1";
                 SpecifTitle2.Text = "Date 2";
@@ -66,6 +67,7 @@ namespace WinFormsApp1
                 EnterR.Visible = true;
 
                 Specif.Visible = false;
+                choice = 1;
             }
             else if (ReportSelection.SelectedIndex == 2)
             {
@@ -81,6 +83,8 @@ namespace WinFormsApp1
                 cal1.Visible = false;
                 cal2.Visible = false;
 
+                choice = 2;
+
             }
             else if (ReportSelection.SelectedIndex == 3)
             {
@@ -95,6 +99,8 @@ namespace WinFormsApp1
                 EnterR.Visible = true;
 
                 Specif.Visible = false;
+
+                choice = 3;
             }
             else if (ReportSelection.SelectedIndex == 4)
             {
@@ -108,6 +114,8 @@ namespace WinFormsApp1
                 DateSelect2.Visible = false;
                 cal1.Visible = false;
                 cal2.Visible = false;
+
+                choice = 4;
 
             }
 
@@ -132,116 +140,20 @@ namespace WinFormsApp1
             DateSelect1.Text = cal1.SelectionStart.ToShortDateString();
         }
 
-        private void Enter_Click(object sender, EventArgs e)
+
+        private void cal2_DateChanged(object sender, DateRangeEventArgs e)
         {
-            if (choice == 1) // What Movies haven't been rented since a specific date?
-            {
-                try
-                {
-                    //db.myCommand.CommandText = "SELECT Username, firstName FROM Employee WHERE Username = @user AND password = @pass";
-                    //db.myCommand.Parameters.Clear();
-                    //db.myCommand.Parameters.AddWithValue("@user", user.Text);
-                    //db.myReader = db.myCommand.ExecuteReader();
+            DateSelect2.Text = cal1.SelectionStart.ToShortDateString();
+        }
 
-                    // Check if any row is returned
-                    if (db.myReader.Read())
-                    {
+        private void cal2_DateSelected(object sender, DateRangeEventArgs e)
+        {
+            DateSelect2.Text = cal1.SelectionStart.ToShortDateString();
+        }
 
-
-                    }
-                    else
-                    {
-                        MessageBox.Show("Invalid employeeID or password.");
-                    }
-                    db.myReader.Close();
-                }
-
-                catch (Exception e3)
-                {
-                    MessageBox.Show(e3.ToString(), "Error");
-                }
-            }
-            else if (choice == 2) //
-            {
-                try
-                {
-                    //db.myCommand.CommandText = "SELECT Username, firstName FROM Employee WHERE Username = @user AND password = @pass";
-                    //db.myCommand.Parameters.Clear();
-                    //db.myCommand.Parameters.AddWithValue("@user", user.Text);
-                    //db.myReader = db.myCommand.ExecuteReader();
-
-                    // Check if any row is returned
-                    if (db.myReader.Read())
-                    {
-
-
-                    }
-                    else
-                    {
-                        MessageBox.Show("Invalid employeeID or password.");
-                    }
-                    db.myReader.Close();
-                }
-
-                catch (Exception e3)
-                {
-                    MessageBox.Show(e3.ToString(), "Error");
-                }
-            }
-            else if (choice == 3)
-            {
-                try
-                {
-                    //db.myCommand.CommandText = "SELECT Username, firstName FROM Employee WHERE Username = @user AND password = @pass";
-                    //db.myCommand.Parameters.Clear();
-                    //db.myCommand.Parameters.AddWithValue("@user", user.Text);
-                    //db.myReader = db.myCommand.ExecuteReader();
-
-                    // Check if any row is returned
-                    if (db.myReader.Read())
-                    {
-
-                    }
-                    else
-                    {
-                        MessageBox.Show("Invalid employeeID or password.");
-                    }
-                    db.myReader.Close();
-                }
-
-                catch (Exception e3)
-                {
-                    MessageBox.Show(e3.ToString(), "Error");
-                }
-            }
-            else if (choice == 4)
-            {
-                try
-                {
-                    //db.myCommand.CommandText = "SELECT Username, firstName FROM Employee WHERE Username = @user AND password = @pass";
-                    //db.myCommand.Parameters.Clear();
-                    //db.myCommand.Parameters.AddWithValue("@user", user.Text);
-                    //db.myReader = db.myCommand.ExecuteReader();
-
-                    // Check if any row is returned
-                    if (db.myReader.Read())
-                    {
-
-
-                    }
-                    else
-                    {
-                        MessageBox.Show("Invalid employeeID or password.");
-                    }
-                    db.myReader.Close();
-                }
-
-                catch (Exception e3)
-                {
-                    MessageBox.Show(e3.ToString(), "Error");
-                }
-            }
-            else if (choice == 5)
+        private void EnterR_Click(object sender, EventArgs e)
+        {
+            if (choice == 0) // What Movies haven't been rented since a specific date?
             {
                 db = new Database();
                 db.myCommand.CommandText = @"
@@ -256,7 +168,7 @@ namespace WinFormsApp1
 
                 db.myCommand.Parameters.Clear();
                 db.myReader = db.myCommand.ExecuteReader();
-
+                String output = "";
 
                 if (db.myReader.HasRows)
                 {
@@ -264,35 +176,176 @@ namespace WinFormsApp1
                     {
                         string firstName = db.myReader["FirstName"]?.ToString() ?? "Unknown";
                         string lastName = db.myReader["LastName"]?.ToString() ?? "Unknown";
-                        //output.AppendLine($"{firstName} {lastName}");
+                        string CustomerID = db.myReader["CustomerID"]?.ToString() ?? "Unknown";
+                        String Numb_of_rentals = db.myReader["Numb_of_rentals"]?.ToString() ?? "Unknown";
+                        output = output + ($"{firstName} {lastName} ({CustomerID}): {Numb_of_rentals}\n");
                     }
+                    RepRes.Text = output;
+                }
+
+                else
+                {
+                    RepRes.Text = "Error Occured";
                 }
             }
-            else
+            else if (choice == 1) //
             {
-                MessageBox.Show("No rental records found.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                db = new Database();
+                DateOnly date1 = DateOnly.Parse(DateSelect1.Text);
+                DateOnly date2 = DateOnly.Parse(DateSelect1.Text);
+                db.myCommand.CommandText = @$"
+                                               $WITH RankedMovies AS (
+                                                        SELECT 
+                                                         M.MovieID, 
+                                                         M.MovieName, 
+                                                         COUNT(*) AS Numb_of_Rentals,
+                                                         DENSE_RANK() OVER (ORDER BY COUNT(*) DESC) AS rnk
+                                                        FROM Rental R
+                                                        JOIN Movie M ON R.MovieID = M.MovieID
+                                                        WHERE R.CheckoutDateTime BETWEEN {date1} AND {date2}
+                                                        GROUP BY M.MovieID, M.MovieName)
+                                                        SELECT MovieID, MovieName, Numb_of_Rentals
+                                                        FROM RankedMovies
+                                                        WHERE rnk <= 5
+                                                        ORDER BY Numb_of_Rentals DESC;";
+
+                db.myCommand.Parameters.Clear();
+                db.myReader = db.myCommand.ExecuteReader();
+                String output = "";
+
+                if (db.myReader.HasRows)
+                {
+                    while (db.myReader.Read())
+                    {
+                        string MovieName = db.myReader["MovieName"]?.ToString() ?? "Unknown";
+                        string MovieID = db.myReader["MovieID"]?.ToString() ?? "Unknown";
+                        String Numb_of_rentals = db.myReader["Numb_of_rentals"]?.ToString() ?? "Unknown";
+                        output = output + ($"{MovieName} ({MovieID}): {Numb_of_rentals}\n");
+                    }
+                    RepRes.Text = output;
+                }
+
+                else
+                {
+                    RepRes.Text = "Error Occured";
+                }
             }
-        }
+            else if (choice == 2)
+            {
+                db = new Database();
+                String EmpID = Specif.Text;
+                db.myCommand.CommandText = @$"
+                                               WITH RankedMovies AS (
+                                                SELECT MovieID, COUNT(*) AS numb_of_rentals,
+                                                DENSE_RANK() OVER (ORDER BY COUNT(*) DESC) AS rnk
+                                                FROM rental
+                                                GROUP BY MovieID
+                                                )
+                                                SELECT MovieID, numb_of_rentals
+                                                FROM RankedMovies
+                                                WHERE rnk <=   
+                                                ORDER BY numb_of_rentals DESC;";
 
+                db.myCommand.Parameters.Clear();
+                db.myReader = db.myCommand.ExecuteReader();
+                String output = "";
 
-        private void Result_TextChanged(object sender, EventArgs e)
-        {
+                if (db.myReader.HasRows)
+                {
+                    while (db.myReader.Read())
+                    {
 
-        }
+                        string MovieID = db.myReader["MovieID"]?.ToString() ?? "Unknown";
+                        String Numb_of_rentals = db.myReader["Numb_of_rentals"]?.ToString() ?? "Unknown";
+                        output = output + ($"({MovieID}): {Numb_of_rentals}\n");
+                    }
+                    RepRes.Text = output;
+                }
 
-        private void Result_TextChanged_1(object sender, EventArgs e)
-        {
+                else
+                {
+                    RepRes.Text = "Error Occured";
+                }
+            }
+            else if (choice == 3)
+            {
+                db = new Database();
+                DateOnly date1 = DateOnly.Parse(DateSelect1.Text);
+                DateOnly date2 = DateOnly.Parse(DateSelect1.Text);
+                db.myCommand.CommandText = @$"
+                                                WITH RankedMovies AS (
+                                                SELECT m.MovieType, COUNT(*) AS numb_of_rentals,
+                                                DENSE_RANK() OVER (ORDER BY COUNT(*) DESC) AS rank
+                                                FROM rental r
+                                                JOIN movie m ON m.MovieID = r.MovieID
+                                                WHERE r.CheckoutDateTime BETWEEN @myDateA AND @myDateB
+                                                GROUP BY m.MovieType
+                                                )
+                                                SELECT MovieType, numb_of_rentals
+                                                FROM RankedMovies
+                                                WHERE rank <= 3
+                                                ORDER BY numb_of_rentals DESC;";
 
-        }
+                db.myCommand.Parameters.Clear();
+                db.myReader = db.myCommand.ExecuteReader();
+                String output = "";
 
-        private void Res_TextChanged(object sender, EventArgs e)
-        {
+                if (db.myReader.HasRows)
+                {
+                    while (db.myReader.Read())
+                    {
+                        string MovieType = db.myReader["MovieType"]?.ToString() ?? "Unknown";
+                        String Numb_of_rentals = db.myReader["Numb_of_rentals"]?.ToString() ?? "Unknown";
+                        output = output + ($"{MovieType}: {Numb_of_rentals}\n");
+                    }
+                    RepRes.Text = output;
+                }
 
-        }
+                else
+                {
+                    RepRes.Text = "Error Occured";
+                }
+            }
+            else if (choice == 4)
+            {
+                db = new Database();
+                String ActorID = Specif.Text;
+                db.myCommand.CommandText = @$"
+                                                WITH RankedMovies AS (
+                                                SELECT m.MovieName, r.MovieID, COUNT(*) AS numb_of_rentals,
+                                                DENSE_RANK() OVER (ORDER BY COUNT(*) DESC) AS rank
+                                                FROM Rental r
+                                                JOIN AppearedIn a ON r.MovieID = a.MovieID
+                                                JOIN Movie m ON r.MovieID = m.MovieID
+                                                WHERE a.ActorID = {ActorID}
+                                                GROUP BY r.MovieID, m.MovieName
+                                                )
+                                                SELECT MovieName, numb_of_rentals
+                                                FROM RankedMovies
+                                                WHERE rank <= 3
+                                                ORDER BY numb_of_rentals DESC;";
 
-        private void RepRes_TextChanged(object sender, EventArgs e)
-        {
+                db.myCommand.Parameters.Clear();
+                db.myReader = db.myCommand.ExecuteReader();
+                String output = "";
 
+                if (db.myReader.HasRows)
+                {
+                    while (db.myReader.Read())
+                    {
+                        string MovieName = db.myReader["MovieName"]?.ToString() ?? "Unknown";
+                        string MovieID = db.myReader["MovieID"]?.ToString() ?? "Unknown";
+                        String Numb_of_rentals = db.myReader["Numb_of_rentals"]?.ToString() ?? "Unknown";
+                        output = output + ($"{MovieName} ({MovieID}): {Numb_of_rentals}\n");
+                    }
+                    RepRes.Text = output;
+                }
+
+                else
+                {
+                    RepRes.Text = "Error Occured";
+                }
+            }
         }
     }
 }

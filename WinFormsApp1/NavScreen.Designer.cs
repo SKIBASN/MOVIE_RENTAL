@@ -34,6 +34,8 @@ namespace WinFormsApp1
             Movie = new TabPage();
             Rental = new TabPage();
             Report = new TabPage();
+            EnterR = new Button();
+            RepRes = new TextBox();
             SpecifTitle2 = new Label();
             cal2 = new MonthCalendar();
             DateSelect2 = new Label();
@@ -43,8 +45,6 @@ namespace WinFormsApp1
             SpecifTitle1 = new Label();
             Specif = new TextBox();
             ReportSelection = new ComboBox();
-            RepRes = new TextBox();
-            EnterR = new Button();
             tabControl1.SuspendLayout();
             Report.SuspendLayout();
             SuspendLayout();
@@ -119,6 +119,26 @@ namespace WinFormsApp1
             Report.Text = "Report";
             Report.Click += Report_Click;
             // 
+            // EnterR
+            // 
+            EnterR.Font = new Font("Segoe UI", 10F);
+            EnterR.Location = new Point(604, 154);
+            EnterR.Name = "EnterR";
+            EnterR.Size = new Size(168, 30);
+            EnterR.TabIndex = 12;
+            EnterR.Text = "Enter";
+            EnterR.UseVisualStyleBackColor = true;
+            // 
+            // RepRes
+            // 
+            RepRes.Font = new Font("Segoe UI", 5F);
+            RepRes.Location = new Point(588, 190);
+            RepRes.MaximumSize = new Size(200, 200);
+            RepRes.Name = "RepRes";
+            RepRes.Size = new Size(196, 16);
+            RepRes.TabIndex = 11;
+            RepRes.Text = "Result";
+            // 
             // SpecifTitle2
             // 
             SpecifTitle2.AutoSize = true;
@@ -137,6 +157,7 @@ namespace WinFormsApp1
             cal2.Name = "cal2";
             cal2.TabIndex = 9;
             cal2.Visible = false;
+            cal2.DateSelected += cal2_DateSelected;
             // 
             // DateSelect2
             // 
@@ -217,26 +238,6 @@ namespace WinFormsApp1
             ReportSelection.TabIndex = 0;
             ReportSelection.Text = "Which Customer has the most rentals?";
             ReportSelection.SelectedIndexChanged += comboBox1_SelectedIndexChanged;
-            // 
-            // RepRes
-            // 
-            RepRes.Font = new Font("Segoe UI", 5F);
-            RepRes.Location = new Point(588, 190);
-            RepRes.MaximumSize = new Size(200, 200);
-            RepRes.Name = "RepRes";
-            RepRes.Size = new Size(196, 16);
-            RepRes.TabIndex = 11;
-            RepRes.Text = "Result";
-            // 
-            // EnterR
-            // 
-            EnterR.Font = new Font("Segoe UI", 10F);
-            EnterR.Location = new Point(604, 154);
-            EnterR.Name = "EnterR";
-            EnterR.Size = new Size(168, 30);
-            EnterR.TabIndex = 12;
-            EnterR.Text = "Enter";
-            EnterR.UseVisualStyleBackColor = true;
             // 
             // NavScreen
             // 
