@@ -60,6 +60,8 @@ namespace WinFormsApp1
                 SpecifTitle2.Text = "Date 2";
                 SpecifTitle1.Visible = true;
                 SpecifTitle2.Visible = true;
+                DateSelect1.Text = "";
+                DateSelect2.Text = "";
                 DateSelect1.Visible = true;
                 DateSelect2.Visible = true;
                 cal1.Visible = true;
@@ -93,6 +95,8 @@ namespace WinFormsApp1
                 SpecifTitle2.Text = "Date 2";
                 SpecifTitle1.Visible = true;
                 SpecifTitle2.Visible = true;
+                DateSelect1.Text = "";
+                DateSelect2.Text = "";
                 DateSelect1.Visible = true;
                 DateSelect2.Visible = true;
                 cal1.Visible = true;
