@@ -221,68 +221,85 @@ namespace WinFormsApp1
                         return;
                     }
 
-                    db.myCommand.CommandText = @"
-            WITH RankedMovies AS (
-                SELECT M.MovieID, M.MovieName, COUNT(*) AS Numb_of_Rentals,
-                DENSE_RANK() OVER (ORDER BY COUNT(*) DESC) AS rnk
-                FROM Rental R
-                JOIN Movie M ON R.MovieID = M.MovieID
-                WHERE R.CheckoutDateTime BETWEEN @Date1 AND @Date2
-                GROUP BY M.MovieID, M.MovieName
-            )
-            SELECT MovieID, MovieName, Numb_of_Rentals
-            FROM RankedMovies
-            WHERE rnk <= 5
-            ORDER BY Numb_of_Rentals DESC;";
+                    try
+                    {
+                        string query = @"
+                                        WITH CHOICE5 AS (
+                                        SELECT R.CustomerID, C.FirstName, C.LastName, R.Numb_of_rentals,
+                                        DENSE_RANK() OVER(ORDER BY R.Numb_of_rentals DESC) AS rnk
+                                        FROM Customer C
+                                        JOIN (
+                                        SELECT CustomerID, COUNT(*) AS Numb_of_rentals 
+                                        FROM Rental 
+                                        GROUP BY CustomerID
+                                        ) R 
+                                        ON R.CustomerID = C.CustomerID
+                                        ) 
+                                        SELECT CustomerID, FirstName, LastName, Numb_of_rentals 
+                                        FROM CHOICE5 
+                                        WHERE rnk <= 3 
+                                        ORDER BY Numb_of_rentals DESC;
+        ";
+                        db.query(query);
 
-                    db.myCommand.Parameters.AddWithValue("@Date1", date1);
-                    db.myCommand.Parameters.AddWithValue("@Date2", date2);
+                        RepRes.Columns.Add("CustomerID", "Customer ID");
+                        RepRes.Columns.Add("FirstName", "First Name");
+                        RepRes.Columns.Add("LastName", "Last Name");
+                        RepRes.Columns.Add("Numb_of_rentals", "# of Rentals");
 
-                    db.OpenConnection();
-                    db.myReader = db.myCommand.ExecuteReader();
+                        RepRes.Rows.Clear();
+                        while (db.myReader.Read())
+                        {
+                            RepRes.Rows.Add(db.myReader["CustomerID"].ToString(), db.myReader["FirstName"].ToString(), db.myReader["LastName"].ToString(), db.myReader["Numb_of_rentals"].ToString());
+                        }
 
-                    DataTable dataTable = new DataTable();
-                    dataTable.Load(db.myReader);
-
-                    RepRes.ClearSelection();
-                    RepRes.DataSource = dataTable;
-
-                    db.myReader.Close();
+                        db.myReader.Close();
+                    }
+                    catch (Exception e3)
+                    {
+                        MessageBox.Show(e3.ToString(), "Error");
+                    }
                 }
                 else if (choice == 2) // Top movies rented by an employee (FIXED INCOMPLETE QUERY)
                 {
-                    string empID = Specif.Text.Trim();
-                    if (string.IsNullOrEmpty(empID))
+                    try
                     {
-                        MessageBox.Show("Please enter a valid Employee ID.");
-                        return;
+                        string query = @"
+                                        WITH CHOICE5 AS (
+                                        SELECT R.CustomerID, C.FirstName, C.LastName, R.Numb_of_rentals,
+                                        DENSE_RANK() OVER(ORDER BY R.Numb_of_rentals DESC) AS rnk
+                                        FROM Customer C
+                                        JOIN (
+                                        SELECT CustomerID, COUNT(*) AS Numb_of_rentals 
+                                        FROM Rental 
+                                        GROUP BY CustomerID
+                                        ) R 
+                                        ON R.CustomerID = C.CustomerID
+                                        ) 
+                                        SELECT CustomerID, FirstName, LastName, Numb_of_rentals 
+                                        FROM CHOICE5 
+                                        WHERE rnk <= 3 
+                                        ORDER BY Numb_of_rentals DESC;
+        ";
+                        db.query(query);
+
+                        RepRes.Columns.Add("CustomerID", "Customer ID");
+                        RepRes.Columns.Add("FirstName", "First Name");
+                        RepRes.Columns.Add("LastName", "Last Name");
+                        RepRes.Columns.Add("Numb_of_rentals", "# of Rentals");
+
+                        RepRes.Rows.Clear();
+                        while (db.myReader.Read())
+                        {
+                            RepRes.Rows.Add(db.myReader["CustomerID"].ToString(), db.myReader["FirstName"].ToString(), db.myReader["LastName"].ToString(), db.myReader["Numb_of_rentals"].ToString());
+                        }
+
+                        db.myReader.Close();
                     }
-
-                    db.myCommand.CommandText = @"
-            WITH RankedMovies AS (
-                SELECT MovieID, COUNT(*) AS numb_of_rentals,
-                DENSE_RANK() OVER (ORDER BY COUNT(*) DESC) AS rnk
-                FROM Rental
-                WHERE EmployeeID = @EmpID
-                GROUP BY MovieID
-            )
-            SELECT MovieID, numb_of_rentals
-            FROM RankedMovies
-            WHERE rnk <= 3
-            ORDER BY numb_of_rentals DESC;";
-
-                    db.myCommand.Parameters.AddWithValue("@EmpID", empID);
-
-                    db.OpenConnection();
-                    db.myReader = db.myCommand.ExecuteReader();
-
-                    DataTable dataTable = new DataTable();
-                    dataTable.Load(db.myReader);
-
-                    RepRes.ClearSelection();
-                    RepRes.DataSource = dataTable;
-
-                    db.myReader.Close();
+                    catch (Exception e3)
+                    {
+                        MessageBox.Show(e3.ToString(), "Error");
+                    }
                 }
                 else if (choice == 3) // Top 3 rented movie types in date range
                 {
@@ -293,73 +310,89 @@ namespace WinFormsApp1
                         return;
                     }
 
-                    db.myCommand.CommandText = @"
-            WITH RankedMovies AS (
-                SELECT M.MovieType, COUNT(*) AS numb_of_rentals,
-                DENSE_RANK() OVER (ORDER BY COUNT(*) DESC) AS rank
-                FROM Rental R
-                JOIN Movie M ON M.MovieID = R.MovieID
-                WHERE R.CheckoutDateTime BETWEEN @Date1 AND @Date2
-                GROUP BY M.MovieType
-            )
-            SELECT MovieType, numb_of_rentals
-            FROM RankedMovies
-            WHERE rank <= 3
-            ORDER BY numb_of_rentals DESC;";
+                    try
+                    {
+                        string query = @"
+                                        WITH CHOICE5 AS (
+                                        SELECT R.CustomerID, C.FirstName, C.LastName, R.Numb_of_rentals,
+                                        DENSE_RANK() OVER(ORDER BY R.Numb_of_rentals DESC) AS rnk
+                                        FROM Customer C
+                                        JOIN (
+                                        SELECT CustomerID, COUNT(*) AS Numb_of_rentals 
+                                        FROM Rental 
+                                        GROUP BY CustomerID
+                                        ) R 
+                                        ON R.CustomerID = C.CustomerID
+                                        ) 
+                                        SELECT CustomerID, FirstName, LastName, Numb_of_rentals 
+                                        FROM CHOICE5 
+                                        WHERE rnk <= 3 
+                                        ORDER BY Numb_of_rentals DESC;
+        ";
+                        db.query(query);
 
-                    db.myCommand.Parameters.AddWithValue("@Date1", date1);
-                    db.myCommand.Parameters.AddWithValue("@Date2", date2);
+                        RepRes.Columns.Add("CustomerID", "Customer ID");
+                        RepRes.Columns.Add("FirstName", "First Name");
+                        RepRes.Columns.Add("LastName", "Last Name");
+                        RepRes.Columns.Add("Numb_of_rentals", "# of Rentals");
 
-                    db.OpenConnection();
-                    db.myReader = db.myCommand.ExecuteReader();
+                        RepRes.Rows.Clear();
+                        while (db.myReader.Read())
+                        {
+                            RepRes.Rows.Add(db.myReader["CustomerID"].ToString(), db.myReader["FirstName"].ToString(), db.myReader["LastName"].ToString(), db.myReader["Numb_of_rentals"].ToString());
+                        }
 
-                    DataTable dataTable = new DataTable();
-                    dataTable.Load(db.myReader);
-
-                    RepRes.ClearSelection();
-                    RepRes.DataSource = dataTable;
-
-                    db.myReader.Close();
+                        db.myReader.Close();
+                    }
+                    catch (Exception e3)
+                    {
+                        MessageBox.Show(e3.ToString(), "Error");
+                    }
                 }
                 else if (choice == 4) // Top 3 rented movies by an actor
                 {
-                    string actorID = Specif.Text.Trim();
-                    if (string.IsNullOrEmpty(actorID))
+                    try
                     {
-                        MessageBox.Show("Please enter a valid Actor ID.");
-                        return;
+                        string query = @"
+                                        WITH CHOICE5 AS (
+                                        SELECT R.CustomerID, C.FirstName, C.LastName, R.Numb_of_rentals,
+                                        DENSE_RANK() OVER(ORDER BY R.Numb_of_rentals DESC) AS rnk
+                                        FROM Customer C
+                                        JOIN (
+                                        SELECT CustomerID, COUNT(*) AS Numb_of_rentals 
+                                        FROM Rental 
+                                        GROUP BY CustomerID
+                                        ) R 
+                                        ON R.CustomerID = C.CustomerID
+                                        ) 
+                                        SELECT CustomerID, FirstName, LastName, Numb_of_rentals 
+                                        FROM CHOICE5 
+                                        WHERE rnk <= 3 
+                                        ORDER BY Numb_of_rentals DESC;
+        ";
+                        db.query(query);
+
+                        RepRes.Columns.Add("CustomerID", "Customer ID");
+                        RepRes.Columns.Add("FirstName", "First Name");
+                        RepRes.Columns.Add("LastName", "Last Name");
+                        RepRes.Columns.Add("Numb_of_rentals", "# of Rentals");
+
+                        RepRes.Rows.Clear();
+                        while (db.myReader.Read())
+                        {
+                            RepRes.Rows.Add(db.myReader["CustomerID"].ToString(), db.myReader["FirstName"].ToString(), db.myReader["LastName"].ToString(), db.myReader["Numb_of_rentals"].ToString());
+                        }
+
+                        db.myReader.Close();
                     }
-
-                    db.myCommand.CommandText = @"
-            WITH RankedMovies AS (
-                SELECT M.MovieName, R.MovieID, COUNT(*) AS numb_of_rentals,
-                DENSE_RANK() OVER (ORDER BY COUNT(*) DESC) AS rank
-                FROM Rental R
-                JOIN AppearedIn A ON R.MovieID = A.MovieID
-                JOIN Movie M ON R.MovieID = M.MovieID
-                WHERE A.ActorID = @ActorID
-                GROUP BY R.MovieID, M.MovieName
-            )
-            SELECT MovieName, numb_of_rentals
-            FROM RankedMovies
-            WHERE rank <= 3
-            ORDER BY numb_of_rentals DESC;";
-
-                    db.myCommand.Parameters.AddWithValue("@ActorID", actorID);
-
-                    db.OpenConnection();
-                    db.myReader = db.myCommand.ExecuteReader();
-
-                    DataTable dataTable = new DataTable();
-                    dataTable.Load(db.myReader);
-
-                    RepRes.ClearSelection();
-                    RepRes.DataSource = dataTable;
-
-                    db.myReader.Close();
+                    catch (Exception e3)
+                    {
+                        MessageBox.Show(e3.ToString(), "Error");
+                    }
                 }
             }
         }
+            
 
         private void Specif_TextChanged(object sender, EventArgs e)
         {
