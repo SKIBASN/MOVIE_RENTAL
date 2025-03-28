@@ -37,7 +37,7 @@ namespace WinFormsApp1
         //}
         
         // Functions for Customer and/or Movie screen(s)
-  /*      public void insert(String insert_statement)
+        public void insert(String insert_statement)
         {
             this.myCommand.CommandText = insert_statement;
             this.myCommand.ExecuteNonQuery();
@@ -47,6 +47,6 @@ namespace WinFormsApp1
         {
             this.myCommand.CommandText = query_string;
             this.myReader = this.myCommand.ExecuteReader();
-        }*/
+        }
     }
 }

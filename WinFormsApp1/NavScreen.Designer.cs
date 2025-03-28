@@ -34,6 +34,7 @@ namespace WinFormsApp1
             Movie = new TabPage();
             Rental = new TabPage();
             Report = new TabPage();
+            RepRes = new DataGridView();
             EnterR = new Button();
             SpecifTitle2 = new Label();
             cal2 = new MonthCalendar();
@@ -44,9 +45,9 @@ namespace WinFormsApp1
             SpecifTitle1 = new Label();
             Specif = new TextBox();
             ReportSelection = new ComboBox();
-            RepRes = new DataGridView();
             tabControl1.SuspendLayout();
             Report.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)RepRes).BeginInit();
             SuspendLayout();
             // 
             // tabControl1
@@ -118,6 +119,15 @@ namespace WinFormsApp1
             Report.TabIndex = 3;
             Report.Text = "Report";
             Report.Click += Report_Click;
+            // 
+            // RepRes
+            // 
+            RepRes.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            RepRes.Location = new Point(578, 191);
+            RepRes.Name = "RepRes";
+            RepRes.Size = new Size(240, 150);
+            RepRes.TabIndex = 13;
+            RepRes.CellContentClick += dataGridView1_CellContentClick;
             // 
             // EnterR
             // 
@@ -226,17 +236,8 @@ namespace WinFormsApp1
             ReportSelection.Name = "ReportSelection";
             ReportSelection.Size = new Size(692, 36);
             ReportSelection.TabIndex = 0;
-            ReportSelection.Text = "Which Customer has the most rentals?";
+            ReportSelection.Text = "Who are the top 3 customers with the most rentals?";
             ReportSelection.SelectedIndexChanged += comboBox1_SelectedIndexChanged;
-            // 
-            // RepRes
-            // 
-            RepRes.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            RepRes.Location = new Point(578, 191);
-            RepRes.Name = "RepRes";
-            RepRes.Size = new Size(240, 150);
-            RepRes.TabIndex = 13;
-            RepRes.CellContentClick += this.dataGridView1_CellContentClick;
             // 
             // NavScreen
             // 
