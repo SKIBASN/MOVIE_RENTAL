@@ -73,6 +73,7 @@ namespace WinFormsApp1
             {
                 SpecifTitle1.Text = "Employee ID";
                 SpecifTitle1.Visible = true;
+                Specif.Text = "";
                 Specif.Visible = true;
                 EnterR.Visible = true;
 
@@ -106,6 +107,7 @@ namespace WinFormsApp1
             {
                 SpecifTitle1.Text = "Actor ID";
                 SpecifTitle1.Visible = true;
+                Specif.Text = "";
                 Specif.Visible = true;
                 EnterR.Visible = true;
 
@@ -143,12 +145,12 @@ namespace WinFormsApp1
 
         private void cal2_DateChanged(object sender, DateRangeEventArgs e)
         {
-            DateSelect2.Text = cal1.SelectionStart.ToShortDateString();
+            DateSelect2.Text = cal2.SelectionStart.ToShortDateString();
         }
 
         private void cal2_DateSelected(object sender, DateRangeEventArgs e)
         {
-            DateSelect2.Text = cal1.SelectionStart.ToShortDateString();
+            DateSelect2.Text = cal2.SelectionStart.ToShortDateString();
         }
 
         private void EnterR_Click(object sender, EventArgs e)
@@ -349,3 +351,4 @@ namespace WinFormsApp1
         }
     }
 }
+   
