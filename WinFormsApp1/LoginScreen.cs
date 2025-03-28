@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 
 namespace WinFormsApp1
 {
+
     public partial class LoginScreen : Form
     {
         public Database db;
@@ -50,6 +51,7 @@ namespace WinFormsApp1
 
                 if (db.myReader.Read())
                 {
+
                     string storedHash = db.myReader["Password"].ToString();
 
                     if (Database.VerifyPassword(enteredPassword, storedHash))
@@ -72,6 +74,7 @@ namespace WinFormsApp1
                 }
                     
                 db.myReader.Close();
+
 
             }
             catch (Exception e3)
