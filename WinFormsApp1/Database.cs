@@ -60,6 +60,17 @@ namespace WinFormsApp1
             myCommand.CommandText = insert_statement;
             myCommand.ExecuteNonQuery();
         }
+        public void Date_Param_query(string query_string, DateTime param1, DateTime param2)
+        {
+            OpenConnection();
+            myCommand.CommandText = query_string;
+
+            // Add parameters to the command
+            myCommand.Parameters.AddWithValue("@date1", param1);
+            myCommand.Parameters.AddWithValue("@date2", param2);
+
+            myReader = myCommand.ExecuteReader();
+        }
 
         public void query(string query_string)
         {
