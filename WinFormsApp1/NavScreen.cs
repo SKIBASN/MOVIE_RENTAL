@@ -60,12 +60,13 @@ namespace WinFormsApp1
                 SpecifTitle2.Text = "Date 2";
                 SpecifTitle1.Visible = true;
                 SpecifTitle2.Visible = true;
+                DateSelect1.Text = "";
+                DateSelect2.Text = "";
                 DateSelect1.Visible = true;
                 DateSelect2.Visible = true;
                 cal1.Visible = true;
                 cal2.Visible = true;
                 EnterR.Visible = true;
-
                 Specif.Visible = false;
                 choice = 1;
             }
@@ -77,7 +78,6 @@ namespace WinFormsApp1
                 Specif.Visible = true;
                 EnterR.Visible = true;
 
-
                 SpecifTitle2.Visible = false;
                 DateSelect1.Visible = false;
                 DateSelect2.Visible = false;
@@ -85,7 +85,6 @@ namespace WinFormsApp1
                 cal2.Visible = false;
 
                 choice = 2;
-
             }
             else if (ReportSelection.SelectedIndex == 3)
             {
@@ -93,11 +92,14 @@ namespace WinFormsApp1
                 SpecifTitle2.Text = "Date 2";
                 SpecifTitle1.Visible = true;
                 SpecifTitle2.Visible = true;
+                DateSelect1.Text = "";
+                DateSelect2.Text = "";
                 DateSelect1.Visible = true;
                 DateSelect2.Visible = true;
                 cal1.Visible = true;
                 cal2.Visible = true;
                 EnterR.Visible = true;
+
 
                 Specif.Visible = false;
 
@@ -118,9 +120,7 @@ namespace WinFormsApp1
                 cal2.Visible = false;
 
                 choice = 4;
-
             }
-
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -159,36 +159,29 @@ namespace WinFormsApp1
             {
                 db = new Database();
                 db.myCommand.CommandText = @"
-                                                select *
-                                                from (SELECT R.CustomerID, C.FirstName, C.LastName, R.Numb_of_rentals
-		                                        FROM Customer c,
-		                                        (SELECT CustomerID, COUNT(*) AS Numb_of_rentals
-		                                        FROM Rental
-		                                        GROUP BY CustomerID) R
-		                                        WHERE R.customerID=C.customerID) CHOICE5
-                                                ORDER BY Numb_of_rentals DESC;";
+    SELECT R.CustomerID, C.FirstName, C.LastName, R.Numb_of_rentals
+    FROM Customer C
+    JOIN (
+        SELECT CustomerID, COUNT(*) AS Numb_of_rentals
+        FROM Rental
+        GROUP BY CustomerID
+    ) R ON R.CustomerID = C.CustomerID
+    ORDER BY Numb_of_rentals DESC;";
 
                 db.myCommand.Parameters.Clear();
-                db.myReader = db.myCommand.ExecuteReader();
-                String output = "";
 
-                if (db.myReader.HasRows)
-                {
-                    while (db.myReader.Read())
-                    {
-                        string firstName = db.myReader["FirstName"]?.ToString() ?? "Unknown";
-                        string lastName = db.myReader["LastName"]?.ToString() ?? "Unknown";
-                        string CustomerID = db.myReader["CustomerID"]?.ToString() ?? "Unknown";
-                        String Numb_of_rentals = db.myReader["Numb_of_rentals"]?.ToString() ?? "Unknown";
-                        output = output + ($"{firstName} {lastName} ({CustomerID}): {Numb_of_rentals}\n");
-                    }
-                    RepRes.Text = output;
-                }
+                // Clear existing data in RepRes before loading new data
+                RepRes.ClearSelection();
 
-                else
-                {
-                    RepRes.Text = "Error Occured";
-                }
+                // Execute the query and load data into the existing DataTable (RepRes)
+                // Use a DataTable to load the data from the reader and then bind it to the DataGridView
+                DataTable dataTable = new DataTable();
+                dataTable.Load(db.myReader);
+                RepRes.DataSource = dataTable;
+                // Close the reader after loading data
+                db.myReader.Close();
+                // Replace the line causing the error
+                RepRes.ClearSelection();
             }
             else if (choice == 1) //
             {
@@ -212,25 +205,19 @@ namespace WinFormsApp1
                                                         ORDER BY Numb_of_Rentals DESC;";
 
                 db.myCommand.Parameters.Clear();
-                db.myReader = db.myCommand.ExecuteReader();
-                String output = "";
 
-                if (db.myReader.HasRows)
-                {
-                    while (db.myReader.Read())
-                    {
-                        string MovieName = db.myReader["MovieName"]?.ToString() ?? "Unknown";
-                        string MovieID = db.myReader["MovieID"]?.ToString() ?? "Unknown";
-                        String Numb_of_rentals = db.myReader["Numb_of_rentals"]?.ToString() ?? "Unknown";
-                        output = output + ($"{MovieName} ({MovieID}): {Numb_of_rentals}\n");
-                    }
-                    RepRes.Text = output;
-                }
+                // Clear existing data in RepRes before loading new data
+                RepRes.ClearSelection();
 
-                else
-                {
-                    RepRes.Text = "Error Occured";
-                }
+                // Execute the query and load data into the existing DataTable (RepRes)
+                // Use a DataTable to load the data from the reader and then bind it to the DataGridView
+                DataTable dataTable = new DataTable();
+                dataTable.Load(db.myReader);
+                RepRes.DataSource = dataTable;
+                // Close the reader after loading data
+                db.myReader.Close();
+                // Replace the line causing the error
+                RepRes.ClearSelection();
             }
             else if (choice == 2)
             {
@@ -249,25 +236,19 @@ namespace WinFormsApp1
                                                 ORDER BY numb_of_rentals DESC;";
 
                 db.myCommand.Parameters.Clear();
-                db.myReader = db.myCommand.ExecuteReader();
-                String output = "";
 
-                if (db.myReader.HasRows)
-                {
-                    while (db.myReader.Read())
-                    {
+                // Clear existing data in RepRes before loading new data
+                RepRes.ClearSelection();
 
-                        string MovieID = db.myReader["MovieID"]?.ToString() ?? "Unknown";
-                        String Numb_of_rentals = db.myReader["Numb_of_rentals"]?.ToString() ?? "Unknown";
-                        output = output + ($"({MovieID}): {Numb_of_rentals}\n");
-                    }
-                    RepRes.Text = output;
-                }
-
-                else
-                {
-                    RepRes.Text = "Error Occured";
-                }
+                // Execute the query and load data into the existing DataTable (RepRes)
+                // Use a DataTable to load the data from the reader and then bind it to the DataGridView
+                DataTable dataTable = new DataTable();
+                dataTable.Load(db.myReader);
+                RepRes.DataSource = dataTable;
+                // Close the reader after loading data
+                db.myReader.Close();
+                // Replace the line causing the error
+                RepRes.ClearSelection();
             }
             else if (choice == 3)
             {
@@ -289,24 +270,19 @@ namespace WinFormsApp1
                                                 ORDER BY numb_of_rentals DESC;";
 
                 db.myCommand.Parameters.Clear();
-                db.myReader = db.myCommand.ExecuteReader();
-                String output = "";
 
-                if (db.myReader.HasRows)
-                {
-                    while (db.myReader.Read())
-                    {
-                        string MovieType = db.myReader["MovieType"]?.ToString() ?? "Unknown";
-                        String Numb_of_rentals = db.myReader["Numb_of_rentals"]?.ToString() ?? "Unknown";
-                        output = output + ($"{MovieType}: {Numb_of_rentals}\n");
-                    }
-                    RepRes.Text = output;
-                }
+                // Clear existing data in RepRes before loading new data
+                RepRes.ClearSelection();
 
-                else
-                {
-                    RepRes.Text = "Error Occured";
-                }
+                // Execute the query and load data into the existing DataTable (RepRes)
+                // Use a DataTable to load the data from the reader and then bind it to the DataGridView
+                DataTable dataTable = new DataTable();
+                dataTable.Load(db.myReader);
+                RepRes.DataSource = dataTable;
+                // Close the reader after loading data
+                db.myReader.Close();
+                // Replace the line causing the error
+                RepRes.ClearSelection();
             }
             else if (choice == 4)
             {
@@ -326,28 +302,30 @@ namespace WinFormsApp1
                                                 FROM RankedMovies
                                                 WHERE rank <= 3
                                                 ORDER BY numb_of_rentals DESC;";
-
                 db.myCommand.Parameters.Clear();
-                db.myReader = db.myCommand.ExecuteReader();
-                String output = "";
 
-                if (db.myReader.HasRows)
-                {
-                    while (db.myReader.Read())
-                    {
-                        string MovieName = db.myReader["MovieName"]?.ToString() ?? "Unknown";
-                        string MovieID = db.myReader["MovieID"]?.ToString() ?? "Unknown";
-                        String Numb_of_rentals = db.myReader["Numb_of_rentals"]?.ToString() ?? "Unknown";
-                        output = output + ($"{MovieName} ({MovieID}): {Numb_of_rentals}\n");
-                    }
-                    RepRes.Text = output;
-                }
+                // Clear existing data in RepRes before loading new data
+                RepRes.ClearSelection();
 
-                else
-                {
-                    RepRes.Text = "Error Occured";
-                }
+                // Execute the query and load data into the existing DataTable (RepRes)
+                // Use a DataTable to load the data from the reader and then bind it to the DataGridView
+                DataTable dataTable = new DataTable();
+                dataTable.Load(db.myReader);
+                RepRes.DataSource = dataTable;
+                // Close the reader after loading data
+                db.myReader.Close();
+                // Replace the line causing the error
+                RepRes.ClearSelection();
             }
+        }
+
+        private void Specif_TextChanged(object sender, EventArgs e)
+        {
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
     }
 }
