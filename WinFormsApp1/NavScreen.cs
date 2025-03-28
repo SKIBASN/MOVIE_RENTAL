@@ -155,167 +155,202 @@ namespace WinFormsApp1
 
         private void EnterR_Click(object sender, EventArgs e)
         {
-            if (choice == 0) // What Movies haven't been rented since a specific date?
+            using (db = new Database()) // Ensure proper disposal
             {
-                db = new Database();
-                db.myCommand.CommandText = @"
-    SELECT R.CustomerID, C.FirstName, C.LastName, R.Numb_of_rentals
-    FROM Customer C
-    JOIN (
-        SELECT CustomerID, COUNT(*) AS Numb_of_rentals
-        FROM Rental
-        GROUP BY CustomerID
-    ) R ON R.CustomerID = C.CustomerID
-    ORDER BY Numb_of_rentals DESC;";
+                db.myCommand.Parameters.Clear(); // Always clear parameters before use
 
-                db.myCommand.Parameters.Clear();
+                if (choice == 0) // Top 3 customers with most rentals
+                {
+                    db.myCommand.CommandText = @"
+            SELECT TOP 3 R.CustomerID, C.FirstName, C.LastName, R.Numb_of_rentals
+            FROM Customer C
+            JOIN (
+                SELECT CustomerID, COUNT(*) AS Numb_of_rentals
+                FROM Rental
+                GROUP BY CustomerID
+            ) R ON R.CustomerID = C.CustomerID
+            ORDER BY Numb_of_rentals DESC;";
 
-                // Clear existing data in RepRes before loading new data
-                RepRes.ClearSelection();
+                    db.OpenConnection(); // Open the connection before execution
+                    db.myReader = db.myCommand.ExecuteReader();
 
-                // Execute the query and load data into the existing DataTable (RepRes)
-                // Use a DataTable to load the data from the reader and then bind it to the DataGridView
-                DataTable dataTable = new DataTable();
-                dataTable.Load(db.myReader);
-                RepRes.DataSource = dataTable;
-                // Close the reader after loading data
-                db.myReader.Close();
-                // Replace the line causing the error
-                RepRes.ClearSelection();
-            }
-            else if (choice == 1) //
-            {
-                db = new Database();
-                DateOnly date1 = DateOnly.Parse(DateSelect1.Text);
-                DateOnly date2 = DateOnly.Parse(DateSelect1.Text);
-                db.myCommand.CommandText = @$"
-                                               $WITH RankedMovies AS (
-                                                        SELECT 
-                                                         M.MovieID, 
-                                                         M.MovieName, 
-                                                         COUNT(*) AS Numb_of_Rentals,
-                                                         DENSE_RANK() OVER (ORDER BY COUNT(*) DESC) AS rnk
-                                                        FROM Rental R
-                                                        JOIN Movie M ON R.MovieID = M.MovieID
-                                                        WHERE R.CheckoutDateTime BETWEEN {date1} AND {date2}
-                                                        GROUP BY M.MovieID, M.MovieName)
-                                                        SELECT MovieID, MovieName, Numb_of_Rentals
-                                                        FROM RankedMovies
-                                                        WHERE rnk <= 5
-                                                        ORDER BY Numb_of_Rentals DESC;";
+                    // Use a DataTable to hold the result
+ 
+                    if (db.myReader.HasRows)
+                    {
+                        try
+                        {
+                            DataTable dataTable = new DataTable();
+                            // Only load the data if there are rows to read
+                            dataTable.Load(db.myReader);
 
-                db.myCommand.Parameters.Clear();
+                            // Bind the data to the DataGridView
+                            this.Invoke((MethodInvoker)delegate
+                            {
+                                RepRes.ClearSelection();
+                                RepRes.DataSource = dataTable;
+                                RepRes.Refresh();
+                            });
+                        }
+                        catch(Exception ex)
+                        {
+                            MessageBox.Show("Error: " + ex.Message);
 
-                // Clear existing data in RepRes before loading new data
-                RepRes.ClearSelection();
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("No data found.");
+                    }
 
-                // Execute the query and load data into the existing DataTable (RepRes)
-                // Use a DataTable to load the data from the reader and then bind it to the DataGridView
-                DataTable dataTable = new DataTable();
-                dataTable.Load(db.myReader);
-                RepRes.DataSource = dataTable;
-                // Close the reader after loading data
-                db.myReader.Close();
-                // Replace the line causing the error
-                RepRes.ClearSelection();
-            }
-            else if (choice == 2)
-            {
-                db = new Database();
-                String EmpID = Specif.Text;
-                db.myCommand.CommandText = @$"
-                                               WITH RankedMovies AS (
-                                                SELECT MovieID, COUNT(*) AS numb_of_rentals,
-                                                DENSE_RANK() OVER (ORDER BY COUNT(*) DESC) AS rnk
-                                                FROM rental
-                                                GROUP BY MovieID
-                                                )
-                                                SELECT MovieID, numb_of_rentals
-                                                FROM RankedMovies
-                                                WHERE rnk <=   
-                                                ORDER BY numb_of_rentals DESC;";
+                    db.myReader.Close();
+                }
+                else if (choice == 1) // Top 5 rented movies in date range
+                {
+                    DateTime date1, date2;
+                    if (!DateTime.TryParse(DateSelect1.Text, out date1) || !DateTime.TryParse(DateSelect2.Text, out date2))
+                    {
+                        MessageBox.Show("Invalid dates selected.");
+                        return;
+                    }
 
-                db.myCommand.Parameters.Clear();
+                    db.myCommand.CommandText = @"
+            WITH RankedMovies AS (
+                SELECT M.MovieID, M.MovieName, COUNT(*) AS Numb_of_Rentals,
+                DENSE_RANK() OVER (ORDER BY COUNT(*) DESC) AS rnk
+                FROM Rental R
+                JOIN Movie M ON R.MovieID = M.MovieID
+                WHERE R.CheckoutDateTime BETWEEN @Date1 AND @Date2
+                GROUP BY M.MovieID, M.MovieName
+            )
+            SELECT MovieID, MovieName, Numb_of_Rentals
+            FROM RankedMovies
+            WHERE rnk <= 5
+            ORDER BY Numb_of_Rentals DESC;";
 
-                // Clear existing data in RepRes before loading new data
-                RepRes.ClearSelection();
+                    db.myCommand.Parameters.AddWithValue("@Date1", date1);
+                    db.myCommand.Parameters.AddWithValue("@Date2", date2);
 
-                // Execute the query and load data into the existing DataTable (RepRes)
-                // Use a DataTable to load the data from the reader and then bind it to the DataGridView
-                DataTable dataTable = new DataTable();
-                dataTable.Load(db.myReader);
-                RepRes.DataSource = dataTable;
-                // Close the reader after loading data
-                db.myReader.Close();
-                // Replace the line causing the error
-                RepRes.ClearSelection();
-            }
-            else if (choice == 3)
-            {
-                db = new Database();
-                DateOnly date1 = DateOnly.Parse(DateSelect1.Text);
-                DateOnly date2 = DateOnly.Parse(DateSelect1.Text);
-                db.myCommand.CommandText = @$"
-                                                WITH RankedMovies AS (
-                                                SELECT m.MovieType, COUNT(*) AS numb_of_rentals,
-                                                DENSE_RANK() OVER (ORDER BY COUNT(*) DESC) AS rank
-                                                FROM rental r
-                                                JOIN movie m ON m.MovieID = r.MovieID
-                                                WHERE r.CheckoutDateTime BETWEEN @myDateA AND @myDateB
-                                                GROUP BY m.MovieType
-                                                )
-                                                SELECT MovieType, numb_of_rentals
-                                                FROM RankedMovies
-                                                WHERE rank <= 3
-                                                ORDER BY numb_of_rentals DESC;";
+                    db.OpenConnection();
+                    db.myReader = db.myCommand.ExecuteReader();
 
-                db.myCommand.Parameters.Clear();
+                    DataTable dataTable = new DataTable();
+                    dataTable.Load(db.myReader);
 
-                // Clear existing data in RepRes before loading new data
-                RepRes.ClearSelection();
+                    RepRes.ClearSelection();
+                    RepRes.DataSource = dataTable;
 
-                // Execute the query and load data into the existing DataTable (RepRes)
-                // Use a DataTable to load the data from the reader and then bind it to the DataGridView
-                DataTable dataTable = new DataTable();
-                dataTable.Load(db.myReader);
-                RepRes.DataSource = dataTable;
-                // Close the reader after loading data
-                db.myReader.Close();
-                // Replace the line causing the error
-                RepRes.ClearSelection();
-            }
-            else if (choice == 4)
-            {
-                db = new Database();
-                String ActorID = Specif.Text;
-                db.myCommand.CommandText = @$"
-                                                WITH RankedMovies AS (
-                                                SELECT m.MovieName, r.MovieID, COUNT(*) AS numb_of_rentals,
-                                                DENSE_RANK() OVER (ORDER BY COUNT(*) DESC) AS rank
-                                                FROM Rental r
-                                                JOIN AppearedIn a ON r.MovieID = a.MovieID
-                                                JOIN Movie m ON r.MovieID = m.MovieID
-                                                WHERE a.ActorID = {ActorID}
-                                                GROUP BY r.MovieID, m.MovieName
-                                                )
-                                                SELECT MovieName, numb_of_rentals
-                                                FROM RankedMovies
-                                                WHERE rank <= 3
-                                                ORDER BY numb_of_rentals DESC;";
-                db.myCommand.Parameters.Clear();
+                    db.myReader.Close();
+                }
+                else if (choice == 2) // Top movies rented by an employee (FIXED INCOMPLETE QUERY)
+                {
+                    string empID = Specif.Text.Trim();
+                    if (string.IsNullOrEmpty(empID))
+                    {
+                        MessageBox.Show("Please enter a valid Employee ID.");
+                        return;
+                    }
 
-                // Clear existing data in RepRes before loading new data
-                RepRes.ClearSelection();
+                    db.myCommand.CommandText = @"
+            WITH RankedMovies AS (
+                SELECT MovieID, COUNT(*) AS numb_of_rentals,
+                DENSE_RANK() OVER (ORDER BY COUNT(*) DESC) AS rnk
+                FROM Rental
+                WHERE EmployeeID = @EmpID
+                GROUP BY MovieID
+            )
+            SELECT MovieID, numb_of_rentals
+            FROM RankedMovies
+            WHERE rnk <= 3
+            ORDER BY numb_of_rentals DESC;";
 
-                // Execute the query and load data into the existing DataTable (RepRes)
-                // Use a DataTable to load the data from the reader and then bind it to the DataGridView
-                DataTable dataTable = new DataTable();
-                dataTable.Load(db.myReader);
-                RepRes.DataSource = dataTable;
-                // Close the reader after loading data
-                db.myReader.Close();
-                // Replace the line causing the error
-                RepRes.ClearSelection();
+                    db.myCommand.Parameters.AddWithValue("@EmpID", empID);
+
+                    db.OpenConnection();
+                    db.myReader = db.myCommand.ExecuteReader();
+
+                    DataTable dataTable = new DataTable();
+                    dataTable.Load(db.myReader);
+
+                    RepRes.ClearSelection();
+                    RepRes.DataSource = dataTable;
+
+                    db.myReader.Close();
+                }
+                else if (choice == 3) // Top 3 rented movie types in date range
+                {
+                    DateTime date1, date2;
+                    if (!DateTime.TryParse(DateSelect1.Text, out date1) || !DateTime.TryParse(DateSelect2.Text, out date2))
+                    {
+                        MessageBox.Show("Invalid dates selected.");
+                        return;
+                    }
+
+                    db.myCommand.CommandText = @"
+            WITH RankedMovies AS (
+                SELECT M.MovieType, COUNT(*) AS numb_of_rentals,
+                DENSE_RANK() OVER (ORDER BY COUNT(*) DESC) AS rank
+                FROM Rental R
+                JOIN Movie M ON M.MovieID = R.MovieID
+                WHERE R.CheckoutDateTime BETWEEN @Date1 AND @Date2
+                GROUP BY M.MovieType
+            )
+            SELECT MovieType, numb_of_rentals
+            FROM RankedMovies
+            WHERE rank <= 3
+            ORDER BY numb_of_rentals DESC;";
+
+                    db.myCommand.Parameters.AddWithValue("@Date1", date1);
+                    db.myCommand.Parameters.AddWithValue("@Date2", date2);
+
+                    db.OpenConnection();
+                    db.myReader = db.myCommand.ExecuteReader();
+
+                    DataTable dataTable = new DataTable();
+                    dataTable.Load(db.myReader);
+
+                    RepRes.ClearSelection();
+                    RepRes.DataSource = dataTable;
+
+                    db.myReader.Close();
+                }
+                else if (choice == 4) // Top 3 rented movies by an actor
+                {
+                    string actorID = Specif.Text.Trim();
+                    if (string.IsNullOrEmpty(actorID))
+                    {
+                        MessageBox.Show("Please enter a valid Actor ID.");
+                        return;
+                    }
+
+                    db.myCommand.CommandText = @"
+            WITH RankedMovies AS (
+                SELECT M.MovieName, R.MovieID, COUNT(*) AS numb_of_rentals,
+                DENSE_RANK() OVER (ORDER BY COUNT(*) DESC) AS rank
+                FROM Rental R
+                JOIN AppearedIn A ON R.MovieID = A.MovieID
+                JOIN Movie M ON R.MovieID = M.MovieID
+                WHERE A.ActorID = @ActorID
+                GROUP BY R.MovieID, M.MovieName
+            )
+            SELECT MovieName, numb_of_rentals
+            FROM RankedMovies
+            WHERE rank <= 3
+            ORDER BY numb_of_rentals DESC;";
+
+                    db.myCommand.Parameters.AddWithValue("@ActorID", actorID);
+
+                    db.OpenConnection();
+                    db.myReader = db.myCommand.ExecuteReader();
+
+                    DataTable dataTable = new DataTable();
+                    dataTable.Load(db.myReader);
+
+                    RepRes.ClearSelection();
+                    RepRes.DataSource = dataTable;
+
+                    db.myReader.Close();
+                }
             }
         }
 

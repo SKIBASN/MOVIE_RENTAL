@@ -1,28 +1,31 @@
 using System;
-using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace WinFormsApp1
 {
-    public class Database
+    public class Database : IDisposable
     {
         public SqlConnection myConnection;
         public SqlCommand myCommand;
         public SqlDataReader myReader;
-        
+        private bool disposed = false;
+
         public Database()
         {
-            String connectionString = "Server = DESKTOP-MNUPRSE; Database = TEAM4CMPT291DATABASE; Trusted_Connection = yes;";
-            this.myConnection = new SqlConnection(connectionString); // Timeout in seconds
+            String connectionString = "Server=DESKTOP-MNUPRSE; Database=TEAM4CMPT291DATABASE; Trusted_Connection=yes;";
+            this.myConnection = new SqlConnection(connectionString);
+        }
 
+        public void OpenConnection()
+        {
             try
             {
-                this.myConnection.Open(); // Open connection
-                this.myCommand = new SqlCommand();
-                this.myCommand.Connection = myConnection; // Link the command stream to the connection
+                if (myConnection.State == System.Data.ConnectionState.Closed)
+                {
+                    myConnection.Open();
+                    myCommand = new SqlCommand { Connection = myConnection };
+                }
             }
             catch (Exception e)
             {
@@ -30,23 +33,44 @@ namespace WinFormsApp1
             }
         }
 
-        //// Function to convert existing passwords to hash?
-        //public static string HashPassword(string password)
-        //{
-
-        //}
-        
-        // Functions for Customer and/or Movie screen(s)
-        public void insert(String insert_statement)
+        public void insert(string insert_statement)
         {
-            this.myCommand.CommandText = insert_statement;
-            this.myCommand.ExecuteNonQuery();
+            OpenConnection();
+            myCommand.CommandText = insert_statement;
+            myCommand.ExecuteNonQuery();
         }
-        
-        public void query(String query_string)
+
+        public void query(string query_string)
         {
-            this.myCommand.CommandText = query_string;
-            this.myReader = this.myCommand.ExecuteReader();
+            OpenConnection();
+            myCommand.CommandText = query_string;
+            myReader = myCommand.ExecuteReader();
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposed)
+            {
+                if (disposing)
+                {
+                    myReader?.Close();
+                    myCommand?.Dispose();
+                    myConnection?.Close();
+                    myConnection?.Dispose();
+                }
+                disposed = true;
+            }
+        }
+
+        ~Database()
+        {
+            Dispose(false);
         }
     }
 }
