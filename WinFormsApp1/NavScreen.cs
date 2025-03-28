@@ -14,6 +14,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.SqlClient;
 using System.IO.Pipes;
 using static System.ComponentModel.Design.ObjectSelectorEditor;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace WinFormsApp1
 {
@@ -263,36 +264,33 @@ namespace WinFormsApp1
                     try
                     {
                         string query = @"
-                                        WITH CHOICE5 AS (
-                                        SELECT R.CustomerID, C.FirstName, C.LastName, R.Numb_of_rentals,
-                                        DENSE_RANK() OVER(ORDER BY R.Numb_of_rentals DESC) AS rnk
-                                        FROM Customer C
-                                        JOIN (
-                                        SELECT CustomerID, COUNT(*) AS Numb_of_rentals 
-                                        FROM Rental 
-                                        GROUP BY CustomerID
-                                        ) R 
-                                        ON R.CustomerID = C.CustomerID
-                                        ) 
-                                        SELECT CustomerID, FirstName, LastName, Numb_of_rentals 
-                                        FROM CHOICE5 
-                                        WHERE rnk <= 3 
-                                        ORDER BY Numb_of_rentals DESC;
-        ";
-                        db.query(query);
+                                        WITH RankedMovies AS (
+                                        SELECT r.MovieID, m.MovieName, COUNT(*) AS numb_of_rentals,
+                                        DENSE_RANK() OVER (ORDER BY COUNT(*) DESC) AS rnk
+                                        FROM rental r, movie m
+	                                    WHERE r.EmployeeID= @ID and r.MovieID=m.MovieID
+                                        GROUP BY r.MovieID, m.MovieName
+                                        )
+                                        SELECT MovieID, MovieName,  numb_of_rentals
+                                        FROM RankedMovies
+                                        WHERE rnk <= 3
+                                        ORDER BY numb_of_rentals DESC;"
+                        ;
+                        System.String empID= Specif.Text;
+                        db.ID_Param_query(query, empID);
 
-                        RepRes.Columns.Add("CustomerID", "Customer ID");
-                        RepRes.Columns.Add("FirstName", "First Name");
-                        RepRes.Columns.Add("LastName", "Last Name");
+                        RepRes.Columns.Add("MovieID", "Movie ID");
+                        RepRes.Columns.Add("MovieName", "Movie Name");
                         RepRes.Columns.Add("Numb_of_rentals", "# of Rentals");
 
                         RepRes.Rows.Clear();
                         while (db.myReader.Read())
                         {
-                            RepRes.Rows.Add(db.myReader["CustomerID"].ToString(), db.myReader["FirstName"].ToString(), db.myReader["LastName"].ToString(), db.myReader["Numb_of_rentals"].ToString());
+                            RepRes.Rows.Add(db.myReader["MovieID"].ToString(), db.myReader["MovieName"].ToString(), db.myReader["Numb_of_rentals"].ToString());
                         }
 
                         db.myReader.Close();
+                    
                     }
                     catch (Exception e3)
                     {
