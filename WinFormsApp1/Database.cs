@@ -31,7 +31,15 @@ namespace WinFormsApp1
             }
         }
 
-        // Hash an entered password
+
+        public void query(String query_string)
+        {
+            this.myCommand.CommandText = query_string;
+            this.myReader = this.myCommand.ExecuteReader();
+        }
+
+
+        // Hash the entered password
         public static string HashPassword(string password)
         {
             using (SHA256 sha256 = SHA256.Create())
@@ -51,12 +59,7 @@ namespace WinFormsApp1
             return enteredHash == storedHash;
         }
 
-        public void query(String query_string)
-        {
-            this.myCommand.CommandText = query_string;
-            this.myReader = this.myCommand.ExecuteReader();
-        }
-
+     
         // Convert existing passwords to hashes in the table
         public void ConvertPasswordsToHashes()
         {
@@ -67,7 +70,7 @@ namespace WinFormsApp1
 
                 while (myReader.Read())
                 {
-                    int id = myReader.GetInt32(0);
+                    int id = Convert.ToInt32(myReader["EmployeeID"]);
                     string password = myReader.GetString(1);
 
                     if (password.Length == 44 || password.Length == 64)
