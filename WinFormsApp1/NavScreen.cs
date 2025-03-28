@@ -12,9 +12,11 @@ namespace WinFormsApp1
 {
     public partial class NavScreen : Form
     {
-        public NavScreen()
+        public Database db;
+        public NavScreen(Database DT)
         {
             InitializeComponent();
+            db = DT;
         }
 
         private void Report_Click(object sender, EventArgs e)

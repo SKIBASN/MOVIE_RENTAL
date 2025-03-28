@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.SqlClient;
 using System.IO.Pipes;
+using System.Runtime.CompilerServices;
 
 namespace WinFormsApp1
 {
@@ -12,15 +13,9 @@ namespace WinFormsApp1
         {
             InitializeComponent();
             db = new Database(); // Initialize the object and create the connection
-
-            //ConvertExistingPasswordsToHash(db);
+            db.ConvertPasswordsToHashes();
         }
 
-        // Convert existing users' passwords to hashes
-        //private void ConvertPasswordsToHash(Database db)
-        //{
-        //    string selectQuery = "SELECT User"
-        //}
 
         private void UserTitle_Load(object sender, EventArgs e)
         {
@@ -31,42 +26,60 @@ namespace WinFormsApp1
         private void login_Click(object sender, EventArgs e)
         {
             status.Visible = true;
+            status.Text = "Authenticating...";
+
+            string username = user.Text.Trim();
+            string enteredPassword = password.Text;
+
+            // Check if missing an input
+            if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(enteredPassword))
+            {
+                status.Text = "Enter credentials";
+                MessageBox.Show("Please enter both username and password");
+                return;
+            }
 
             try
             {
-                db.myCommand.CommandText = "SELECT Username, firstName FROM Employee WHERE Username = @user AND password = @pass";
+                // Add parameters
                 db.myCommand.Parameters.Clear();
-                db.myCommand.Parameters.AddWithValue("@user", user.Text);
-                db.myCommand.Parameters.AddWithValue("@pass", password.Text);
+                db.myCommand.Parameters.AddWithValue("@username", username);
 
-                db.myReader = db.myCommand.ExecuteReader();
+                db.query("SELECT Password FROM Employee WHERE Username = @username");
+                
 
-                // Check if any row is returned
                 if (db.myReader.Read())
                 {
-                    //string empName = myReader["firstName"].ToString();
-                    //MessageBox.Show("Login successful for employee " + myReader["firstName"].ToString());
+                    string storedHash = db.myReader["Password"].ToString();
 
-                    status.Text = "Login successful";
-                    NavScreen f2 = new();
-                    f2.Show();
-                    this.Hide();
+                    if (Database.VerifyPassword(enteredPassword, storedHash))
+                    {
+                        status.Text = "Login successful";
+                        NavScreen f2 = new NavScreen(db);
+                        f2.Show();
+                        this.Hide();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Invalid Username or password.");
+                        status.Text = "Username or Password is incorrect";
+                    }
                 }
                 else
                 {
-                    MessageBox.Show("Invalid employeeID or password.");
+                    MessageBox.Show("Invalid Username or password.");
                     status.Text = "Username or Password is incorrect";
-                
                 }
-
+                    
                 db.myReader.Close();
 
             }
             catch (Exception e3)
             {
                 MessageBox.Show(e3.ToString(), "Error");
-                status.Text = "Username or Password is incorrect";
+                status.Text = "Login error";
             }
+
         }
 
 
