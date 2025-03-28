@@ -50,22 +50,64 @@ namespace WinFormsApp1
         {
             if (ReportSelection.SelectedIndex == 0) // Assuming 0 is the index for "Who are the top 3 customers with the most rentals?"
             {
-
+                EnterR.Visible = true;
+                RepRes.Visible = true;
             }
             else if (ReportSelection.SelectedIndex==1)
             {
+                SpecifTitle1.Text = "Date 1";
+                SpecifTitle2.Text = "Date 2";
+                SpecifTitle1.Visible = true;
+                SpecifTitle2.Visible = true;
+                DateSelect1.Visible = true;
+                DateSelect2.Visible = true;
+                cal1.Visible = true;
+                cal2.Visible = true;
+                EnterR.Visible = true;
 
+                Specif.Visible = false;
             }
             else if (ReportSelection.SelectedIndex == 2)
             {
+                SpecifTitle1.Text = "Employee ID";
+                SpecifTitle1.Visible = true;
+                Specif.Visible = true;
+                EnterR.Visible = true;
+
+
+                SpecifTitle2.Visible = false;
+                DateSelect1.Visible = false;
+                DateSelect2.Visible = false;
+                cal1.Visible = false;
+                cal2.Visible = false;
 
             }
             else if (ReportSelection.SelectedIndex == 3)
             {
+                SpecifTitle1.Text = "Date 1";
+                SpecifTitle2.Text = "Date 2";
+                SpecifTitle1.Visible = true;
+                SpecifTitle2.Visible = true;
+                DateSelect1.Visible = true;
+                DateSelect2.Visible = true;
+                cal1.Visible = true;
+                cal2.Visible = true;
+                EnterR.Visible = true;
 
+                Specif.Visible = false;
             }
             else if (ReportSelection.SelectedIndex == 4)
             {
+                SpecifTitle1.Text = "Actor ID";
+                SpecifTitle1.Visible = true;
+                Specif.Visible = true;
+                EnterR.Visible = true;
+
+                SpecifTitle2.Visible = false;
+                DateSelect1.Visible = false;
+                DateSelect2.Visible = false;
+                cal1.Visible = false;
+                cal2.Visible = false;
 
             }
 

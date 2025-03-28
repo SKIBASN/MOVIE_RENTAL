@@ -34,15 +34,17 @@ namespace WinFormsApp1
             Movie = new TabPage();
             Rental = new TabPage();
             Report = new TabPage();
+            SpecifTitle2 = new Label();
+            cal2 = new MonthCalendar();
+            DateSelect2 = new Label();
             DateSelect1 = new Label();
             cal1 = new MonthCalendar();
             PickReportTitle = new Label();
             SpecifTitle1 = new Label();
             Specif = new TextBox();
             ReportSelection = new ComboBox();
-            DateSelect2 = new Label();
-            cal2 = new MonthCalendar();
-            SpecifTitle2 = new Label();
+            RepRes = new TextBox();
+            EnterR = new Button();
             tabControl1.SuspendLayout();
             Report.SuspendLayout();
             SuspendLayout();
@@ -96,6 +98,8 @@ namespace WinFormsApp1
             // Report
             // 
             Report.BackColor = Color.Firebrick;
+            Report.Controls.Add(EnterR);
+            Report.Controls.Add(RepRes);
             Report.Controls.Add(SpecifTitle2);
             Report.Controls.Add(cal2);
             Report.Controls.Add(DateSelect2);
@@ -114,6 +118,38 @@ namespace WinFormsApp1
             Report.TabIndex = 3;
             Report.Text = "Report";
             Report.Click += Report_Click;
+            // 
+            // SpecifTitle2
+            // 
+            SpecifTitle2.AutoSize = true;
+            SpecifTitle2.Font = new Font("Segoe UI", 15F);
+            SpecifTitle2.ForeColor = SystemColors.ActiveCaptionText;
+            SpecifTitle2.Location = new Point(329, 108);
+            SpecifTitle2.Name = "SpecifTitle2";
+            SpecifTitle2.Size = new Size(76, 28);
+            SpecifTitle2.TabIndex = 10;
+            SpecifTitle2.Text = "Specif2";
+            SpecifTitle2.Visible = false;
+            // 
+            // cal2
+            // 
+            cal2.Location = new Point(339, 179);
+            cal2.Name = "cal2";
+            cal2.TabIndex = 9;
+            cal2.Visible = false;
+            // 
+            // DateSelect2
+            // 
+            DateSelect2.AutoSize = true;
+            DateSelect2.BackColor = Color.White;
+            DateSelect2.Font = new Font("Segoe UI", 15F);
+            DateSelect2.ForeColor = SystemColors.ActiveCaptionText;
+            DateSelect2.Location = new Point(370, 145);
+            DateSelect2.Name = "DateSelect2";
+            DateSelect2.Size = new Size(180, 28);
+            DateSelect2.TabIndex = 8;
+            DateSelect2.Text = "No Date Selected 2";
+            DateSelect2.Visible = false;
             // 
             // DateSelect1
             // 
@@ -182,37 +218,25 @@ namespace WinFormsApp1
             ReportSelection.Text = "Which Customer has the most rentals?";
             ReportSelection.SelectedIndexChanged += comboBox1_SelectedIndexChanged;
             // 
-            // DateSelect2
+            // RepRes
             // 
-            DateSelect2.AutoSize = true;
-            DateSelect2.BackColor = Color.White;
-            DateSelect2.Font = new Font("Segoe UI", 15F);
-            DateSelect2.ForeColor = SystemColors.ActiveCaptionText;
-            DateSelect2.Location = new Point(370, 145);
-            DateSelect2.Name = "DateSelect2";
-            DateSelect2.Size = new Size(180, 28);
-            DateSelect2.TabIndex = 8;
-            DateSelect2.Text = "No Date Selected 2";
-            DateSelect2.Visible = false;
+            RepRes.Font = new Font("Segoe UI", 5F);
+            RepRes.Location = new Point(588, 190);
+            RepRes.MaximumSize = new Size(200, 200);
+            RepRes.Name = "RepRes";
+            RepRes.Size = new Size(196, 16);
+            RepRes.TabIndex = 11;
+            RepRes.Text = "Result";
             // 
-            // cal2
+            // EnterR
             // 
-            cal2.Location = new Point(339, 179);
-            cal2.Name = "cal2";
-            cal2.TabIndex = 9;
-            cal2.Visible = false;
-            // 
-            // SpecifTitle2
-            // 
-            SpecifTitle2.AutoSize = true;
-            SpecifTitle2.Font = new Font("Segoe UI", 15F);
-            SpecifTitle2.ForeColor = SystemColors.ActiveCaptionText;
-            SpecifTitle2.Location = new Point(329, 108);
-            SpecifTitle2.Name = "SpecifTitle2";
-            SpecifTitle2.Size = new Size(76, 28);
-            SpecifTitle2.TabIndex = 10;
-            SpecifTitle2.Text = "Specif2";
-            SpecifTitle2.Visible = false;
+            EnterR.Font = new Font("Segoe UI", 10F);
+            EnterR.Location = new Point(604, 154);
+            EnterR.Name = "EnterR";
+            EnterR.Size = new Size(168, 30);
+            EnterR.TabIndex = 12;
+            EnterR.Text = "Enter";
+            EnterR.UseVisualStyleBackColor = true;
             // 
             // NavScreen
             // 
@@ -244,5 +268,7 @@ namespace WinFormsApp1
         private Label SpecifTitle2;
         private MonthCalendar cal2;
         private Label DateSelect2;
+        private TextBox RepRes;
+        private Button EnterR;
     }
 }
