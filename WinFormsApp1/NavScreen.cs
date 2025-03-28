@@ -66,7 +66,10 @@ namespace WinFormsApp1
                 DateSelect2.Visible = true;
                 cal1.Visible = true;
                 cal2.Visible = true;
-                EnterR.Visible = true;
+                if (DateSelect1.Text != "" && DateSelect2.Text != "" && (DateTime.Parse(DateSelect1.Text) > DateTime.Parse(DateSelect2.Text)))
+                {
+                    EnterR.Visible = true;
+                }
 
                 Specif.Visible = false;
                 choice = 1;
@@ -79,7 +82,6 @@ namespace WinFormsApp1
                 Specif.Visible = true;
                 EnterR.Visible = true;
 
-
                 SpecifTitle2.Visible = false;
                 DateSelect1.Visible = false;
                 DateSelect2.Visible = false;
@@ -87,7 +89,6 @@ namespace WinFormsApp1
                 cal2.Visible = false;
 
                 choice = 2;
-
             }
             else if (ReportSelection.SelectedIndex == 3)
             {
@@ -122,9 +123,7 @@ namespace WinFormsApp1
                 cal2.Visible = false;
 
                 choice = 4;
-
             }
-
         }
 
         private void label1_Click(object sender, EventArgs e)
