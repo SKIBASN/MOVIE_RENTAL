@@ -70,8 +70,12 @@ namespace WinFormsApp1
                 {
                     EnterR.Visible = true;
                 }
+                else
+                {
+                    EnterR.Visible = false;
+                }
 
-                Specif.Visible = false;
+                    Specif.Visible = false;
                 choice = 1;
             }
             else if (ReportSelection.SelectedIndex == 2)
@@ -80,9 +84,16 @@ namespace WinFormsApp1
                 SpecifTitle1.Visible = true;
                 Specif.Text = "";
                 Specif.Visible = true;
-                EnterR.Visible = true;
+                if (Specif.Text != "")
+                {
+                    EnterR.Visible = true;
 
-                SpecifTitle2.Visible = false;
+                }
+                else
+                {
+                    EnterR.Visible = false;
+                }
+                    SpecifTitle2.Visible = false;
                 DateSelect1.Visible = false;
                 DateSelect2.Visible = false;
                 cal1.Visible = false;
@@ -102,9 +113,16 @@ namespace WinFormsApp1
                 DateSelect2.Visible = true;
                 cal1.Visible = true;
                 cal2.Visible = true;
-                EnterR.Visible = true;
+                if (DateSelect1.Text != "" && DateSelect2.Text != "" && (DateTime.Parse(DateSelect1.Text) > DateTime.Parse(DateSelect2.Text)))
+                {
+                    EnterR.Visible = true;
+                }
+                else
+                {
+                    EnterR.Visible = false;
+                }
 
-                Specif.Visible = false;
+                    Specif.Visible = false;
 
                 choice = 3;
             }
@@ -114,7 +132,15 @@ namespace WinFormsApp1
                 SpecifTitle1.Visible = true;
                 Specif.Text = "";
                 Specif.Visible = true;
-                EnterR.Visible = true;
+                if (Specif.Text != "")
+                {
+                    EnterR.Visible = true;
+
+                }
+                else
+                {
+                    EnterR.Visible = false;
+                }
 
                 SpecifTitle2.Visible = false;
                 DateSelect1.Visible = false;
