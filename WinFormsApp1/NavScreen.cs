@@ -13,6 +13,7 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.SqlClient;
 using System.IO.Pipes;
+using static System.ComponentModel.Design.ObjectSelectorEditor;
 
 namespace WinFormsApp1
 {
@@ -173,13 +174,34 @@ namespace WinFormsApp1
                 {
                     try
                     {
-                        db.query("select MovieID, MovieName from Movie");
-                        RepRes.Columns.Add("MovieID", "Movie ID");
-                        RepRes.Columns.Add("MovieName", "Movie Name");
+                        string query = @"
+                                        WITH CHOICE5 AS (
+                                        SELECT R.CustomerID, C.FirstName, C.LastName, R.Numb_of_rentals,
+                                        DENSE_RANK() OVER(ORDER BY R.Numb_of_rentals DESC) AS rnk
+                                        FROM Customer C
+                                        JOIN (
+                                        SELECT CustomerID, COUNT(*) AS Numb_of_rentals 
+                                        FROM Rental 
+                                        GROUP BY CustomerID
+                                        ) R 
+                                        ON R.CustomerID = C.CustomerID
+                                        ) 
+                                        SELECT CustomerID, FirstName, LastName, Numb_of_rentals 
+                                        FROM CHOICE5 
+                                        WHERE rnk <= 3 
+                                        ORDER BY Numb_of_rentals DESC;
+        ";
+                        db.query(query);
+
+                        RepRes.Columns.Add("CustomerID", "Customer ID");
+                        RepRes.Columns.Add("FirstName", "First Name");
+                        RepRes.Columns.Add("LastName", "Last Name");
+                        RepRes.Columns.Add("Numb_of_rentals", "# of Rentals");
+
                         RepRes.Rows.Clear();
                         while (db.myReader.Read())
                         {
-                            RepRes.Rows.Add(db.myReader["MovieID"].ToString(), db.myReader["MovieName"].ToString());
+                            RepRes.Rows.Add(db.myReader["CustomerID"].ToString(), db.myReader["FirstName"].ToString(), db.myReader["LastName"].ToString(), db.myReader["Numb_of_rentals"].ToString());
                         }
 
                         db.myReader.Close();

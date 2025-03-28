@@ -15,6 +15,9 @@ namespace WinFormsApp1
             InitializeComponent();
             db = new Database(); // Initialize the object and create the connection
             db.ConvertPasswordsToHashes();
+            NavScreen f2 = new NavScreen(db);
+            f2.Show();
+            this.Hide();
         }
 
 
