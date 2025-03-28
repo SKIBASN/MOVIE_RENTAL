@@ -75,7 +75,7 @@ namespace WinFormsApp1
                     EnterR.Visible = false;
                 }
 
-                    Specif.Visible = false;
+                Specif.Visible = false;
                 choice = 1;
             }
             else if (ReportSelection.SelectedIndex == 2)
@@ -93,7 +93,7 @@ namespace WinFormsApp1
                 {
                     EnterR.Visible = false;
                 }
-                    SpecifTitle2.Visible = false;
+                SpecifTitle2.Visible = false;
                 DateSelect1.Visible = false;
                 DateSelect2.Visible = false;
                 cal1.Visible = false;
@@ -122,7 +122,7 @@ namespace WinFormsApp1
                     EnterR.Visible = false;
                 }
 
-                    Specif.Visible = false;
+                Specif.Visible = false;
 
                 choice = 3;
             }
@@ -165,21 +165,53 @@ namespace WinFormsApp1
         private void cal_DateSelected(object sender, DateRangeEventArgs e)
         {
             DateSelect1.Text = cal1.SelectionStart.ToShortDateString();
+            if (DateSelect1.Text != "" && DateSelect2.Text != "" && (DateTime.Parse(DateSelect1.Text) > DateTime.Parse(DateSelect2.Text)))
+            {
+                EnterR.Visible = true;
+            }
+            else
+            {
+                EnterR.Visible = false;
+            }
         }
         private void cal_DateChanged(object sender, DateRangeEventArgs e)
         {
             DateSelect1.Text = cal1.SelectionStart.ToShortDateString();
+            if (DateSelect1.Text != "" && DateSelect2.Text != "" && (DateTime.Parse(DateSelect1.Text) > DateTime.Parse(DateSelect2.Text)))
+            {
+                EnterR.Visible = true;
+            }
+            else
+            {
+                EnterR.Visible = false;
+            }
         }
 
 
         private void cal2_DateChanged(object sender, DateRangeEventArgs e)
         {
             DateSelect2.Text = cal2.SelectionStart.ToShortDateString();
+            if (DateSelect1.Text != "" && DateSelect2.Text != "" && (DateTime.Parse(DateSelect1.Text) > DateTime.Parse(DateSelect2.Text)))
+            {
+                EnterR.Visible = true;
+            }
+            else
+            {
+                EnterR.Visible = false;
+            }
         }
 
         private void cal2_DateSelected(object sender, DateRangeEventArgs e)
         {
             DateSelect2.Text = cal2.SelectionStart.ToShortDateString();
+            if (DateSelect1.Text != "" && DateSelect2.Text != "" && (DateTime.Parse(DateSelect1.Text) > DateTime.Parse(DateSelect2.Text)))
+            {
+                EnterR.Visible = true;
+            }
+            else
+            {
+                EnterR.Visible = false;
+            }
         }
 
         private void EnterR_Click(object sender, EventArgs e)
@@ -376,6 +408,19 @@ namespace WinFormsApp1
                 {
                     RepRes.Text = "Error Occured";
                 }
+            }
+        }
+
+        private void Specif_TextChanged(object sender, EventArgs e)
+        {
+            if (Specif.Text != "")
+            {
+                EnterR.Visible = true;
+
+            }
+            else
+            {
+                EnterR.Visible = false;
             }
         }
     }
