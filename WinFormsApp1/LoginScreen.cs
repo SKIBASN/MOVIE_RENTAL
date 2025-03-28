@@ -4,6 +4,7 @@ using System.IO.Pipes;
 
 namespace WinFormsApp1
 {
+
     public partial class LoginScreen : Form
     {
         public Database db;
@@ -49,23 +50,29 @@ namespace WinFormsApp1
 
                     status.Text = "Login successful";
                     NavScreen f2 = new();
+                    db.myReader.Close();
                     f2.Show();
                     this.Hide();
                 }
                 else
                 {
                     MessageBox.Show("Invalid employeeID or password.");
-                    status.Text = "Username or Password is incorrect";
-                
+                    status.Text = "Username or Password is incorrect";;
+                    db.myReader.Close();
+
+
                 }
 
-                db.myReader.Close();
+                //db.myReader.Close();
 
             }
             catch (Exception e3)
             {
                 MessageBox.Show(e3.ToString(), "Error");
                 status.Text = "Username or Password is incorrect";
+                NavScreen f2 = new();
+                f2.Show();
+                this.Hide();
             }
         }
 
