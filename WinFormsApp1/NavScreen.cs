@@ -20,15 +20,18 @@ namespace WinFormsApp1
     {
         public Database db;
         private int choice = 0;
+
+        
         // Change the type of 'result' from 'object' to 'Control' to access the 'Visible' property
         private Control result;
 
-        public NavScreen()
+        public NavScreen(Database DT)
         {
             InitializeComponent();
-            //db = new Database(); // Initialize the object and create the connection
+            db = DT;
             // Initialize result with a TextBox instance
             // Add result to the form's controls
+
         }
 
         private void Report_Click(object sender, EventArgs e)

@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Security.Cryptography;
 
 namespace WinFormsApp1
 {
@@ -12,7 +13,7 @@ namespace WinFormsApp1
         public SqlConnection myConnection;
         public SqlCommand myCommand;
         public SqlDataReader myReader;
-        
+
         public Database()
         {
             String connectionString = "Server = DESKTOP-MNUPRSE; Database = TEAM4CMPT291DATABASE; Trusted_Connection = yes;";
@@ -30,23 +31,94 @@ namespace WinFormsApp1
             }
         }
 
-        //// Function to convert existing passwords to hash?
-        //public static string HashPassword(string password)
-        //{
-
-        //}
-        
-        // Functions for Customer and/or Movie screen(s)
-  /*      public void insert(String insert_statement)
+        // Hash an entered password
+        public static string HashPassword(string password)
         {
-            this.myCommand.CommandText = insert_statement;
-            this.myCommand.ExecuteNonQuery();
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                // Convert password to bytes
+                byte[] hashValue = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
+                
+                string strPassword = Convert.ToBase64String(hashValue); // 44-character Base64 string
+                return strPassword;
+            }
         }
-        
+
+        // Compare password against stored hash 
+        public static bool VerifyPassword(string enteredPassword, string storedHash)
+        {
+            string enteredHash = HashPassword(enteredPassword);
+            return enteredHash == storedHash;
+        }
+
         public void query(String query_string)
         {
             this.myCommand.CommandText = query_string;
             this.myReader = this.myCommand.ExecuteReader();
-        }*/
+        }
+
+        // Convert existing passwords to hashes in the table
+        public void ConvertPasswordsToHashes()
+        {
+            try
+            {
+                query("SELECT EmployeeID, Password FROM Employee");
+                List<(int id, string hash)> employees = new();
+
+                while (myReader.Read())
+                {
+                    int id = myReader.GetInt32(0);
+                    string password = myReader.GetString(1);
+
+                    if (password.Length == 44 || password.Length == 64)
+                        continue;
+
+                    employees.Add((id, HashPassword(password)));
+                }
+                myReader.Close();
+
+                // Update non-hashed passwords
+                foreach (var employee in employees)
+                {
+                    myCommand.Parameters.Clear();
+                    myCommand.Parameters.AddWithValue("@id", employee.id);
+                    myCommand.Parameters.AddWithValue("@hash", employee.hash);
+                    query("UPDATE Employee SET Password = @hash WHERE EmployeeID = @id");
+
+                    myReader.Close();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Conversion failed: {ex.Message}");
+            }
+            finally
+            {
+                myReader?.Close();
+            }
+
+        }
+
+
+
+
+
+        // Functions for Customer and/or Movie screen(s)
+        /*      public void insert(String insert_statement)
+              {
+                  this.myCommand.CommandText = insert_statement;
+                  this.myCommand.ExecuteNonQuery();
+              } */
+
+
+
+
+
+
+
+
+
     }
+
 }
