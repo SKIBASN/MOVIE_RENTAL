@@ -13,6 +13,11 @@ namespace WinFormsApp1
     public partial class NavScreen : Form
     {
         public Database db;
+        private int choice = 0;
+        
+        // Change the type of 'result' from 'object' to 'Control' to access the 'Visible' property
+        private Control result;
+
         public NavScreen(Database DT)
         {
             InitializeComponent();
