@@ -35,7 +35,6 @@ namespace WinFormsApp1
             Rental = new TabPage();
             Report = new TabPage();
             EnterR = new Button();
-            RepRes = new TextBox();
             SpecifTitle2 = new Label();
             cal2 = new MonthCalendar();
             DateSelect2 = new Label();
@@ -45,6 +44,7 @@ namespace WinFormsApp1
             SpecifTitle1 = new Label();
             Specif = new TextBox();
             ReportSelection = new ComboBox();
+            RepRes = new DataGridView();
             tabControl1.SuspendLayout();
             Report.SuspendLayout();
             SuspendLayout();
@@ -98,8 +98,8 @@ namespace WinFormsApp1
             // Report
             // 
             Report.BackColor = Color.Firebrick;
-            Report.Controls.Add(EnterR);
             Report.Controls.Add(RepRes);
+            Report.Controls.Add(EnterR);
             Report.Controls.Add(SpecifTitle2);
             Report.Controls.Add(cal2);
             Report.Controls.Add(DateSelect2);
@@ -128,16 +128,6 @@ namespace WinFormsApp1
             EnterR.TabIndex = 12;
             EnterR.Text = "Enter";
             EnterR.UseVisualStyleBackColor = true;
-            // 
-            // RepRes
-            // 
-            RepRes.Font = new Font("Segoe UI", 5F);
-            RepRes.Location = new Point(588, 190);
-            RepRes.MaximumSize = new Size(200, 200);
-            RepRes.Name = "RepRes";
-            RepRes.Size = new Size(196, 16);
-            RepRes.TabIndex = 11;
-            RepRes.Text = "Result";
             // 
             // SpecifTitle2
             // 
@@ -239,6 +229,15 @@ namespace WinFormsApp1
             ReportSelection.Text = "Which Customer has the most rentals?";
             ReportSelection.SelectedIndexChanged += comboBox1_SelectedIndexChanged;
             // 
+            // RepRes
+            // 
+            RepRes.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            RepRes.Location = new Point(578, 191);
+            RepRes.Name = "RepRes";
+            RepRes.Size = new Size(240, 150);
+            RepRes.TabIndex = 13;
+            RepRes.CellContentClick += this.dataGridView1_CellContentClick;
+            // 
             // NavScreen
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -250,6 +249,7 @@ namespace WinFormsApp1
             tabControl1.ResumeLayout(false);
             Report.ResumeLayout(false);
             Report.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)RepRes).EndInit();
             ResumeLayout(false);
         }
 
@@ -269,7 +269,7 @@ namespace WinFormsApp1
         private Label SpecifTitle2;
         private MonthCalendar cal2;
         private Label DateSelect2;
-        private TextBox RepRes;
         private Button EnterR;
+        private DataGridView RepRes;
     }
 }
