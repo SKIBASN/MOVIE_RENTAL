@@ -20,15 +20,18 @@ namespace WinFormsApp1
     {
         public Database db;
         private int choice = 0;
+
+
         // Change the type of 'result' from 'object' to 'Control' to access the 'Visible' property
         private Control result;
 
-        public NavScreen()
+        public NavScreen(Database DT)
         {
             InitializeComponent();
-            //db = new Database(); // Initialize the object and create the connection
+            db = DT;
             // Initialize result with a TextBox instance
             // Add result to the form's controls
+
         }
 
         private void Report_Click(object sender, EventArgs e)
@@ -164,54 +167,29 @@ namespace WinFormsApp1
         {
             using (db = new Database()) // Ensure proper disposal
             {
-                db.myCommand.Parameters.Clear(); // Always clear parameters before use
+                //db.myCommand.Parameters.Clear(); // Always clear parameters before use
 
                 if (choice == 0) // Top 3 customers with most rentals
                 {
-                    db.myCommand.CommandText = @"
-            SELECT TOP 3 R.CustomerID, C.FirstName, C.LastName, R.Numb_of_rentals
-            FROM Customer C
-            JOIN (
-                SELECT CustomerID, COUNT(*) AS Numb_of_rentals
-                FROM Rental
-                GROUP BY CustomerID
-            ) R ON R.CustomerID = C.CustomerID
-            ORDER BY Numb_of_rentals DESC;";
-
-                    db.OpenConnection(); // Open the connection before execution
-                    db.myReader = db.myCommand.ExecuteReader();
-
-                    // Use a DataTable to hold the result
- 
-                    if (db.myReader.HasRows)
+                    try
                     {
-                        try
+                        db.query("select MovieID, MovieName from Movie");
+                        RepRes.Columns.Add("MovieID", "Movie ID");
+                        RepRes.Columns.Add("MovieName", "Movie Name");
+                        RepRes.Rows.Clear();
+                        while (db.myReader.Read())
                         {
-                            DataTable dataTable = new DataTable();
-                            // Only load the data if there are rows to read
-                            dataTable.Load(db.myReader);
-
-                            // Bind the data to the DataGridView
-                            this.Invoke((MethodInvoker)delegate
-                            {
-                                RepRes.ClearSelection();
-                                RepRes.DataSource = dataTable;
-                                RepRes.Refresh();
-                            });
+                            RepRes.Rows.Add(db.myReader["MovieID"].ToString(), db.myReader["MovieName"].ToString());
                         }
-                        catch(Exception ex)
-                        {
-                            MessageBox.Show("Error: " + ex.Message);
 
-                        }
+                        db.myReader.Close();
                     }
-                    else
+                    catch (Exception e3)
                     {
-                        MessageBox.Show("No data found.");
+                        MessageBox.Show(e3.ToString(), "Error");
                     }
-
-                    db.myReader.Close();
                 }
+
                 else if (choice == 1) // Top 5 rented movies in date range
                 {
                     DateTime date1, date2;
@@ -366,6 +344,11 @@ namespace WinFormsApp1
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void EnterR_Click_1(object sender, EventArgs e)
         {
 
         }

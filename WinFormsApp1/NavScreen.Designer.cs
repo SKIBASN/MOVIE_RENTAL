@@ -122,28 +122,27 @@ namespace WinFormsApp1
             // 
             // RepRes
             // 
+            RepRes.AllowUserToAddRows = false;
+            RepRes.AllowUserToDeleteRows = false;
             RepRes.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             RepRes.Location = new Point(578, 191);
             RepRes.Name = "RepRes";
+            RepRes.ReadOnly = true;
+            RepRes.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             RepRes.Size = new Size(240, 150);
             RepRes.TabIndex = 13;
             RepRes.CellContentClick += dataGridView1_CellContentClick;
-            RepRes.AutoGenerateColumns = true;
-            RepRes.AllowUserToAddRows = false;  // Disable adding rows
-            RepRes.AllowUserToDeleteRows = false;  // Disable deleting rows
-            RepRes.ReadOnly = true;  // Make the grid read-only
-            RepRes.SelectionMode = DataGridViewSelectionMode.FullRowSelect;  // Allow full row selectio
-
             // 
             // EnterR
             // 
             EnterR.Font = new Font("Segoe UI", 10F);
-            EnterR.Location = new Point(604, 154);
+            EnterR.Location = new Point(619, 145);
             EnterR.Name = "EnterR";
             EnterR.Size = new Size(168, 30);
             EnterR.TabIndex = 12;
             EnterR.Text = "Enter";
             EnterR.UseVisualStyleBackColor = true;
+            EnterR.Click += EnterR_Click;
             // 
             // SpecifTitle2
             // 
