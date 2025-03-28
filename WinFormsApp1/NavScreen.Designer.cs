@@ -34,14 +34,15 @@ namespace WinFormsApp1
             Movie = new TabPage();
             Rental = new TabPage();
             Report = new TabPage();
-            RepRes = new TextBox();
-            DateSelect = new Label();
-            Enter = new Button();
-            cal = new MonthCalendar();
+            DateSelect1 = new Label();
+            cal1 = new MonthCalendar();
             PickReportTitle = new Label();
-            SpecifTitle = new Label();
+            SpecifTitle1 = new Label();
             Specif = new TextBox();
             ReportSelection = new ComboBox();
+            DateSelect2 = new Label();
+            cal2 = new MonthCalendar();
+            SpecifTitle2 = new Label();
             tabControl1.SuspendLayout();
             Report.SuspendLayout();
             SuspendLayout();
@@ -95,12 +96,13 @@ namespace WinFormsApp1
             // Report
             // 
             Report.BackColor = Color.Firebrick;
-            Report.Controls.Add(RepRes);
-            Report.Controls.Add(DateSelect);
-            Report.Controls.Add(Enter);
-            Report.Controls.Add(cal);
+            Report.Controls.Add(SpecifTitle2);
+            Report.Controls.Add(cal2);
+            Report.Controls.Add(DateSelect2);
+            Report.Controls.Add(DateSelect1);
+            Report.Controls.Add(cal1);
             Report.Controls.Add(PickReportTitle);
-            Report.Controls.Add(SpecifTitle);
+            Report.Controls.Add(SpecifTitle1);
             Report.Controls.Add(Specif);
             Report.Controls.Add(ReportSelection);
             Report.Font = new Font("Segoe UI", 20F);
@@ -113,49 +115,28 @@ namespace WinFormsApp1
             Report.Text = "Report";
             Report.Click += Report_Click;
             // 
-            // RepRes
+            // DateSelect1
             // 
-            RepRes.Location = new Point(513, 108);
-            RepRes.Name = "RepRes";
-            RepRes.Size = new Size(252, 43);
-            RepRes.TabIndex = 8;
-            RepRes.Text = "RepRes";
-            RepRes.TextChanged += RepRes_TextChanged;
-            RepRes.VisibleChanged += Enter_Click;
+            DateSelect1.AutoSize = true;
+            DateSelect1.BackColor = Color.White;
+            DateSelect1.Font = new Font("Segoe UI", 15F);
+            DateSelect1.ForeColor = SystemColors.ActiveCaptionText;
+            DateSelect1.Location = new Point(79, 139);
+            DateSelect1.Name = "DateSelect1";
+            DateSelect1.Size = new Size(180, 28);
+            DateSelect1.TabIndex = 7;
+            DateSelect1.Text = "No Date Selected 1";
+            DateSelect1.Visible = false;
+            DateSelect1.Click += DateSelect_Click;
             // 
-            // DateSelect
+            // cal1
             // 
-            DateSelect.AutoSize = true;
-            DateSelect.BackColor = Color.White;
-            DateSelect.Font = new Font("Segoe UI", 15F);
-            DateSelect.ForeColor = SystemColors.ActiveCaptionText;
-            DateSelect.Location = new Point(45, 142);
-            DateSelect.Name = "DateSelect";
-            DateSelect.Size = new Size(164, 28);
-            DateSelect.TabIndex = 7;
-            DateSelect.Text = "No Date Selected";
-            DateSelect.Visible = false;
-            DateSelect.Click += DateSelect_Click;
-            // 
-            // Enter
-            // 
-            Enter.ForeColor = SystemColors.ActiveCaptionText;
-            Enter.Location = new Point(45, 250);
-            Enter.Name = "Enter";
-            Enter.Size = new Size(129, 51);
-            Enter.TabIndex = 6;
-            Enter.Text = "Enter";
-            Enter.UseVisualStyleBackColor = true;
-            Enter.Click += Enter_Click;
-            // 
-            // cal
-            // 
-            cal.Location = new Point(241, 139);
-            cal.Name = "cal";
-            cal.TabIndex = 5;
-            cal.Visible = false;
-            cal.DateChanged += cal_DateChanged;
-            cal.DateSelected += cal_DateSelected;
+            cal1.Location = new Point(45, 179);
+            cal1.Name = "cal1";
+            cal1.TabIndex = 5;
+            cal1.Visible = false;
+            cal1.DateChanged += cal_DateChanged;
+            cal1.DateSelected += cal_DateSelected;
             // 
             // PickReportTitle
             // 
@@ -168,17 +149,17 @@ namespace WinFormsApp1
             PickReportTitle.Text = "Select A Report:";
             PickReportTitle.Click += label1_Click;
             // 
-            // SpecifTitle
+            // SpecifTitle1
             // 
-            SpecifTitle.AutoSize = true;
-            SpecifTitle.Font = new Font("Segoe UI", 15F);
-            SpecifTitle.ForeColor = SystemColors.ActiveCaptionText;
-            SpecifTitle.Location = new Point(37, 108);
-            SpecifTitle.Name = "SpecifTitle";
-            SpecifTitle.Size = new Size(65, 28);
-            SpecifTitle.TabIndex = 2;
-            SpecifTitle.Text = "Specif";
-            SpecifTitle.Visible = false;
+            SpecifTitle1.AutoSize = true;
+            SpecifTitle1.Font = new Font("Segoe UI", 15F);
+            SpecifTitle1.ForeColor = SystemColors.ActiveCaptionText;
+            SpecifTitle1.Location = new Point(45, 99);
+            SpecifTitle1.Name = "SpecifTitle1";
+            SpecifTitle1.Size = new Size(76, 28);
+            SpecifTitle1.TabIndex = 2;
+            SpecifTitle1.Text = "Specif1";
+            SpecifTitle1.Visible = false;
             // 
             // Specif
             // 
@@ -193,13 +174,45 @@ namespace WinFormsApp1
             // 
             ReportSelection.Font = new Font("Segoe UI", 15F);
             ReportSelection.FormattingEnabled = true;
-            ReportSelection.Items.AddRange(new object[] { "Which Customer has the most rentals?", "What Movies haven't been rented since a specific date?", "What movies has a specific employee rented?", "What Actors appear in a Movie?", "How many times has a movie with a specific actor been rented?" });
+            ReportSelection.Items.AddRange(new object[] { "Who are the top 3 customers with the most rentals?", "What are the top 3 movies that have been rented between two specific days?", "What are the 3 top movies a specific employee rented?", "What are the top 3 rented genre between two specific days?", "What are the top 3 rented movies with a specfic actor?" });
             ReportSelection.Location = new Point(37, 48);
             ReportSelection.Name = "ReportSelection";
             ReportSelection.Size = new Size(692, 36);
             ReportSelection.TabIndex = 0;
             ReportSelection.Text = "Which Customer has the most rentals?";
             ReportSelection.SelectedIndexChanged += comboBox1_SelectedIndexChanged;
+            // 
+            // DateSelect2
+            // 
+            DateSelect2.AutoSize = true;
+            DateSelect2.BackColor = Color.White;
+            DateSelect2.Font = new Font("Segoe UI", 15F);
+            DateSelect2.ForeColor = SystemColors.ActiveCaptionText;
+            DateSelect2.Location = new Point(370, 145);
+            DateSelect2.Name = "DateSelect2";
+            DateSelect2.Size = new Size(180, 28);
+            DateSelect2.TabIndex = 8;
+            DateSelect2.Text = "No Date Selected 2";
+            DateSelect2.Visible = false;
+            // 
+            // cal2
+            // 
+            cal2.Location = new Point(339, 179);
+            cal2.Name = "cal2";
+            cal2.TabIndex = 9;
+            cal2.Visible = false;
+            // 
+            // SpecifTitle2
+            // 
+            SpecifTitle2.AutoSize = true;
+            SpecifTitle2.Font = new Font("Segoe UI", 15F);
+            SpecifTitle2.ForeColor = SystemColors.ActiveCaptionText;
+            SpecifTitle2.Location = new Point(329, 108);
+            SpecifTitle2.Name = "SpecifTitle2";
+            SpecifTitle2.Size = new Size(76, 28);
+            SpecifTitle2.TabIndex = 10;
+            SpecifTitle2.Text = "Specif2";
+            SpecifTitle2.Visible = false;
             // 
             // NavScreen
             // 
@@ -224,11 +237,12 @@ namespace WinFormsApp1
         private TabPage Report;
         private ComboBox ReportSelection;
         private TextBox Specif;
-        private Label SpecifTitle;
+        private Label SpecifTitle1;
         private Label PickReportTitle;
-        private MonthCalendar cal;
-        private Button Enter;
-        private Label DateSelect;
-        private TextBox RepRes;
+        private MonthCalendar cal1;
+        private Label DateSelect1;
+        private Label SpecifTitle2;
+        private MonthCalendar cal2;
+        private Label DateSelect2;
     }
 }

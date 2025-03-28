@@ -28,7 +28,7 @@ namespace WinFormsApp1
             InitializeComponent();
             //db = new Database(); // Initialize the object and create the connection
             // Initialize result with a TextBox instance
-            this.Controls.Add(RepRes); // Add result to the form's controls
+            // Add result to the form's controls
         }
 
         private void Report_Click(object sender, EventArgs e)
@@ -48,88 +48,27 @@ namespace WinFormsApp1
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            int choice = 4;
-            if (ReportSelection.SelectedItem.ToString() == "What Movies haven't been rented since a specific date?")
+            if (ReportSelection.SelectedIndex == 0) // Assuming 0 is the index for "Who are the top 3 customers with the most rentals?"
             {
-                Specif.Text = "";
-                DateSelect.Text = "No Date Selected";
-                RepRes.Visible = false;
-                cal.Visible = true;
-                Enter.Visible = false;
-                DateSelect.Visible = true;
-                Specif.Visible = false;
-                SpecifTitle.Visible = true;
-                SpecifTitle.Text = "Pick a Date: ";
-                Enter.Visible = true;
-                choice = 5;
 
             }
-            else if (ReportSelection.SelectedItem.ToString() == "What movies has a specific employee rented?")
+            else if (ReportSelection.SelectedIndex==1)
             {
-                Specif.Text = "";
-                DateSelect.Text = "No Date Selected";
-                RepRes.Visible = false;
-                Specif.Visible = true;
-                Enter.Visible = false;
-                DateSelect.Visible = false;
-                cal.Visible = false;
-                SpecifTitle.Visible = true;
-                SpecifTitle.Text = "Enter an Employee ID:";
-                Enter.Visible = true;
-                choice = 5;
+
             }
-            else if (ReportSelection.SelectedItem.ToString() == "What Actors appear in a Movie?")
+            else if (ReportSelection.SelectedIndex == 2)
             {
-                Specif.Text = "";
-                DateSelect.Text = "No Date Selected";
-                RepRes.Visible = false;
-                cal.Visible = false;
-                Enter.Visible = false;
-                DateSelect.Visible = false;
-                Specif.Visible = true;
-                SpecifTitle.Visible = true;
-                SpecifTitle.Text = "Enter a Movie ID:";
-                Enter.Visible = true;
-                choice = 5;
+
             }
-            else if (ReportSelection.SelectedItem.ToString() == "How many times has a movie with a specific actor been rented?")
+            else if (ReportSelection.SelectedIndex == 3)
             {
-                Specif.Text = "";
-                DateSelect.Text = "No Date Selected";
-                RepRes.Visible = false;
-                cal.Visible = false;
-                Enter.Visible = false;
-                Specif.Visible = true;
-                DateSelect.Visible = false;
-                SpecifTitle.Visible = true;
-                SpecifTitle.Text = "Enter an Actor ID: ";
-                Enter.Visible = true;
-                choice = 4;
+
             }
-            else if (ReportSelection.SelectedItem.ToString() == "Which Customer has the most rentals?")
+            else if (ReportSelection.SelectedIndex == 4)
             {
-                Specif.Text = "";
-                DateSelect.Text = "No Date Selected";
-                Enter.Visible = true;
-                //RepRes.Visible = false;
-                cal.Visible = false;
-                Specif.Visible = false;
-                DateSelect.Visible = false;
-                SpecifTitle.Visible = false;
-                choice = 5;
+
             }
-            else
-            {
-                Specif.Text = "";
-                //RepRes.Visible = false;
-                DateSelect.Text = "No Date Selected";
-                Enter.Visible = false;
-                cal.Visible = false;
-                Specif.Visible = false;
-                DateSelect.Visible = false;
-                SpecifTitle.Visible = false;
-                choice = 5;
-            }
+
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -144,11 +83,11 @@ namespace WinFormsApp1
 
         private void cal_DateSelected(object sender, DateRangeEventArgs e)
         {
-            DateSelect.Text = cal.SelectionStart.ToShortDateString();
+            DateSelect1.Text = cal1.SelectionStart.ToShortDateString();
         }
         private void cal_DateChanged(object sender, DateRangeEventArgs e)
         {
-            DateSelect.Text = cal.SelectionStart.ToShortDateString();
+            DateSelect1.Text = cal1.SelectionStart.ToShortDateString();
         }
 
         private void Enter_Click(object sender, EventArgs e)
@@ -165,8 +104,7 @@ namespace WinFormsApp1
                     // Check if any row is returned
                     if (db.myReader.Read())
                     {
-                        RepRes.Text = "Success";
-                        RepRes.Visible = true;
+
 
                     }
                     else
@@ -193,8 +131,7 @@ namespace WinFormsApp1
                     // Check if any row is returned
                     if (db.myReader.Read())
                     {
-                        RepRes.Text = "Success";
-                        RepRes.Visible = true;
+
 
                     }
                     else
@@ -221,8 +158,6 @@ namespace WinFormsApp1
                     // Check if any row is returned
                     if (db.myReader.Read())
                     {
-                        RepRes.Text = "Success";
-                        RepRes.Visible = true;
 
                     }
                     else
@@ -249,8 +184,7 @@ namespace WinFormsApp1
                     // Check if any row is returned
                     if (db.myReader.Read())
                     {
-                        RepRes.Text = "Success";
-                        RepRes.Visible = true;
+
 
                     }
                     else
@@ -284,20 +218,13 @@ namespace WinFormsApp1
 
                 if (db.myReader.HasRows)
                 {
-                    Enter.BackColor = Color.Red;
-                    StringBuilder output = new StringBuilder();
                     while (db.myReader.Read())
                     {
                         string firstName = db.myReader["FirstName"]?.ToString() ?? "Unknown";
                         string lastName = db.myReader["LastName"]?.ToString() ?? "Unknown";
-                        output.AppendLine($"{firstName} {lastName}");
+                        //output.AppendLine($"{firstName} {lastName}");
                     }
-                    Enter.BackColor = Color.Blue;
-                    RepRes.Text = output.ToString().Trim();
-                    RepRes.BorderStyle = BorderStyle.FixedSingle;
-                    RepRes.Visible = true;
                 }
-                Enter.BackColor = Color.Purple;
             }
             else
             {
