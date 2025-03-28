@@ -128,6 +128,12 @@ namespace WinFormsApp1
             RepRes.Size = new Size(240, 150);
             RepRes.TabIndex = 13;
             RepRes.CellContentClick += dataGridView1_CellContentClick;
+            RepRes.AutoGenerateColumns = true;
+            RepRes.AllowUserToAddRows = false;  // Disable adding rows
+            RepRes.AllowUserToDeleteRows = false;  // Disable deleting rows
+            RepRes.ReadOnly = true;  // Make the grid read-only
+            RepRes.SelectionMode = DataGridViewSelectionMode.FullRowSelect;  // Allow full row selectio
+
             // 
             // EnterR
             // 
