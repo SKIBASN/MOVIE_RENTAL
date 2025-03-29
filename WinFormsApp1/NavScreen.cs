@@ -309,33 +309,27 @@ namespace WinFormsApp1
                     try
                     {
                         string query = @"
-                                        WITH CHOICE5 AS (
-                                        SELECT R.CustomerID, C.FirstName, C.LastName, R.Numb_of_rentals,
-                                        DENSE_RANK() OVER(ORDER BY R.Numb_of_rentals DESC) AS rnk
-                                        FROM Customer C
-                                        JOIN (
-                                        SELECT CustomerID, COUNT(*) AS Numb_of_rentals 
-                                        FROM Rental 
-                                        GROUP BY CustomerID
-                                        ) R 
-                                        ON R.CustomerID = C.CustomerID
-                                        ) 
-                                        SELECT CustomerID, FirstName, LastName, Numb_of_rentals 
-                                        FROM CHOICE5 
-                                        WHERE rnk <= 3 
-                                        ORDER BY Numb_of_rentals DESC;
-        ";
-                        db.query(query);
+                                        WITH RankedMovies AS (
+                                        SELECT m.MovieType, COUNT(*) AS numb_of_rentals,
+                                        DENSE_RANK() OVER (ORDER BY COUNT(*) DESC) AS rank
+                                        FROM rental r
+                                        JOIN movie m ON m.MovieID = r.MovieID
+                                        WHERE r.CheckoutDateTime BETWEEN @Date1 AND @Date2
+                                        GROUP BY m.MovieType
+                                         )
+                                        SELECT MovieType, numb_of_rentals
+                                        FROM RankedMovies
+                                        WHERE rank <= 3
+                                        ORDER BY numb_of_rentals DESC;";
+                        db.Date_Param_query(query, date1, date2);
 
-                        RepRes.Columns.Add("CustomerID", "Customer ID");
-                        RepRes.Columns.Add("FirstName", "First Name");
-                        RepRes.Columns.Add("LastName", "Last Name");
+                        RepRes.Columns.Add("MovieType", "Movie Type");
                         RepRes.Columns.Add("Numb_of_rentals", "# of Rentals");
 
                         RepRes.Rows.Clear();
                         while (db.myReader.Read())
                         {
-                            RepRes.Rows.Add(db.myReader["CustomerID"].ToString(), db.myReader["FirstName"].ToString(), db.myReader["LastName"].ToString(), db.myReader["Numb_of_rentals"].ToString());
+                            RepRes.Rows.Add(db.myReader["MovieType"].ToString(), db.myReader["Numb_of_rentals"].ToString());
                         }
 
                         db.myReader.Close();
@@ -350,33 +344,31 @@ namespace WinFormsApp1
                     try
                     {
                         string query = @"
-                                        WITH CHOICE5 AS (
-                                        SELECT R.CustomerID, C.FirstName, C.LastName, R.Numb_of_rentals,
-                                        DENSE_RANK() OVER(ORDER BY R.Numb_of_rentals DESC) AS rnk
-                                        FROM Customer C
-                                        JOIN (
-                                        SELECT CustomerID, COUNT(*) AS Numb_of_rentals 
-                                        FROM Rental 
-                                        GROUP BY CustomerID
-                                        ) R 
-                                        ON R.CustomerID = C.CustomerID
-                                        ) 
-                                        SELECT CustomerID, FirstName, LastName, Numb_of_rentals 
-                                        FROM CHOICE5 
-                                        WHERE rnk <= 3 
-                                        ORDER BY Numb_of_rentals DESC;
+                                    WITH RankedMovies AS (
+                                        SELECT m.MovieName, r.MovieID, COUNT(*) AS numb_of_rentals,
+                                               DENSE_RANK() OVER (ORDER BY COUNT(*) DESC) AS rank
+                                        FROM Rental r
+                                        JOIN AppearedIn a ON r.MovieID = a.MovieID
+                                        JOIN Movie m ON r.MovieID = m.MovieID
+                                        WHERE a.ActorID = @ID
+                                        GROUP BY r.MovieID, m.MovieName
+                                    )
+                                    SELECT MovieName, MovieID, numb_of_rentals
+                                    FROM RankedMovies
+                                    WHERE rank <= 3
+                                    ORDER BY numb_of_rentals DESC;
         ";
-                        db.query(query);
+                        System.String actorID = Specif.Text;
+                        db.ID_Param_query(query, actorID);
 
-                        RepRes.Columns.Add("CustomerID", "Customer ID");
-                        RepRes.Columns.Add("FirstName", "First Name");
-                        RepRes.Columns.Add("LastName", "Last Name");
+                        RepRes.Columns.Add("MovieID", "Movie ID");
+                        RepRes.Columns.Add("MovieName", "Movie Name");
                         RepRes.Columns.Add("Numb_of_rentals", "# of Rentals");
 
                         RepRes.Rows.Clear();
                         while (db.myReader.Read())
                         {
-                            RepRes.Rows.Add(db.myReader["CustomerID"].ToString(), db.myReader["FirstName"].ToString(), db.myReader["LastName"].ToString(), db.myReader["Numb_of_rentals"].ToString());
+                            RepRes.Rows.Add(db.myReader["MovieID"].ToString(), db.myReader["MovieName"].ToString(), db.myReader["Numb_of_rentals"].ToString());
                         }
 
                         db.myReader.Close();
