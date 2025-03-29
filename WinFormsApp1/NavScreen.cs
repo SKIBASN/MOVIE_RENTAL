@@ -55,6 +55,9 @@ namespace WinFormsApp1
         {
             if (ReportSelection.SelectedIndex == 0) // Assuming 0 is the index for "Who are the top 3 customers with the most rentals?"
             {
+                ErrorMes.Text = "";
+                RepRes.Rows.Clear();
+                RepRes.Columns.Clear();
                 EnterR.Visible = true;
                 RepRes.Visible = true;
                 Specif.Visible = false;
@@ -68,6 +71,9 @@ namespace WinFormsApp1
             }
             else if (ReportSelection.SelectedIndex == 1)
             {
+                RepRes.Rows.Clear();
+                RepRes.Columns.Clear();
+                ErrorMes.Text = "";
                 SpecifTitle1.Text = "Date 1";
                 SpecifTitle2.Text = "Date 2";
                 SpecifTitle1.Visible = true;
@@ -84,6 +90,9 @@ namespace WinFormsApp1
             }
             else if (ReportSelection.SelectedIndex == 2)
             {
+                RepRes.Rows.Clear();
+                RepRes.Columns.Clear();
+                ErrorMes.Text = "";
                 SpecifTitle1.Text = "Employee ID";
                 SpecifTitle1.Visible = true;
                 Specif.Text = "";
@@ -100,6 +109,9 @@ namespace WinFormsApp1
             }
             else if (ReportSelection.SelectedIndex == 3)
             {
+                ErrorMes.Text = "";
+                RepRes.Rows.Clear();
+                RepRes.Columns.Clear();
                 SpecifTitle1.Text = "Date 1";
                 SpecifTitle2.Text = "Date 2";
                 SpecifTitle1.Visible = true;
@@ -119,6 +131,9 @@ namespace WinFormsApp1
             }
             else if (ReportSelection.SelectedIndex == 4)
             {
+                ErrorMes.Text = "";
+                RepRes.Rows.Clear();
+                RepRes.Columns.Clear();
                 SpecifTitle1.Text = "Actor ID";
                 SpecifTitle1.Visible = true;
                 Specif.Text = "";
@@ -215,12 +230,6 @@ namespace WinFormsApp1
 
                 else if (choice == 1) // Top 5 rented movies in date range
                 {
-                    DateTime date1, date2;
-                    if (!DateTime.TryParse(DateSelect1.Text, out date1) || !DateTime.TryParse(DateSelect2.Text, out date2))
-                    {
-                        MessageBox.Show("Invalid dates selected.");
-                        return;
-                    }
 
                     try
                     {
@@ -236,23 +245,48 @@ namespace WinFormsApp1
                                         WHERE R.CheckoutDateTime BETWEEN @date1 AND @date2
                                         GROUP BY M.MovieID, M.MovieName
                                         )
-                                        SELECT MovieID, MovieName, Numb_of_Rentals
+                                        SELECT MovieID, MovieName, Numb_of_Rentals 
                                         FROM RankedMovies
                                         WHERE rnk <= 5
                                         ORDER BY Numb_of_Rentals DESC;";
-                        db.Date_Param_query(query, date1, date2);
 
-                        RepRes.Columns.Add("MovieID", "Movie ID");
-                        RepRes.Columns.Add("MovieName", "Movie Name");
-                        RepRes.Columns.Add("Numb_of_rentals", "# of Rentals");
-
-                        RepRes.Rows.Clear();
-                        while (db.myReader.Read())
+                        DateTime date1, date2;
+                        if (!DateTime.TryParse(DateSelect1.Text, out date1) || !DateTime.TryParse(DateSelect2.Text, out date2))
                         {
-                            RepRes.Rows.Add(db.myReader["MovieID"].ToString(), db.myReader["MovieName"].ToString(), db.myReader["Numb_of_rentals"].ToString());
+                            ErrorMes.Text = "Invalid Date Range.";
+                            RepRes.Rows.Clear();
+                            RepRes.Columns.Clear();
+                            return;
                         }
+                        else if (string.IsNullOrEmpty(DateSelect1.Text) || string.IsNullOrEmpty(DateSelect2.Text))
+                        {
+                            ErrorMes.Text = "Please enter a date range.";
+                            RepRes.Rows.Clear();
+                            RepRes.Columns.Clear();
+                        }
+                        else if (date1 > date2)
+                        {
+                            ErrorMes.Text = "Invalid date range.";
+                            RepRes.Rows.Clear();
+                            RepRes.Columns.Clear();
+                        }
+                        else
+                        {
+                            ErrorMes.Text = "";
 
-                        db.myReader.Close();
+                            db.Date_Param_query(query, date1, date2);
+
+                            RepRes.Columns.Add("MovieID", "Movie ID");
+                            RepRes.Columns.Add("MovieName", "Movie Name");
+                            RepRes.Columns.Add("Numb_of_rentals", "# of Rentals");
+                            RepRes.Rows.Clear();
+                            while (db.myReader.Read())
+                            {
+                                RepRes.Rows.Add(db.myReader["MovieID"].ToString(), db.myReader["MovieName"].ToString(), db.myReader["Numb_of_rentals"].ToString());
+                            }
+
+                            db.myReader.Close();
+                        }
                     }
                     catch (Exception e3)
                     {
@@ -276,7 +310,7 @@ namespace WinFormsApp1
                                         WHERE rnk <= 3
                                         ORDER BY numb_of_rentals DESC;"
                         ;
-                        System.String empID= Specif.Text;
+                        System.String empID = Specif.Text;
                         db.ID_Param_query(query, empID);
 
                         RepRes.Columns.Add("MovieID", "Movie ID");
@@ -290,7 +324,7 @@ namespace WinFormsApp1
                         }
 
                         db.myReader.Close();
-                    
+
                     }
                     catch (Exception e3)
                     {
@@ -300,11 +334,6 @@ namespace WinFormsApp1
                 else if (choice == 3) // Top 3 rented movie types in date range
                 {
                     DateTime date1, date2;
-                    if (!DateTime.TryParse(DateSelect1.Text, out date1) || !DateTime.TryParse(DateSelect2.Text, out date2))
-                    {
-                        MessageBox.Show("Invalid dates selected.");
-                        return;
-                    }
 
                     try
                     {
@@ -321,18 +350,42 @@ namespace WinFormsApp1
                                         FROM RankedMovies
                                         WHERE rank <= 3
                                         ORDER BY numb_of_rentals DESC;";
-                        db.Date_Param_query(query, date1, date2);
 
-                        RepRes.Columns.Add("MovieType", "Movie Type");
-                        RepRes.Columns.Add("Numb_of_rentals", "# of Rentals");
-
-                        RepRes.Rows.Clear();
-                        while (db.myReader.Read())
+                        if (!DateTime.TryParse(DateSelect1.Text, out date1) || !DateTime.TryParse(DateSelect2.Text, out date2))
                         {
-                            RepRes.Rows.Add(db.myReader["MovieType"].ToString(), db.myReader["Numb_of_rentals"].ToString());
+                            ErrorMes.Text = "Invalid Date Range.";
+                            RepRes.Rows.Clear();
+                            RepRes.Columns.Clear();
+                            return;
                         }
+                        else if (string.IsNullOrEmpty(DateSelect1.Text) || string.IsNullOrEmpty(DateSelect2.Text))
+                        {
+                            ErrorMes.Text = "Please enter a date range.";
+                            RepRes.Rows.Clear();
+                            RepRes.Columns.Clear();
+                        }
+                        else if (date1 > date2)
+                        {
+                            ErrorMes.Text = "Invalid date range.";
+                            RepRes.Rows.Clear();
+                            RepRes.Columns.Clear();
+                        }
+                        else
+                        {
+                            ErrorMes.Text = "";
+                            db.Date_Param_query(query, date1, date2);
 
-                        db.myReader.Close();
+                            RepRes.Columns.Add("MovieType", "Movie Type");
+                            RepRes.Columns.Add("Numb_of_rentals", "# of Rentals");
+
+                            RepRes.Rows.Clear();
+                            while (db.myReader.Read())
+                            {
+                                RepRes.Rows.Add(db.myReader["MovieType"].ToString(), db.myReader["Numb_of_rentals"].ToString());
+                            }
+
+                            db.myReader.Close();
+                        }
                     }
                     catch (Exception e3)
                     {
@@ -380,7 +433,7 @@ namespace WinFormsApp1
                 }
             }
         }
-            
+
 
         private void Specif_TextChanged(object sender, EventArgs e)
         {
@@ -392,6 +445,11 @@ namespace WinFormsApp1
         }
 
         private void EnterR_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ErrorMes_TextChanged(object sender, EventArgs e)
         {
 
         }

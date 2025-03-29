@@ -34,6 +34,7 @@ namespace WinFormsApp1
             Movie = new TabPage();
             Rental = new TabPage();
             Report = new TabPage();
+            ErrorMes = new TextBox();
             RepRes = new DataGridView();
             EnterR = new Button();
             SpecifTitle2 = new Label();
@@ -45,7 +46,6 @@ namespace WinFormsApp1
             SpecifTitle1 = new Label();
             Specif = new TextBox();
             ReportSelection = new ComboBox();
-            ErrorMes = new TextBox();
             tabControl1.SuspendLayout();
             Report.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)RepRes).BeginInit();
@@ -121,6 +121,19 @@ namespace WinFormsApp1
             Report.TabIndex = 3;
             Report.Text = "Report";
             Report.Click += Report_Click;
+            // 
+            // ErrorMes
+            // 
+            ErrorMes.BackColor = Color.Firebrick;
+            ErrorMes.BorderStyle = BorderStyle.None;
+            ErrorMes.Font = new Font("Segoe UI", 10F);
+            ErrorMes.ForeColor = Color.Yellow;
+            ErrorMes.Location = new Point(200, 347);
+            ErrorMes.Name = "ErrorMes";
+            ErrorMes.Size = new Size(290, 18);
+            ErrorMes.TabIndex = 14;
+            ErrorMes.TextAlign = HorizontalAlignment.Center;
+            ErrorMes.TextChanged += ErrorMes_TextChanged;
             // 
             // RepRes
             // 
@@ -250,19 +263,6 @@ namespace WinFormsApp1
             ReportSelection.TabIndex = 0;
             ReportSelection.Text = "Who are the top 3 customers with the most rentals?";
             ReportSelection.SelectedIndexChanged += comboBox1_SelectedIndexChanged;
-            // 
-            // ErrorMes
-            // 
-            ErrorMes.BackColor = Color.Firebrick;
-            ErrorMes.BorderStyle = BorderStyle.None;
-            ErrorMes.Font = new Font("Segoe UI", 10F);
-            ErrorMes.ForeColor = Color.Yellow;
-            ErrorMes.Location = new Point(200, 347);
-            ErrorMes.Name = "ErrorMes";
-            ErrorMes.Size = new Size(290, 18);
-            ErrorMes.TabIndex = 14;
-            ErrorMes.Text = "Error Message";
-            ErrorMes.TextAlign = HorizontalAlignment.Center;
             // 
             // NavScreen
             // 
