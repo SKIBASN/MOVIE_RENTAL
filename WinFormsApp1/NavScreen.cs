@@ -321,14 +321,12 @@ namespace WinFormsApp1
                         else
                         {
                             string Vquery = @"
-                                        SELECT CASE 
-                                            WHEN EXISTS (SELECT 1 FROM EMPLOYEE WHERE EMPLOYEEID = @VID) 
-                                            THEN CAST(1 AS BIT) 
-                                            ELSE CAST(0 AS BIT) 
-                                        END AS EmpExists;";
+                                            SELECT *
+                                            FROM Employee
+                                            WHERE EmployeeID = @VID;";
 
-                            db.VID_Param_query(Vquery, empID);
-                            bool empExists = db.myReader.Read();
+                            
+                            bool empExists = db.VID_Param_query(Vquery, empID);
                             if (!empExists)
                             {
                                 ErrorMes.Text = "Invalid Employee ID.";
@@ -456,14 +454,12 @@ namespace WinFormsApp1
                         {
                             //check is actorID is valid
                             string Vquery = @"
-                                        SELECT CASE 
-                                            WHEN EXISTS (SELECT 1 FROM ACTOR WHERE ACTORID = @VID) 
-                                            THEN CAST(1 AS BIT) 
-                                            ELSE CAST(0 AS BIT) 
-                                        END AS ActorExists;";
+                                            SELECT *
+                                            FROM Actor
+                                            WHERE ActorID = @VID;";
 
-                            db.VID_Param_query(Vquery, actorID);
-                            bool actorExists = db.myReader.Read();
+                            
+                            bool actorExists = db.VID_Param_query(Vquery, actorID);
                             if (!actorExists)
                             {
                                 ErrorMes.Text = "Invalid Actor ID.";
