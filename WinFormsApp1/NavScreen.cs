@@ -311,20 +311,52 @@ namespace WinFormsApp1
                                         ORDER BY numb_of_rentals DESC;"
                         ;
                         System.String empID = Specif.Text;
-                        db.ID_Param_query(query, empID);
-
-                        RepRes.Columns.Add("MovieID", "Movie ID");
-                        RepRes.Columns.Add("MovieName", "Movie Name");
-                        RepRes.Columns.Add("Numb_of_rentals", "# of Rentals");
-
-                        RepRes.Rows.Clear();
-                        while (db.myReader.Read())
+                        if (string.IsNullOrWhiteSpace(empID))
                         {
-                            RepRes.Rows.Add(db.myReader["MovieID"].ToString(), db.myReader["MovieName"].ToString(), db.myReader["Numb_of_rentals"].ToString());
+                            ErrorMes.Text = "Empty Employee ID.";
+                            RepRes.Rows.Clear();
+                            RepRes.Columns.Clear();
+
                         }
+                        else
+                        {
+                            string Vquery = @"
+                                        SELECT CASE 
+                                            WHEN EXISTS (SELECT 1 FROM EMPLOYEE WHERE EMPLOYEEID = @VID) 
+                                            THEN CAST(1 AS BIT) 
+                                            ELSE CAST(0 AS BIT) 
+                                        END AS EmpExists;";
 
-                        db.myReader.Close();
+                            db.VID_Param_query(Vquery, empID);
+                            bool empExists = db.myReader.Read();
+                            if (!empExists)
+                            {
+                                ErrorMes.Text = "Invalid Employee ID.";
+                                RepRes.Rows.Clear();
+                                RepRes.Columns.Clear();
+                                db.myReader.Close();
 
+                            }
+                            else
+                            {
+                                ErrorMes.Text = "";
+                                db.myReader.Close();
+                                db.ID_Param_query(query, empID);
+
+                                RepRes.Columns.Add("MovieID", "Movie ID");
+                                RepRes.Columns.Add("MovieName", "Movie Name");
+                                RepRes.Columns.Add("Numb_of_rentals", "# of Rentals");
+
+                                RepRes.Rows.Clear();
+                                while (db.myReader.Read())
+                                {
+                                    RepRes.Rows.Add(db.myReader["MovieID"].ToString(), db.myReader["MovieName"].ToString(), db.myReader["Numb_of_rentals"].ToString());
+                                }
+
+                                db.myReader.Close();
+                            }
+
+                        }
                     }
                     catch (Exception e3)
                     {
@@ -405,31 +437,66 @@ namespace WinFormsApp1
                                         JOIN Movie m ON r.MovieID = m.MovieID
                                         WHERE a.ActorID = @ID
                                         GROUP BY r.MovieID, m.MovieName
-                                    )
+                                         )
                                     SELECT MovieName, MovieID, numb_of_rentals
                                     FROM RankedMovies
                                     WHERE rank <= 3
                                     ORDER BY numb_of_rentals DESC;
         ";
                         System.String actorID = Specif.Text;
-                        db.ID_Param_query(query, actorID);
 
-                        RepRes.Columns.Add("MovieID", "Movie ID");
-                        RepRes.Columns.Add("MovieName", "Movie Name");
-                        RepRes.Columns.Add("Numb_of_rentals", "# of Rentals");
-
-                        RepRes.Rows.Clear();
-                        while (db.myReader.Read())
+                        if (string.IsNullOrWhiteSpace(actorID))
                         {
-                            RepRes.Rows.Add(db.myReader["MovieID"].ToString(), db.myReader["MovieName"].ToString(), db.myReader["Numb_of_rentals"].ToString());
-                        }
+                            ErrorMes.Text = "Empty Actor ID.";
+                            RepRes.Rows.Clear();
+                            RepRes.Columns.Clear();
 
-                        db.myReader.Close();
+                        }
+                        else
+                        {
+                            //check is actorID is valid
+                            string Vquery = @"
+                                        SELECT CASE 
+                                            WHEN EXISTS (SELECT 1 FROM ACTOR WHERE ACTORID = @VID) 
+                                            THEN CAST(1 AS BIT) 
+                                            ELSE CAST(0 AS BIT) 
+                                        END AS ActorExists;";
+
+                            db.VID_Param_query(Vquery, actorID);
+                            bool actorExists = db.myReader.Read();
+                            if (!actorExists)
+                            {
+                                ErrorMes.Text = "Invalid Actor ID.";
+                                RepRes.Rows.Clear();
+                                RepRes.Columns.Clear();
+                                db.myReader.Close();
+                            }
+                            else
+                            {
+                                ErrorMes.Text = "";
+                                db.myReader.Close();
+
+                                db.ID_Param_query(query, actorID);
+
+                                RepRes.Columns.Add("MovieID", "Movie ID");
+                                RepRes.Columns.Add("MovieName", "Movie Name");
+                                RepRes.Columns.Add("Numb_of_rentals", "# of Rentals");
+
+                                RepRes.Rows.Clear();
+                                while (db.myReader.Read())
+                                {
+                                    RepRes.Rows.Add(db.myReader["MovieID"].ToString(), db.myReader["MovieName"].ToString(), db.myReader["Numb_of_rentals"].ToString());
+                                }
+
+                                db.myReader.Close();
+                            }
+                        }
                     }
                     catch (Exception e3)
                     {
                         MessageBox.Show(e3.ToString(), "Error");
                     }
+                
                 }
             }
         }
