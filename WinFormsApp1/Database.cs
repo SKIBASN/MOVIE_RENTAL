@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
+using System.Diagnostics.Eventing.Reader;
 
 namespace WinFormsApp1
 {
@@ -76,10 +77,30 @@ namespace WinFormsApp1
             OpenConnection();
             myCommand.CommandText = query_string;
 
-            // Add parameters to the command
+            // Add parameters to the command 
             myCommand.Parameters.AddWithValue("@ID", param1);
 
             myReader = myCommand.ExecuteReader();
+        }
+        public bool VID_Param_query(string query_string, String param1)
+        {
+            OpenConnection();
+            myCommand.CommandText = query_string;
+
+            // Add parameters to the command  
+            myCommand.Parameters.AddWithValue("@VID", param1);
+
+            myReader = myCommand.ExecuteReader();
+            if (myReader.HasRows)
+            {
+                myReader.Close();
+                return true; // Data exists
+            }
+            else
+            {
+                myReader.Close();
+                return false; // No data
+            }
         }
 
         public void query(string query_string)
