@@ -86,7 +86,7 @@ namespace WinFormsApp1
         }
 
 
-        private void user_TextChanged(object sender, EventArgs e)
+                private void user_TextChanged(object sender, EventArgs e)
         {
 
         }
@@ -130,10 +130,10 @@ namespace WinFormsApp1
         }
 
         private void Rental_Click(object sender, EventArgs e)
-        {
+                {
+
+                }
+
 
         }
-
-
     }
-}

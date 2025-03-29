@@ -1,14 +1,14 @@
 using System;
-using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
+using System.Diagnostics.Eventing.Reader;
 
 namespace WinFormsApp1
 {
-    public class Database
+    public class Database : IDisposable
     {
         public SqlConnection myConnection;
         public SqlCommand myCommand;
@@ -16,14 +16,19 @@ namespace WinFormsApp1
 
         public Database()
         {
-            String connectionString = "Server = DESKTOP-MNUPRSE; Database = TEAM4CMPT291DATABASE; Trusted_Connection = yes;";
-            this.myConnection = new SqlConnection(connectionString); // Timeout in seconds
+            String connectionString = "Server=DESKTOP-MNUPRSE; Database=TEAM4CMPT291DATABASE; Trusted_Connection=yes;";
+            this.myConnection = new SqlConnection(connectionString);
+        }
 
+        public void OpenConnection()
+        {
             try
             {
-                this.myConnection.Open(); // Open connection
-                this.myCommand = new SqlCommand();
-                this.myCommand.Connection = myConnection; // Link the command stream to the connection
+                if (myConnection.State == System.Data.ConnectionState.Closed)
+                {
+                    myConnection.Open();
+                    myCommand = new SqlCommand { Connection = myConnection };
+                }
             }
             catch (Exception e)
             {
@@ -46,7 +51,7 @@ namespace WinFormsApp1
             {
                 // Convert password to bytes
                 byte[] hashValue = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
-                
+
                 string strPassword = Convert.ToBase64String(hashValue); // 44-character Base64 string
                 return strPassword;
             }
@@ -58,8 +63,61 @@ namespace WinFormsApp1
             string enteredHash = HashPassword(enteredPassword);
             return enteredHash == storedHash;
         }
+        public void insert(string insert_statement)
+        {
+            OpenConnection();
+            myCommand.CommandText = insert_statement;
+            myCommand.ExecuteNonQuery();
+        }
+        public void Date_Param_query(string query_string, DateTime param1, DateTime param2)
+        {
+            OpenConnection();
+            myCommand.CommandText = query_string;
 
      
+            // Add parameters to the command
+            myCommand.Parameters.AddWithValue("@date1", param1);
+            myCommand.Parameters.AddWithValue("@date2", param2);
+
+            myReader = myCommand.ExecuteReader();
+        }
+        public void ID_Param_query(string query_string, String param1)
+        {
+            OpenConnection();
+            myCommand.CommandText = query_string;
+
+            // Add parameters to the command 
+            myCommand.Parameters.AddWithValue("@ID", param1);
+
+            myReader = myCommand.ExecuteReader();
+        }
+        public bool VID_Param_query(string query_string, String param1)
+        {
+            OpenConnection();
+            myCommand.CommandText = query_string;
+
+            // Add parameters to the command  
+            myCommand.Parameters.AddWithValue("@VID", param1);
+
+            myReader = myCommand.ExecuteReader();
+            if (myReader.HasRows)
+            {
+                myReader.Close();
+                return true; // Data exists
+            }
+            else
+            {
+                myReader.Close();
+                return false; // No data
+            }
+        }
+
+        public void query(string query_string)
+        {
+            OpenConnection();
+            myCommand.CommandText = query_string;
+            myReader = myCommand.ExecuteReader();
+        }
         // Convert existing passwords to hashes in the table
         public void ConvertPasswordsToHashes()
         {
@@ -103,25 +161,24 @@ namespace WinFormsApp1
 
         }
 
-
-
-
-
-        // Functions for Customer and/or Movie screen(s)
-        /*      public void insert(String insert_statement)
-              {
-                  this.myCommand.CommandText = insert_statement;
-                  this.myCommand.ExecuteNonQuery();
-              } */
-
-
-
-
-
-
-
-
+        public void Dispose()
+        {
+            if (myReader != null)
+            {
+                myReader.Dispose();
+                myReader = null;
+            }
+            if (myCommand != null)
+            {
+                myCommand.Dispose();
+                myCommand = null;
+            }
+            if (myConnection != null)
+            {
+                myConnection.Dispose();
+                myConnection = null;
+            }
+        }
 
     }
-
 }
