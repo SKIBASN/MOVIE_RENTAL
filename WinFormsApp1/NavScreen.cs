@@ -15,6 +15,7 @@ using System.Data.SqlClient;
 using System.IO.Pipes;
 using static System.ComponentModel.Design.ObjectSelectorEditor;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Reflection.PortableExecutable;
 
 namespace WinFormsApp1
 {
@@ -31,8 +32,36 @@ namespace WinFormsApp1
         {
             InitializeComponent();
             db = DT;
+            LoadMovies();
             // Initialize result with a TextBox instance
             // Add result to the form's controls
+
+        }
+
+        private void LoadMovies()
+        {
+            try
+            {
+                if (db.myConnection.State == ConnectionState.Open)
+                {
+                    db.myConnection.Close();  // Close the connection if it's open
+                }
+                db.myConnection.Open();
+                string query = "SELECT * FROM Movie";
+                SqlCommand cmd = new SqlCommand(query, db.myConnection);
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                DataTable table = new DataTable();
+                adapter.Fill(table);
+                dgvMovies.DataSource = table;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error loading Movies.");
+            }
+            if (db.myConnection.State == ConnectionState.Open)
+            {
+                db.myConnection.Close();
+            }
 
         }
 
@@ -519,7 +548,43 @@ namespace WinFormsApp1
 
         private void NavScreen_Load(object sender, EventArgs e)
         {
-             
+
+        }
+
+        private void comboBox1_SelectedIndexChanged_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label1_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dataGridView1_CellContentClick_1(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void dataGridView1_CellContentClick_2(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dataGridView1_CellContentClick_3(object sender, DataGridViewCellEventArgs e)
+        {
+            dgvMovies.RowTemplate.Height = 30;
+            dgvMovies.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
         }
     }
 }
