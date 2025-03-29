@@ -45,6 +45,7 @@ namespace WinFormsApp1
             SpecifTitle1 = new Label();
             Specif = new TextBox();
             ReportSelection = new ComboBox();
+            ErrorMes = new TextBox();
             tabControl1.SuspendLayout();
             Report.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)RepRes).BeginInit();
@@ -99,6 +100,7 @@ namespace WinFormsApp1
             // Report
             // 
             Report.BackColor = Color.Firebrick;
+            Report.Controls.Add(ErrorMes);
             Report.Controls.Add(RepRes);
             Report.Controls.Add(EnterR);
             Report.Controls.Add(SpecifTitle2);
@@ -137,13 +139,16 @@ namespace WinFormsApp1
             // 
             // EnterR
             // 
+            EnterR.BackColor = Color.FromArgb(255, 224, 192);
+            EnterR.FlatStyle = FlatStyle.Popup;
             EnterR.Font = new Font("Segoe UI", 10F);
+            EnterR.ForeColor = Color.Black;
             EnterR.Location = new Point(12, 351);
             EnterR.Name = "EnterR";
             EnterR.Size = new Size(168, 30);
             EnterR.TabIndex = 12;
             EnterR.Text = "Enter";
-            EnterR.UseVisualStyleBackColor = true;
+            EnterR.UseVisualStyleBackColor = false;
             EnterR.Click += EnterR_Click;
             // 
             // SpecifTitle2
@@ -246,6 +251,19 @@ namespace WinFormsApp1
             ReportSelection.Text = "Who are the top 3 customers with the most rentals?";
             ReportSelection.SelectedIndexChanged += comboBox1_SelectedIndexChanged;
             // 
+            // ErrorMes
+            // 
+            ErrorMes.BackColor = Color.Firebrick;
+            ErrorMes.BorderStyle = BorderStyle.None;
+            ErrorMes.Font = new Font("Segoe UI", 10F);
+            ErrorMes.ForeColor = Color.Yellow;
+            ErrorMes.Location = new Point(200, 347);
+            ErrorMes.Name = "ErrorMes";
+            ErrorMes.Size = new Size(290, 18);
+            ErrorMes.TabIndex = 14;
+            ErrorMes.Text = "Error Message";
+            ErrorMes.TextAlign = HorizontalAlignment.Center;
+            // 
             // NavScreen
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -279,5 +297,6 @@ namespace WinFormsApp1
         private Label DateSelect2;
         private Button EnterR;
         private DataGridView RepRes;
+        private TextBox ErrorMes;
     }
 }
