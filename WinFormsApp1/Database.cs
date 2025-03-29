@@ -87,7 +87,7 @@ namespace WinFormsApp1
             OpenConnection();
             myCommand.CommandText = query_string;
 
-            // Add parameters to the command 
+            // Add parameters to the command  
             myCommand.Parameters.AddWithValue("@VID", param1);
 
             myReader = myCommand.ExecuteReader();

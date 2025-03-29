@@ -325,7 +325,7 @@ namespace WinFormsApp1
                                             FROM Employee
                                             WHERE EmployeeID = @VID;";
 
-                            
+
                             bool empExists = db.VID_Param_query(Vquery, empID);
                             if (!empExists)
                             {
@@ -458,7 +458,7 @@ namespace WinFormsApp1
                                             FROM Actor
                                             WHERE ActorID = @VID;";
 
-                            
+
                             bool actorExists = db.VID_Param_query(Vquery, actorID);
                             if (!actorExists)
                             {
@@ -492,7 +492,7 @@ namespace WinFormsApp1
                     {
                         MessageBox.Show(e3.ToString(), "Error");
                     }
-                
+
                 }
             }
         }
@@ -515,6 +515,11 @@ namespace WinFormsApp1
         private void ErrorMes_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void NavScreen_Load(object sender, EventArgs e)
+        {
+             
         }
     }
 }
