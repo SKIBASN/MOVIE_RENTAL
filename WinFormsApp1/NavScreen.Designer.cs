@@ -34,6 +34,7 @@ namespace WinFormsApp1
             Movie = new TabPage();
             Rental = new TabPage();
             Report = new TabPage();
+            RepRes = new DataGridView();
             EnterR = new Button();
             SpecifTitle2 = new Label();
             cal2 = new MonthCalendar();
@@ -44,9 +45,9 @@ namespace WinFormsApp1
             SpecifTitle1 = new Label();
             Specif = new TextBox();
             ReportSelection = new ComboBox();
-            RepRes = new DataGridView();
             tabControl1.SuspendLayout();
             Report.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)RepRes).BeginInit();
             SuspendLayout();
             // 
             // tabControl1
@@ -119,22 +120,38 @@ namespace WinFormsApp1
             Report.Text = "Report";
             Report.Click += Report_Click;
             // 
+            // RepRes
+            // 
+            RepRes.AllowUserToAddRows = false;
+            RepRes.AllowUserToDeleteRows = false;
+            RepRes.BackgroundColor = SystemColors.ButtonHighlight;
+            RepRes.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            RepRes.Location = new Point(496, 90);
+            RepRes.Name = "RepRes";
+            RepRes.ReadOnly = true;
+            RepRes.RowHeadersWidth = 10;
+            RepRes.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            RepRes.Size = new Size(288, 291);
+            RepRes.TabIndex = 13;
+            RepRes.CellContentClick += dataGridView1_CellContentClick;
+            // 
             // EnterR
             // 
             EnterR.Font = new Font("Segoe UI", 10F);
-            EnterR.Location = new Point(604, 154);
+            EnterR.Location = new Point(12, 351);
             EnterR.Name = "EnterR";
             EnterR.Size = new Size(168, 30);
             EnterR.TabIndex = 12;
             EnterR.Text = "Enter";
             EnterR.UseVisualStyleBackColor = true;
+            EnterR.Click += EnterR_Click;
             // 
             // SpecifTitle2
             // 
             SpecifTitle2.AutoSize = true;
             SpecifTitle2.Font = new Font("Segoe UI", 15F);
             SpecifTitle2.ForeColor = SystemColors.ActiveCaptionText;
-            SpecifTitle2.Location = new Point(329, 108);
+            SpecifTitle2.Location = new Point(257, 99);
             SpecifTitle2.Name = "SpecifTitle2";
             SpecifTitle2.Size = new Size(76, 28);
             SpecifTitle2.TabIndex = 10;
@@ -143,7 +160,7 @@ namespace WinFormsApp1
             // 
             // cal2
             // 
-            cal2.Location = new Point(339, 179);
+            cal2.Location = new Point(257, 179);
             cal2.Name = "cal2";
             cal2.TabIndex = 9;
             cal2.Visible = false;
@@ -155,7 +172,7 @@ namespace WinFormsApp1
             DateSelect2.BackColor = Color.White;
             DateSelect2.Font = new Font("Segoe UI", 15F);
             DateSelect2.ForeColor = SystemColors.ActiveCaptionText;
-            DateSelect2.Location = new Point(370, 145);
+            DateSelect2.Location = new Point(257, 145);
             DateSelect2.Name = "DateSelect2";
             DateSelect2.Size = new Size(180, 28);
             DateSelect2.TabIndex = 8;
@@ -168,7 +185,7 @@ namespace WinFormsApp1
             DateSelect1.BackColor = Color.White;
             DateSelect1.Font = new Font("Segoe UI", 15F);
             DateSelect1.ForeColor = SystemColors.ActiveCaptionText;
-            DateSelect1.Location = new Point(79, 139);
+            DateSelect1.Location = new Point(12, 142);
             DateSelect1.Name = "DateSelect1";
             DateSelect1.Size = new Size(180, 28);
             DateSelect1.TabIndex = 7;
@@ -178,7 +195,7 @@ namespace WinFormsApp1
             // 
             // cal1
             // 
-            cal1.Location = new Point(45, 179);
+            cal1.Location = new Point(12, 179);
             cal1.Name = "cal1";
             cal1.TabIndex = 5;
             cal1.Visible = false;
@@ -201,7 +218,7 @@ namespace WinFormsApp1
             SpecifTitle1.AutoSize = true;
             SpecifTitle1.Font = new Font("Segoe UI", 15F);
             SpecifTitle1.ForeColor = SystemColors.ActiveCaptionText;
-            SpecifTitle1.Location = new Point(45, 99);
+            SpecifTitle1.Location = new Point(12, 108);
             SpecifTitle1.Name = "SpecifTitle1";
             SpecifTitle1.Size = new Size(76, 28);
             SpecifTitle1.TabIndex = 2;
@@ -226,17 +243,8 @@ namespace WinFormsApp1
             ReportSelection.Name = "ReportSelection";
             ReportSelection.Size = new Size(692, 36);
             ReportSelection.TabIndex = 0;
-            ReportSelection.Text = "Which Customer has the most rentals?";
+            ReportSelection.Text = "Who are the top 3 customers with the most rentals?";
             ReportSelection.SelectedIndexChanged += comboBox1_SelectedIndexChanged;
-            // 
-            // RepRes
-            // 
-            RepRes.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            RepRes.Location = new Point(578, 191);
-            RepRes.Name = "RepRes";
-            RepRes.Size = new Size(240, 150);
-            RepRes.TabIndex = 13;
-            RepRes.CellContentClick += this.dataGridView1_CellContentClick;
             // 
             // NavScreen
             // 

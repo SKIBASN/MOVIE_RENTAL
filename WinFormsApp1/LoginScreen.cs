@@ -15,6 +15,9 @@ namespace WinFormsApp1
             InitializeComponent();
             db = new Database(); // Initialize the object and create the connection
             db.ConvertPasswordsToHashes();
+            NavScreen f2 = new NavScreen(db);
+            f2.Show();
+            this.Hide();
         }
 
 
@@ -86,7 +89,7 @@ namespace WinFormsApp1
         }
 
 
-        private void user_TextChanged(object sender, EventArgs e)
+                private void user_TextChanged(object sender, EventArgs e)
         {
 
         }
@@ -130,10 +133,10 @@ namespace WinFormsApp1
         }
 
         private void Rental_Click(object sender, EventArgs e)
-        {
+                {
+
+                }
+
 
         }
-
-
     }
-}
