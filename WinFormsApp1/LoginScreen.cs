@@ -46,7 +46,7 @@ namespace WinFormsApp1
                 db.myCommand.Parameters.Clear();
                 db.myCommand.Parameters.AddWithValue("@username", username);
 
-                db.query("SELECT Password FROM Employee WHERE Username = @username");
+                db.query("SELECT EmployeeID, Password FROM Employee WHERE Username = @username");
 
 
 
@@ -60,7 +60,8 @@ namespace WinFormsApp1
                     if (loginSuccessful)
                     {
                         status.Text = "Login successful";
-                        NavScreen f2 = new NavScreen(db);
+                        int _employeeID = Convert.ToInt32(db.myReader["EmployeeID"]);
+                        NavScreen f2 = new NavScreen(_employeeID, db);
                         f2.Show();
                         this.Hide();
                     }

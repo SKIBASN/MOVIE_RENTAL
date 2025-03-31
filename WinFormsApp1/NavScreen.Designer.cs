@@ -46,7 +46,7 @@ namespace WinFormsApp1
             movieTypeColumn = new DataGridViewTextBoxColumn();
             feeColumn = new DataGridViewTextBoxColumn();
             numCopiesColumn = new DataGridViewTextBoxColumn();
-            button1 = new Button();
+            dispenseButton = new Button();
             label1 = new Label();
             dgvRentalCustomers = new DataGridView();
             custIdColumn = new DataGridViewTextBoxColumn();
@@ -77,6 +77,7 @@ namespace WinFormsApp1
             customerID = new DataGridViewTextBoxColumn();
             customerFirstName = new DataGridViewTextBoxColumn();
             customerLastName = new DataGridViewTextBoxColumn();
+            returnButton = new Button();
             tabControl1.SuspendLayout();
             Rental.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvRentalMovies).BeginInit();
@@ -128,9 +129,10 @@ namespace WinFormsApp1
             // Rental
             // 
             Rental.BackColor = Color.Firebrick;
+            Rental.Controls.Add(returnButton);
             Rental.Controls.Add(label2);
             Rental.Controls.Add(dgvRentalMovies);
-            Rental.Controls.Add(button1);
+            Rental.Controls.Add(dispenseButton);
             Rental.Controls.Add(label1);
             Rental.Controls.Add(dgvRentalCustomers);
             Rental.ForeColor = SystemColors.ControlLightLight;
@@ -161,7 +163,7 @@ namespace WinFormsApp1
             dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle1.BackColor = SystemColors.Control;
             dataGridViewCellStyle1.Font = new Font("Segoe UI", 14F);
-            dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle1.ForeColor = SystemColors.MenuText;
             dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
             dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
             dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
@@ -171,7 +173,7 @@ namespace WinFormsApp1
             dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = SystemColors.Window;
             dataGridViewCellStyle2.Font = new Font("Segoe UI", 12F);
-            dataGridViewCellStyle2.ForeColor = SystemColors.ActiveCaptionText;
+            dataGridViewCellStyle2.ForeColor = SystemColors.ControlLightLight;
             dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
             dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
             dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
@@ -183,7 +185,7 @@ namespace WinFormsApp1
             dgvRentalMovies.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvRentalMovies.Size = new Size(949, 186);
             dgvRentalMovies.TabIndex = 4;
-            dgvRentalMovies.CellContentClick += dataGridView2_CellContentClick;
+            dgvRentalMovies.CellContentClick += dgvRentalMovies_CellContentClick;
             // 
             // movieIdColumn
             // 
@@ -215,17 +217,17 @@ namespace WinFormsApp1
             numCopiesColumn.MinimumWidth = 6;
             numCopiesColumn.Name = "numCopiesColumn";
             // 
-            // button1
+            // dispenseButton
             // 
-            button1.BackColor = Color.LimeGreen;
-            button1.ForeColor = SystemColors.ButtonHighlight;
-            button1.Location = new Point(84, 497);
-            button1.Name = "button1";
-            button1.Size = new Size(204, 54);
-            button1.TabIndex = 3;
-            button1.Text = "Dispense";
-            button1.UseVisualStyleBackColor = false;
-            button1.Click += button1_Click;
+            dispenseButton.BackColor = SystemColors.Control;
+            dispenseButton.ForeColor = SystemColors.ControlText;
+            dispenseButton.Location = new Point(568, 485);
+            dispenseButton.Name = "dispenseButton";
+            dispenseButton.Size = new Size(204, 54);
+            dispenseButton.TabIndex = 3;
+            dispenseButton.Text = "Dispense";
+            dispenseButton.UseVisualStyleBackColor = false;
+            dispenseButton.Click += dispenseButton_Click;
             // 
             // label1
             // 
@@ -255,7 +257,7 @@ namespace WinFormsApp1
             dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle4.BackColor = SystemColors.Window;
             dataGridViewCellStyle4.Font = new Font("Segoe UI", 12F);
-            dataGridViewCellStyle4.ForeColor = SystemColors.ActiveCaptionText;
+            dataGridViewCellStyle4.ForeColor = SystemColors.ControlLightLight;
             dataGridViewCellStyle4.SelectionBackColor = SystemColors.Highlight;
             dataGridViewCellStyle4.SelectionForeColor = SystemColors.HighlightText;
             dataGridViewCellStyle4.WrapMode = DataGridViewTriState.False;
@@ -267,7 +269,7 @@ namespace WinFormsApp1
             dgvRentalCustomers.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvRentalCustomers.Size = new Size(949, 186);
             dgvRentalCustomers.TabIndex = 0;
-            dgvRentalCustomers.CellContentClick += dataGridView1_CellContentClick_1;
+            dgvRentalCustomers.CellContentClick += dgvRentalCustomers_CellContentClick;
             // 
             // custIdColumn
             // 
@@ -553,6 +555,18 @@ namespace WinFormsApp1
             customerLastName.Name = "customerLastName";
             customerLastName.Width = 125;
             // 
+            // returnButton
+            // 
+            returnButton.BackColor = SystemColors.Control;
+            returnButton.ForeColor = SystemColors.ControlText;
+            returnButton.Location = new Point(956, 485);
+            returnButton.Name = "returnButton";
+            returnButton.Size = new Size(204, 54);
+            returnButton.TabIndex = 6;
+            returnButton.Text = "Return";
+            returnButton.UseVisualStyleBackColor = false;
+            returnButton.Click += returnButton_Click;
+            // 
             // NavScreen
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -602,7 +616,7 @@ namespace WinFormsApp1
         private DataGridView RepRes;
         private TextBox ErrorMes;
         private Label label1;
-        private Button button1;
+        private Button dispenseButton;
         private Label label2;
         private DataGridView dgvRentalMovies;
         private DataGridViewTextBoxColumn custIdColumn;
@@ -622,5 +636,6 @@ namespace WinFormsApp1
         private DataGridViewTextBoxColumn movieTypeColumn;
         private DataGridViewTextBoxColumn feeColumn;
         private DataGridViewTextBoxColumn numCopiesColumn;
+        private Button returnButton;
     }
 }
