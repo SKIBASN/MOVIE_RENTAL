@@ -664,7 +664,22 @@ namespace WinFormsApp1
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Error");
+                if (ex.Message.Contains("Error converting data type nvarchar to numeric"))
+            {
+                
+                MessageBox.Show("Please make sure that the Dsitribution Fee and/or the # Copies are an int.", 
+                                "Data Conversion Error", 
+                                MessageBoxButtons.OK, 
+                                MessageBoxIcon.Error);
+            }
+            else
+            {
+                // Handle other SQL errors
+                MessageBox.Show("An unexpected error occurred. Please try again later.",
+                                "Database Error",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Error);
+            }
             }
         }
 
