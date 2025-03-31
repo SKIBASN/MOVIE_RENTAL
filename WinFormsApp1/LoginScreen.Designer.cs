@@ -135,8 +135,8 @@
         private Button button1;
         private TextBox user;
         private TextBox password;
-        private RadioButton employee;
-        private RadioButton cust;
+        //private RadioButton employee;
+        //private RadioButton cust;
         private Label status;
         private FileSystemWatcher fileSystemWatcher1;
     }

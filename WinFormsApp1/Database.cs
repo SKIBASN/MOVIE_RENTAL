@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
 using System.Diagnostics.Eventing.Reader;
+using System.Data;
 
 namespace WinFormsApp1
 {
@@ -16,35 +17,59 @@ namespace WinFormsApp1
 
         public Database()
         {
-            String connectionString = "Server=DESKTOP-MNUPRSE; Database=TEAM4CMPT291DATABASE; Trusted_Connection=yes;";
+            String connectionString = "Server=BRIGHT-THINKPAD; Database=TEAM4CMPT291DATABASE; Trusted_Connection=yes;";
             this.myConnection = new SqlConnection(connectionString);
-        }
 
-        public void OpenConnection()
-        {
             try
             {
-                if (myConnection.State == System.Data.ConnectionState.Closed)
-                {
-                    myConnection.Open();
-                    myCommand = new SqlCommand { Connection = myConnection };
-                }
+                this.myConnection.Open(); // Open connection
+                this.myCommand = new SqlCommand();
+                this.myCommand.Connection = myConnection; // Link the command stream to the connection
             }
             catch (Exception e)
             {
                 MessageBox.Show(e.ToString(), "Error");
             }
+
         }
 
-
-        public void query(String query_string)
+        // DataTable class to retrieve customers from database
+        public DataTable GetCustomers()
         {
-            this.myCommand.CommandText = query_string;
-            this.myReader = this.myCommand.ExecuteReader();
+            DataTable dt = new DataTable();
+            try
+            {
+                query("SELECT * FROM Customer");
+                dt.Load(myReader);
+                myReader.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error retrieving customers: " + ex.Message);
+            }
+            return dt;
+        }
+
+        // DataTable class to retrieve movies from database
+        public DataTable GetMovies()
+        {
+            DataTable dt = new DataTable();
+            try
+            {
+                query("SELECT * FROM Movie");
+                dt.Load(myReader);
+                myReader.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error retrieving movies: " + ex.Message);
+            }
+            return dt;
         }
 
 
-        // Hash the entered password
+
+        // Hash an entered password
         public static string HashPassword(string password)
         {
             using (SHA256 sha256 = SHA256.Create())
@@ -63,18 +88,21 @@ namespace WinFormsApp1
             string enteredHash = HashPassword(enteredPassword);
             return enteredHash == storedHash;
         }
+
+
         public void insert(string insert_statement)
         {
-            OpenConnection();
+            //OpenConnection();
             myCommand.CommandText = insert_statement;
             myCommand.ExecuteNonQuery();
         }
+
+
         public void Date_Param_query(string query_string, DateTime param1, DateTime param2)
         {
-            OpenConnection();
+            //OpenConnection();
             myCommand.CommandText = query_string;
 
-     
             // Add parameters to the command
             myCommand.Parameters.AddWithValue("@date1", param1);
             myCommand.Parameters.AddWithValue("@date2", param2);
@@ -83,7 +111,7 @@ namespace WinFormsApp1
         }
         public void ID_Param_query(string query_string, String param1)
         {
-            OpenConnection();
+            //OpenConnection();
             myCommand.CommandText = query_string;
 
             // Add parameters to the command 
@@ -93,7 +121,7 @@ namespace WinFormsApp1
         }
         public bool VID_Param_query(string query_string, String param1)
         {
-            OpenConnection();
+            //OpenConnection();
             myCommand.CommandText = query_string;
 
             // Add parameters to the command  
@@ -114,10 +142,17 @@ namespace WinFormsApp1
 
         public void query(string query_string)
         {
-            OpenConnection();
-            myCommand.CommandText = query_string;
-            myReader = myCommand.ExecuteReader();
+            //OpenConnection();
+            if (myReader != null && !myReader.IsClosed)
+            {
+                myReader.Close();
+            }
+            this.myCommand.CommandText = query_string;
+            this.myReader = this.myCommand.ExecuteReader();
         }
+
+
+
         // Convert existing passwords to hashes in the table
         public void ConvertPasswordsToHashes()
         {
@@ -128,7 +163,7 @@ namespace WinFormsApp1
 
                 while (myReader.Read())
                 {
-                    int id = Convert.ToInt32(myReader["EmployeeID"]);
+                    int id = myReader.GetInt32(0);
                     string password = myReader.GetString(1);
 
                     if (password.Length == 44 || password.Length == 64)

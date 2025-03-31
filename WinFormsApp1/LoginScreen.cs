@@ -9,7 +9,6 @@ namespace WinFormsApp1
     public partial class LoginScreen : Form
     {
         public Database db;
-
         public LoginScreen()
         {
             InitializeComponent();
@@ -42,19 +41,23 @@ namespace WinFormsApp1
 
             try
             {
-                // Add parameters
+                bool loginSuccessful = false;
+
                 db.myCommand.Parameters.Clear();
                 db.myCommand.Parameters.AddWithValue("@username", username);
 
                 db.query("SELECT Password FROM Employee WHERE Username = @username");
-                
+
+
 
                 if (db.myReader.Read())
                 {
 
                     string storedHash = db.myReader["Password"].ToString();
+                    loginSuccessful = Database.VerifyPassword(enteredPassword, storedHash);
 
-                    if (Database.VerifyPassword(enteredPassword, storedHash))
+                    //if (Database.VerifyPassword(enteredPassword, storedHash))
+                    if (loginSuccessful)
                     {
                         status.Text = "Login successful";
                         NavScreen f2 = new NavScreen(db);
@@ -86,7 +89,7 @@ namespace WinFormsApp1
         }
 
 
-                private void user_TextChanged(object sender, EventArgs e)
+        private void user_TextChanged(object sender, EventArgs e)
         {
 
         }
