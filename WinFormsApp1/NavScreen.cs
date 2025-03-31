@@ -36,6 +36,7 @@ namespace WinFormsApp1
             InitializeComponent();
             db = DT;
             LoadMovies();
+            LoadActors();
             // Initialize result with a TextBox instance
             // Add result to the form's controls
 
@@ -63,6 +64,32 @@ namespace WinFormsApp1
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Error loading Movies.");
+            }
+            if (db.myConnection.State == ConnectionState.Open)
+            {
+                db.myConnection.Close();
+            }
+
+        }
+        private void LoadActors()
+        {
+            try
+            {
+                if (db.myConnection.State == ConnectionState.Open)
+                {
+                    db.myConnection.Close();  // Close the connection if it's open
+                }
+                db.myConnection.Open();
+                string query = "SELECT * FROM Actor";
+                SqlCommand cmd = new SqlCommand(query, db.myConnection);
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                DataTable table = new DataTable();
+                adapter.Fill(table);
+                dgvActors.DataSource = table;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error loading Actors.");
             }
             if (db.myConnection.State == ConnectionState.Open)
             {
@@ -712,6 +739,53 @@ namespace WinFormsApp1
             {
                 MessageBox.Show(ex.Message, "Error");
             }
+        }
+
+        private void label7_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            try
+            {
+                if (db.myConnection.State == ConnectionState.Open)
+                {
+                    db.myConnection.Close();  // Close the connection if it's open
+                }
+                db.myConnection.Open();
+                string insertQuery = "INSERT INTO AppearedIn(MovieID, ActorID) " +
+                                     "VALUES (@MovieID, @ActorID)";
+                db.myCommand.CommandText = insertQuery;
+                db.myCommand.Parameters.Clear();
+                db.myCommand.Parameters.AddWithValue("@MovieID", txtBoxMovieIDActor.Text);
+                db.myCommand.Parameters.AddWithValue("@ActorID", txtBoxActorIDAI.Text);
+
+
+
+                db.myCommand.ExecuteNonQuery();
+                MessageBox.Show("Actor added successfully!");
+                if (db.myConnection.State == ConnectionState.Open)
+                {
+                    db.myConnection.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error");
+            }
+        }
+
+        private void dgvActors_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            dgvMovies.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            dgvMovies.RowTemplate.Height = 30;
         }
     }
 }
