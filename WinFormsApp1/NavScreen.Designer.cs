@@ -30,12 +30,25 @@ namespace WinFormsApp1
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
+            Button BtnMovieUpdate;
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
             tabControl1 = new TabControl();
             Customer = new TabPage();
             Movie = new TabPage();
+            txtBoxMovieID = new TextBox();
+            label6 = new Label();
+            BtnMovieDelete = new Button();
+            BtnMovieAdd = new Button();
+            txtBoxCopies = new TextBox();
+            label5 = new Label();
+            txtBoxDFee = new TextBox();
+            label4 = new Label();
+            txtBoxType = new TextBox();
+            label3 = new Label();
+            label2 = new Label();
+            txtBoxName = new TextBox();
             dgvMovies = new DataGridView();
             label1 = new Label();
             Rental = new TabPage();
@@ -53,6 +66,7 @@ namespace WinFormsApp1
             Specif = new TextBox();
             ReportSelection = new ComboBox();
             databaseBindingSource = new BindingSource(components);
+            BtnMovieUpdate = new Button();
             tabControl1.SuspendLayout();
             Movie.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvMovies).BeginInit();
@@ -60,6 +74,16 @@ namespace WinFormsApp1
             ((System.ComponentModel.ISupportInitialize)RepRes).BeginInit();
             ((System.ComponentModel.ISupportInitialize)databaseBindingSource).BeginInit();
             SuspendLayout();
+            // 
+            // BtnMovieUpdate
+            // 
+            BtnMovieUpdate.Location = new Point(480, 386);
+            BtnMovieUpdate.Name = "BtnMovieUpdate";
+            BtnMovieUpdate.Size = new Size(144, 63);
+            BtnMovieUpdate.TabIndex = 11;
+            BtnMovieUpdate.Text = "Update";
+            BtnMovieUpdate.UseVisualStyleBackColor = true;
+            BtnMovieUpdate.Click += BtnMovieUpdate_Click;
             // 
             // tabControl1
             // 
@@ -91,6 +115,19 @@ namespace WinFormsApp1
             // Movie
             // 
             Movie.BackColor = Color.Firebrick;
+            Movie.Controls.Add(txtBoxMovieID);
+            Movie.Controls.Add(label6);
+            Movie.Controls.Add(BtnMovieDelete);
+            Movie.Controls.Add(BtnMovieUpdate);
+            Movie.Controls.Add(BtnMovieAdd);
+            Movie.Controls.Add(txtBoxCopies);
+            Movie.Controls.Add(label5);
+            Movie.Controls.Add(txtBoxDFee);
+            Movie.Controls.Add(label4);
+            Movie.Controls.Add(txtBoxType);
+            Movie.Controls.Add(label3);
+            Movie.Controls.Add(label2);
+            Movie.Controls.Add(txtBoxName);
             Movie.Controls.Add(dgvMovies);
             Movie.Controls.Add(label1);
             Movie.Location = new Point(4, 54);
@@ -101,6 +138,109 @@ namespace WinFormsApp1
             Movie.TabIndex = 1;
             Movie.Text = "Movie";
             Movie.Click += Movie_Click;
+            // 
+            // txtBoxMovieID
+            // 
+            txtBoxMovieID.Location = new Point(448, 24);
+            txtBoxMovieID.Name = "txtBoxMovieID";
+            txtBoxMovieID.Size = new Size(378, 52);
+            txtBoxMovieID.TabIndex = 14;
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Location = new Point(290, 30);
+            label6.Name = "label6";
+            label6.Size = new Size(146, 46);
+            label6.TabIndex = 13;
+            label6.Text = "MovieID";
+            // 
+            // BtnMovieDelete
+            // 
+            BtnMovieDelete.Location = new Point(672, 386);
+            BtnMovieDelete.Name = "BtnMovieDelete";
+            BtnMovieDelete.Size = new Size(136, 63);
+            BtnMovieDelete.TabIndex = 12;
+            BtnMovieDelete.Text = "Delete";
+            BtnMovieDelete.UseVisualStyleBackColor = true;
+            BtnMovieDelete.Click += BtnMovieDelete_Click;
+            // 
+            // BtnMovieAdd
+            // 
+            BtnMovieAdd.Location = new Point(304, 386);
+            BtnMovieAdd.Name = "BtnMovieAdd";
+            BtnMovieAdd.Size = new Size(136, 63);
+            BtnMovieAdd.TabIndex = 10;
+            BtnMovieAdd.Text = "Add";
+            BtnMovieAdd.UseVisualStyleBackColor = true;
+            BtnMovieAdd.Click += BtnMovieAdd_Click_1;
+            // 
+            // txtBoxCopies
+            // 
+            txtBoxCopies.Location = new Point(448, 294);
+            txtBoxCopies.Name = "txtBoxCopies";
+            txtBoxCopies.Size = new Size(378, 52);
+            txtBoxCopies.TabIndex = 9;
+            txtBoxCopies.TextChanged += txtBoxCopies_TextChanged;
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Location = new Point(290, 294);
+            label5.Name = "label5";
+            label5.Size = new Size(150, 46);
+            label5.TabIndex = 8;
+            label5.Text = "# Copies";
+            label5.Click += label5_Click;
+            // 
+            // txtBoxDFee
+            // 
+            txtBoxDFee.Location = new Point(448, 228);
+            txtBoxDFee.Name = "txtBoxDFee";
+            txtBoxDFee.Size = new Size(378, 52);
+            txtBoxDFee.TabIndex = 7;
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Location = new Point(290, 228);
+            label4.Name = "label4";
+            label4.Size = new Size(113, 46);
+            label4.TabIndex = 6;
+            label4.Text = "D. Fee";
+            // 
+            // txtBoxType
+            // 
+            txtBoxType.Location = new Point(448, 157);
+            txtBoxType.Name = "txtBoxType";
+            txtBoxType.Size = new Size(378, 52);
+            txtBoxType.TabIndex = 5;
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(290, 157);
+            label3.Name = "label3";
+            label3.Size = new Size(90, 46);
+            label3.TabIndex = 4;
+            label3.Text = "Type";
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new Point(290, 91);
+            label2.Name = "label2";
+            label2.Size = new Size(109, 46);
+            label2.TabIndex = 3;
+            label2.Text = "Name";
+            label2.Click += label2_Click;
+            // 
+            // txtBoxName
+            // 
+            txtBoxName.Location = new Point(448, 88);
+            txtBoxName.Name = "txtBoxName";
+            txtBoxName.Size = new Size(378, 52);
+            txtBoxName.TabIndex = 2;
             // 
             // dgvMovies
             // 
@@ -113,10 +253,10 @@ namespace WinFormsApp1
             dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
             dataGridViewCellStyle1.WrapMode = DataGridViewTriState.False;
             dgvMovies.DefaultCellStyle = dataGridViewCellStyle1;
-            dgvMovies.Location = new Point(618, 23);
+            dgvMovies.Location = new Point(855, 12);
             dgvMovies.Name = "dgvMovies";
             dgvMovies.RowHeadersWidth = 51;
-            dgvMovies.Size = new Size(761, 374);
+            dgvMovies.Size = new Size(543, 327);
             dgvMovies.TabIndex = 1;
             dgvMovies.CellContentClick += dataGridView1_CellContentClick_3;
             // 
@@ -371,5 +511,18 @@ namespace WinFormsApp1
         private Label label1;
         private BindingSource databaseBindingSource;
         private DataGridView dgvMovies;
+        private Label label2;
+        private TextBox txtBoxName;
+        private Label label5;
+        private TextBox txtBoxDFee;
+        private Label label4;
+        private TextBox txtBoxType;
+        private Label label3;
+        private TextBox txtBoxCopies;
+        private Button BtnMovieDelete;
+        private Button BtnMovieUpdate;
+        private Button BtnMovieAdd;
+        private TextBox txtBoxMovieID;
+        private Label label6;
     }
 }

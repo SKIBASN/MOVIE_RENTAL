@@ -16,6 +16,9 @@ using System.IO.Pipes;
 using static System.ComponentModel.Design.ObjectSelectorEditor;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.Reflection.PortableExecutable;
+using System.Security.Principal;
+using System.Transactions;
+using System.Data.Common;
 
 namespace WinFormsApp1
 {
@@ -52,7 +55,10 @@ namespace WinFormsApp1
                 SqlDataAdapter adapter = new SqlDataAdapter(cmd);
                 DataTable table = new DataTable();
                 adapter.Fill(table);
-                dgvMovies.DataSource = table;
+                var filteredRows = table.AsEnumerable()
+                .Where(row => row.Field<string>("MovieName") != "DeletedMovie3561")
+                .CopyToDataTable();
+                dgvMovies.DataSource = filteredRows;
             }
             catch (Exception ex)
             {
@@ -585,6 +591,127 @@ namespace WinFormsApp1
         {
             dgvMovies.RowTemplate.Height = 30;
             dgvMovies.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label5_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtBoxCopies_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void BtnMovieAdd_Click_1(object sender, EventArgs e)
+        {
+            try
+            {
+                if (db.myConnection.State == ConnectionState.Open)
+                {
+                    db.myConnection.Close();  // Close the connection if it's open
+                }
+                db.myConnection.Open();
+                string insertQuery = "INSERT INTO Movie(MovieName, MovieType, DistributionFee, NumberOfCopies) " +
+                                     "VALUES (@MovieName, @MovieType, @DistributionFee, @NumberOfCopies)";
+                db.myCommand.CommandText = insertQuery;
+                db.myCommand.Parameters.Clear();
+                db.myCommand.Parameters.AddWithValue("@MovieName", txtBoxName.Text);
+                db.myCommand.Parameters.AddWithValue("@MovieType", txtBoxType.Text);
+                db.myCommand.Parameters.AddWithValue("@DistributionFee", txtBoxDFee.Text);
+                db.myCommand.Parameters.AddWithValue("@NumberOfCopies", txtBoxCopies.Text);
+
+
+                db.myCommand.ExecuteNonQuery();
+                MessageBox.Show("Movies added successfully!");
+                LoadMovies();
+                if (db.myConnection.State == ConnectionState.Open)
+                {
+                    db.myConnection.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error");
+            }
+        }
+
+        private void BtnMovieUpdate_Click(object sender, EventArgs e)
+        {
+            if (dgvMovies.CurrentRow == null) return;
+
+            try
+            {
+                if (db.myConnection.State == ConnectionState.Open)
+                {
+                    db.myConnection.Close();  // Close the connection if it's open
+                }
+                db.myConnection.Open();
+                int id = Convert.ToInt32(dgvMovies.CurrentRow.Cells["MovieID"].Value);
+                string updateQuery = "UPDATE Movie SET MovieName = @MovieName, MovieType = @MovieType, DistributionFee = @DistributionFee, NumberOfCopies = @NumberOfCopies WHERE MovieID = @ID";
+                db.myCommand.CommandText = updateQuery;
+                db.myCommand.Parameters.Clear();
+                db.myCommand.Parameters.AddWithValue("@ID", txtBoxMovieID.Text);
+                db.myCommand.Parameters.AddWithValue("@MovieName", txtBoxName.Text);
+                db.myCommand.Parameters.AddWithValue("@MovieType", txtBoxType.Text);
+                db.myCommand.Parameters.AddWithValue("@DistributionFee", txtBoxDFee.Text);
+                db.myCommand.Parameters.AddWithValue("@NumberOfCopies", txtBoxCopies.Text);
+
+                db.myCommand.ExecuteNonQuery();
+                MessageBox.Show("Movie updated successfully!");
+                LoadMovies();
+                if (db.myConnection.State == ConnectionState.Open)
+                {
+                    db.myConnection.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error");
+            }
+        }
+
+        private void BtnMovieDelete_Click(object sender, EventArgs e)
+        {
+            if (dgvMovies.CurrentRow == null) return;
+
+            try
+            {
+                if (db.myConnection.State == ConnectionState.Open)
+                {
+                    db.myConnection.Close();  // Close the connection if it's open
+                }
+                db.myConnection.Open();
+                string replacedTextName = "DeletedMovie3561";
+                string replacedTextType = "Comedy";
+                int replacedTextFee = 0;
+                int id = Convert.ToInt32(dgvMovies.CurrentRow.Cells["MovieID"].Value);
+                string updateQuery = "UPDATE Movie SET MovieName = @MovieName, MovieType = @MovieType, DistributionFee = @DistributionFee, NumberOfCopies = @NumberOfCopies WHERE MovieID = @ID";
+                db.myCommand.CommandText = updateQuery;
+                db.myCommand.Parameters.Clear();
+                db.myCommand.Parameters.AddWithValue("@ID", txtBoxMovieID.Text);
+                db.myCommand.Parameters.AddWithValue("@MovieName", replacedTextName);
+                db.myCommand.Parameters.AddWithValue("@MovieType", replacedTextType);
+                db.myCommand.Parameters.AddWithValue("@DistributionFee", replacedTextFee);
+                db.myCommand.Parameters.AddWithValue("@NumberOfCopies", replacedTextFee);
+
+                db.myCommand.ExecuteNonQuery();
+                MessageBox.Show("Movie deleted successfully!");
+                LoadMovies();
+                if (db.myConnection.State == ConnectionState.Open)
+                {
+                    db.myConnection.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error");
+            }
         }
     }
 }
