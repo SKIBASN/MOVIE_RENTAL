@@ -18,10 +18,6 @@ namespace WinFormsApp1
         {
             String connectionString = "Server=DESKTOP-MNUPRSE; Database=TEAM4CMPT291DATABASE; Trusted_Connection=yes;";
             this.myConnection = new SqlConnection(connectionString);
-        }
-
-        public void OpenConnection()
-        {
             try
             {
                 if (myConnection.State == System.Data.ConnectionState.Closed)
@@ -57,13 +53,13 @@ namespace WinFormsApp1
         }
         public void insert(string insert_statement)
         {
-            OpenConnection();
+            
             myCommand.CommandText = insert_statement;
             myCommand.ExecuteNonQuery();
         }
         public void Date_Param_query(string query_string, DateTime param1, DateTime param2)
         {
-            OpenConnection();
+            
             myCommand.CommandText = query_string;
 
             // Add parameters to the command
@@ -74,7 +70,7 @@ namespace WinFormsApp1
         }
         public void ID_Param_query(string query_string, String param1)
         {
-            OpenConnection();
+            
             myCommand.CommandText = query_string;
 
             // Add parameters to the command 
@@ -84,7 +80,7 @@ namespace WinFormsApp1
         }
         public bool VID_Param_query(string query_string, String param1)
         {
-            OpenConnection();
+            
             myCommand.CommandText = query_string;
 
             // Add parameters to the command  
@@ -105,7 +101,7 @@ namespace WinFormsApp1
 
         public void query(string query_string)
         {
-            OpenConnection();
+            
             myCommand.CommandText = query_string;
             myReader = myCommand.ExecuteReader();
         }
