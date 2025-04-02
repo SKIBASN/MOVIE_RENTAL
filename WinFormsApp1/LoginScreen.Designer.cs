@@ -99,7 +99,7 @@
             status.Name = "status";
             status.Size = new Size(83, 19);
             status.TabIndex = 7;
-            status.Text = "LOADING ...";
+            //status.Text = "Loading ...";
             status.Visible = false;
             status.Click += label2_Click;
             // 

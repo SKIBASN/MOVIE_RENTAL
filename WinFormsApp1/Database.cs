@@ -1,29 +1,35 @@
 using System;
-using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Security.Cryptography;
+using System.Diagnostics.Eventing.Reader;
 using System.Windows.Forms;
 
 namespace WinFormsApp1
 {
-    public class Database
+    public class Database : IDisposable
     {
         public SqlConnection myConnection;
         public SqlCommand myCommand;
         public SqlDataReader myReader;
 
+
         public Database()
         {
+            String connectionString = "Server=DESKTOP-MNUPRSE; Database=TEAM4CMPT291DATABASE; Trusted_Connection=yes;";
+            this.myConnection = new SqlConnection(connectionString);
             String connectionString = "Server=192.168.1.190;Database=TEAM4CMPT291DATABASE;User Id=sa;Password=YourPassword123;";
             this.myConnection = new SqlConnection(connectionString);
 
             try
             {
-                this.myConnection.Open(); // Open connection
-                this.myCommand = new SqlCommand();
-                this.myCommand.Connection = myConnection; // Link the command stream to the connection
+                if (myConnection.State == System.Data.ConnectionState.Closed)
+                {
+                    myConnection.Open();
+                    myCommand = new SqlCommand { Connection = myConnection };
+                }
             }
             catch (Exception e)
             {
@@ -31,6 +37,74 @@ namespace WinFormsApp1
             }
         }
 
+        // Hash an entered password
+        public static string HashPassword(string password)
+        {
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                // Convert password to bytes
+                byte[] hashValue = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
+
+                string strPassword = Convert.ToBase64String(hashValue); // 44-character Base64 string
+                return strPassword;
+            }
+        }
+
+        // Compare password against stored hash 
+        public static bool VerifyPassword(string enteredPassword, string storedHash)
+        {
+            string enteredHash = HashPassword(enteredPassword);
+            return enteredHash == storedHash;
+        }
+        public void insert(string insert_statement)
+        {
+            
+            myCommand.CommandText = insert_statement;
+            myCommand.ExecuteNonQuery();
+        }
+        public void Date_Param_query(string query_string, DateTime param1, DateTime param2)
+        {
+            
+            myCommand.CommandText = query_string;
+
+            // Add parameters to the command
+            myCommand.Parameters.AddWithValue("@date1", param1);
+            myCommand.Parameters.AddWithValue("@date2", param2);
+
+            myReader = myCommand.ExecuteReader();
+        }
+        public void ID_Param_query(string query_string, String param1)
+        {
+            
+            myCommand.CommandText = query_string;
+
+            // Add parameters to the command 
+            myCommand.Parameters.AddWithValue("@ID", param1);
+
+            myReader = myCommand.ExecuteReader();
+        }
+        public bool VID_Param_query(string query_string, String param1)
+        {
+            
+            myCommand.CommandText = query_string;
+
+            // Add parameters to the command  
+            myCommand.Parameters.AddWithValue("@VID", param1);
+
+            myReader = myCommand.ExecuteReader();
+            if (myReader.HasRows)
+            {
+                myReader.Close();
+                return true; // Data exists
+            }
+            else
+            {
+                myReader.Close();
+                return false; // No data
+            }
+        }
+
+        public void query(string query_string)
         public void AddCustomer(string firstName, string lastName, string address, string city, string state, string zip, string email, string accountNumber, string creditCardNumber)
         {
             try
@@ -69,6 +143,72 @@ namespace WinFormsApp1
 
         public void query(String query_string)
         {
+            
+            myCommand.CommandText = query_string;
+            myReader = myCommand.ExecuteReader();
+        }
+        // Convert existing passwords to hashes in the table
+        public void ConvertPasswordsToHashes()
+        {
+            try
+            {
+                query("SELECT EmployeeID, Password FROM Employee");
+                List<(int id, string hash)> employees = new();
+
+                while (myReader.Read())
+                {
+                    int id = myReader.GetInt32(0);
+                    string password = myReader.GetString(1);
+
+                    if (password.Length == 44 || password.Length == 64)
+                        continue;
+
+                    employees.Add((id, HashPassword(password)));
+                }
+                myReader.Close();
+
+                // Update non-hashed passwords
+                foreach (var employee in employees)
+                {
+                    myCommand.Parameters.Clear();
+                    myCommand.Parameters.AddWithValue("@id", employee.id);
+                    myCommand.Parameters.AddWithValue("@hash", employee.hash);
+                    query("UPDATE Employee SET Password = @hash WHERE EmployeeID = @id");
+
+                    myReader.Close();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Conversion failed: {ex.Message}");
+            }
+            finally
+            {
+                myReader?.Close();
+            }
+
+        }
+
+        public void Dispose()
+        {
+            if (myReader != null)
+            {
+                myReader.Dispose();
+                myReader = null;
+            }
+            if (myCommand != null)
+            {
+                myCommand.Dispose();
+                myCommand = null;
+            }
+            if (myConnection != null)
+            {
+                myConnection.Dispose();
+                myConnection = null;
+            }
+        }
+
             this.myCommand.CommandText = query_string;
             this.myReader = this.myCommand.ExecuteReader();
         }
