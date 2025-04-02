@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Serialization;
+using System.Data.SqlClient;
 using Microsoft.VisualBasic.ApplicationServices;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -30,10 +31,110 @@ namespace WinFormsApp1
         public NavScreen(Database DT)
         {
             InitializeComponent();
-            db = DT;
-            // Initialize result with a TextBox instance
-            // Add result to the form's controls
+            db = new Database(); // Initialize the object and create the connection
+            LoadCustomers();
+            btnAdd.Click += BtnAdd_Click;
+            btnUpdate.Click += BtnUpdate_Click;
+            btnDelete.Click += BtnDelete_Click;
+        }
 
+        private void LoadCustomers()
+        {
+            try
+            {
+                string query = "SELECT * FROM Customer";
+                SqlCommand cmd = new SqlCommand(query, db.myConnection);
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                DataTable table = new DataTable();
+                adapter.Fill(table);
+                dgvCustomers.DataSource = table;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error loading customers.");
+            }
+        }
+
+        private void BtnAdd_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string insertQuery = "INSERT INTO Customer (FirstName, LastName, Address, City, State, ZipCode, EmailAddress, AccountNumber, CreditCardNumber) " +
+                                     "VALUES (@FirstName, @LastName, @Address, @City, @State, @Zip, @Email, @Account, @Credit)";
+                db.myCommand.CommandText = insertQuery;
+                db.myCommand.Parameters.Clear();
+                db.myCommand.Parameters.AddWithValue("@FirstName", txtFirstName.Text);
+                db.myCommand.Parameters.AddWithValue("@LastName", txtLastName.Text);
+                db.myCommand.Parameters.AddWithValue("@Address", txtAddress.Text);
+                db.myCommand.Parameters.AddWithValue("@City", txtCity.Text);
+                db.myCommand.Parameters.AddWithValue("@State", txtState.Text);
+                db.myCommand.Parameters.AddWithValue("@Zip", txtZip.Text);
+                db.myCommand.Parameters.AddWithValue("@Email", txtEmail.Text);
+                db.myCommand.Parameters.AddWithValue("@Account", txtAccount.Text);
+                db.myCommand.Parameters.AddWithValue("@Credit", txtCredit.Text);
+
+                db.myCommand.ExecuteNonQuery();
+                MessageBox.Show("Customer added successfully!");
+                LoadCustomers();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error");
+            }
+        }
+
+        private void BtnUpdate_Click(object sender, EventArgs e)
+        {
+            if (dgvCustomers.CurrentRow == null) return;
+
+            try
+            {
+                int id = Convert.ToInt32(dgvCustomers.CurrentRow.Cells["CustomerID"].Value);
+                string updateQuery = "UPDATE Customer SET FirstName = @FirstName, LastName = @LastName, Address = @Address, City = @City, State = @State, " +
+                                     "ZipCode = @Zip, EmailAddress = @Email, AccountNumber = @Account, CreditCardNumber = @Credit WHERE CustomerID = @ID";
+                db.myCommand.CommandText = updateQuery;
+                db.myCommand.Parameters.Clear();
+                db.myCommand.Parameters.AddWithValue("@ID", id);
+                db.myCommand.Parameters.AddWithValue("@FirstName", txtFirstName.Text);
+                db.myCommand.Parameters.AddWithValue("@LastName", txtLastName.Text);
+                db.myCommand.Parameters.AddWithValue("@Address", txtAddress.Text);
+                db.myCommand.Parameters.AddWithValue("@City", txtCity.Text);
+                db.myCommand.Parameters.AddWithValue("@State", txtState.Text);
+                db.myCommand.Parameters.AddWithValue("@Zip", txtZip.Text);
+                db.myCommand.Parameters.AddWithValue("@Email", txtEmail.Text);
+                db.myCommand.Parameters.AddWithValue("@Account", txtAccount.Text);
+                db.myCommand.Parameters.AddWithValue("@Credit", txtCredit.Text);
+
+                db.myCommand.ExecuteNonQuery();
+                MessageBox.Show("Customer updated successfully!");
+                LoadCustomers();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error");
+            }
+        }
+
+        private void BtnDelete_Click(object sender, EventArgs e)
+        {
+            if (dgvCustomers.CurrentRow == null) return;
+
+            try
+            {
+                int id = Convert.ToInt32(dgvCustomers.CurrentRow.Cells["CustomerID"].Value);
+                string deleteQuery = "DELETE FROM Customer WHERE CustomerID = @ID";
+                db.myCommand.CommandText = deleteQuery;
+                db.myCommand.Parameters.Clear();
+                db.myCommand.Parameters.AddWithValue("@ID", id);
+                db.myCommand.ExecuteNonQuery();
+
+                MessageBox.Show("Customer deleted successfully!");
+                LoadCustomers();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error");
+            }
         }
 
         private void Report_Click(object sender, EventArgs e)
