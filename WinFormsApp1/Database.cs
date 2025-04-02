@@ -117,6 +117,13 @@ namespace WinFormsApp1
             myCommand.ExecuteNonQuery();
         }
 
+        public void delete(string delete_statement)
+        {
+            //OpenConnection();
+            myCommand.CommandText = delete_statement;
+            myCommand.ExecuteNonQuery();
+        }
+
 
         public void Date_Param_query(string query_string, DateTime param1, DateTime param2)
         {

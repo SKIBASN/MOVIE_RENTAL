@@ -609,24 +609,6 @@ namespace WinFormsApp1
                 rentalTransaction = db.myConnection.BeginTransaction();
                 db.myCommand.Transaction = rentalTransaction;
 
-                // Check if customer is already renting the selected movie
-                db.myCommand.Parameters.Clear();
-                db.myCommand.Parameters.AddWithValue("@movieID", movieID);
-                db.myCommand.Parameters.AddWithValue("@customerID", customerID);
-                db.query("SELECT COUNT(*) FROM RentalOrder " +
-                    "WHERE MovieID = @movieID " +
-                    "AND CustomerID = @customerID " +
-                    "AND ReturnDateTime IS NULL");
-
-                bool isRenting = db.myReader.Read() && (Convert.ToInt32(db.myReader[0]) > 0);
-                if (isRenting)
-                {
-                    rentalTransaction.Rollback();
-                    MessageBox.Show($"{custFirstName} {custLastName} is already renting {movieName}.");
-                    return;
-                }
-
-
                 // Check total number of copies for selected movie
                 db.myCommand.Parameters.Clear();
                 db.myCommand.Parameters.AddWithValue("@movieID", movieID);
@@ -646,9 +628,61 @@ namespace WinFormsApp1
                 int numRentedOut = db.myReader.Read() ? Convert.ToInt32(db.myReader["NumRentedOut"]) : 0;
                 db.myReader.Close();
 
-                // Create a new order if available
+                // Check if customer is already renting the selected movie
+                db.myCommand.Parameters.Clear();
+                db.myCommand.Parameters.AddWithValue("@movieID", movieID);
+                db.myCommand.Parameters.AddWithValue("@customerID", customerID);
+                db.query("SELECT COUNT(*) FROM RentalOrder " +
+                    "WHERE MovieID = @movieID " +
+                    "AND CustomerID = @customerID " +
+                    "AND ReturnDateTime IS NULL");
+
+                bool isRenting = db.myReader.Read() && (Convert.ToInt32(db.myReader[0]) > 0);
+                db.myReader.Close();
+                if (isRenting)
+                {
+                    rentalTransaction.Rollback();
+                    MessageBox.Show($"{custFirstName} {custLastName} is already renting {movieName}.");
+                    return;
+                }
+
+                // If copies are available, check the queue
                 if (numRentedOut < totalCopies)
                 {
+                    // Check the queue for the selected movie
+                    db.myCommand.Parameters.Clear();
+                    db.myCommand.CommandText = "SELECT TOP 1 CustomerID FROM MovieQueue " +
+                        "WHERE MovieID = @movieID " +
+                        "ORDER BY SortOrder ASC";
+                    db.myCommand.Parameters.AddWithValue("@movieID", movieID);
+
+                    object _firstInQueue = db.myCommand.ExecuteScalar();
+
+                    // If there is a queue, check if the current customer is next
+                    if (_firstInQueue != null)
+                    {
+                        int firstInQueue = Convert.ToInt32(_firstInQueue);
+
+                        // If the customer is not next in line
+                        if (firstInQueue != customerID)
+                        {
+                            rentalTransaction.Rollback();
+                            MessageBox.Show($"{custFirstName} {custLastName} is not next in line for {movieName}.");
+                            return;
+                        }
+                        else
+                        {
+                            // If customer is next in line, remove the customer from the queue
+                            string removeQueue = "DELETE FROM MovieQueue " +
+                                "WHERE MovieID = @movieID AND CustomerID = @customerID";
+                            db.myCommand.Parameters.Clear();
+                            db.myCommand.Parameters.AddWithValue("@movieID", movieID);
+                            db.myCommand.Parameters.AddWithValue("@customerID", customerID);
+                            db.delete(removeQueue);
+                        }
+                    }
+
+                    // Add new rental order
                     string insertRental = "INSERT INTO RentalOrder (MovieID, CustomerID, EmployeeID, CheckoutDateTime)" +
                         "VALUES (@movieID, @customerID, @employeeID, GETDATE())";
                     db.myCommand.Parameters.Clear();
@@ -675,17 +709,15 @@ namespace WinFormsApp1
                         "FROM MovieQueue " +
                         "WHERE MovieID = @movieID AND CustomerID = @customerID");
 
-                    int queue = db.myReader.Read() ? Convert.ToInt32(db.myReader["MovieCount"]) : 0;
+                    bool inQueue = db.myReader.Read() && (Convert.ToInt32(db.myReader[0]) > 0);
                     db.myReader.Close();
 
                     // If customer is already in the queue 
-                    if (queue > 0)
+                    if (inQueue)
                     {
                         rentalTransaction.Rollback();
                         MessageBox.Show($"{movieName} is not available and customer is already in the queue.", "Movie Unavailable");
-                        return;
                     }
-                    // Add them to the queue
                     else
                     {
                         db.myCommand.Parameters.Clear();
@@ -697,6 +729,7 @@ namespace WinFormsApp1
                         int maxQueue = db.myReader.Read() ? Convert.ToInt32(db.myReader["MaxQueue"]) : 0;
                         db.myReader.Close();
 
+                        // Add customer to the queue
                         string insertMovieQueue = "INSERT INTO MovieQueue (MovieID, CustomerID, SortOrder) " +
                             "VALUES (@movieID, @customerID, @sortOrder)";
                         db.myCommand.Parameters.Clear();
