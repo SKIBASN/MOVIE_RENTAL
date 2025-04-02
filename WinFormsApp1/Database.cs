@@ -18,8 +18,8 @@ namespace WinFormsApp1
 
         public Database()
         {
-            String connectionString = "Server=DESKTOP-MNUPRSE; Database=TEAM4CMPT291DATABASE; Trusted_Connection=yes;";
-            this.myConnection = new SqlConnection(connectionString);
+            //String connectionString = "Server=DESKTOP-MNUPRSE; Database=TEAM4CMPT291DATABASE; Trusted_Connection=yes;";
+            //this.myConnection = new SqlConnection(connectionString);
             String connectionString = "Server=192.168.1.190;Database=TEAM4CMPT291DATABASE;User Id=sa;Password=YourPassword123;";
             this.myConnection = new SqlConnection(connectionString);
 
