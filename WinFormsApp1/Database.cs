@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 using System.Security.Cryptography;
 using System.Diagnostics.Eventing.Reader;
 using System.Data;
+using Microsoft.VisualBasic.Devices;
+using static System.ComponentModel.Design.ObjectSelectorEditor;
+using System.Diagnostics.Metrics;
+using System.Windows.Forms;
 
 namespace WinFormsApp1
 {
@@ -56,7 +60,23 @@ namespace WinFormsApp1
             DataTable dt = new DataTable();
             try
             {
-                query("SELECT * FROM Movie");
+                //query("SELECT * FROM Movie");
+
+                query(@"SELECT movie.*, " +
+                    "CASE WHEN (movie.NumberOfCopies - " +
+                     "  (SELECT COUNT(*) FROM RentalOrder rental " +
+                     "  WHERE rental.MovieID = movie.MovieID " +
+                     "      AND rental.ReturnDateTime IS NULL)) < 0" +
+
+                     "  THEN 0 " +
+                     "  ELSE " +
+                         "  (movie.NumberOfCopies - " +
+                         "  (SELECT COUNT(*) FROM RentalOrder rental " +
+                         "  WHERE rental.MovieID = movie.MovieID " +
+                         "      AND rental.ReturnDateTime IS NULL)) " +
+                     "END AS AvailableCopies " +
+                     "FROM Movie movie");
+                   
                 dt.Load(myReader);
                 myReader.Close();
             }
@@ -147,6 +167,11 @@ namespace WinFormsApp1
             {
                 myReader.Close();
             }
+            if (myConnection.State != ConnectionState.Open)
+            {
+                myConnection.Open();
+            }
+
             this.myCommand.CommandText = query_string;
             this.myReader = this.myCommand.ExecuteReader();
         }
@@ -195,6 +220,8 @@ namespace WinFormsApp1
             }
 
         }
+
+
 
         public void Dispose()
         {

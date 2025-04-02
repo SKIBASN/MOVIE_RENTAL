@@ -67,14 +67,15 @@ namespace WinFormsApp1
                     }
                     else
                     {
-                        MessageBox.Show("Invalid Username or password.");
-                        status.Text = "Username or Password is incorrect";
+                        MessageBox.Show("Invalid username or password.");
+                        status.Text = "Username or password is incorrect";
                     }
+                    db.myReader.Close();
                 }
                 else
                 {
                     MessageBox.Show("Invalid Username or password.");
-                    status.Text = "Username or Password is incorrect";
+                    status.Text = "Username or password is incorrect";
                 }
                     
                 db.myReader.Close();

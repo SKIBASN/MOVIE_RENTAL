@@ -15,6 +15,8 @@ using System.Data.SqlClient;
 using System.IO.Pipes;
 using static System.ComponentModel.Design.ObjectSelectorEditor;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Data.Common;
+using System.Collections;
 
 namespace WinFormsApp1
 {
@@ -31,9 +33,6 @@ namespace WinFormsApp1
             employeeID = _employeeID;
             LoadCustomersIntoDataGridView();
             LoadMoviesIntoDataGridView();
-
-            dgvRentalCustomers.DefaultCellStyle.ForeColor = Color.Black;
-            dgvRentalMovies.DefaultCellStyle.ForeColor = Color.Black;
         }
 
         private void LoadCustomersIntoDataGridView()
@@ -43,10 +42,9 @@ namespace WinFormsApp1
                 dgvRentalCustomers.DataSource = null;
                 dgvRentalCustomers.Columns.Clear();
 
-                DataTable customersTable = db.GetCustomers();   // Retrieve the customer data as a DataTable
+                DataTable customersTable = db.GetCustomers();
 
-
-                dgvRentalCustomers.DataSource = customersTable; // Bind the DataTable to the DataGridView
+                dgvRentalCustomers.DataSource = customersTable;
 
                 // rename columns
                 dgvRentalCustomers.Columns["CustomerID"].HeaderText = "Customer ID";
@@ -58,6 +56,8 @@ namespace WinFormsApp1
                 dgvRentalCustomers.Columns["AccountNumber"].HeaderText = "Account Number";
                 dgvRentalCustomers.Columns["AccountCreateDate"].HeaderText = "Date Joined";
                 dgvRentalCustomers.Columns["CreditCardNumber"].HeaderText = "Credit Card Number";
+
+                dgvRentalCustomers.DefaultCellStyle.ForeColor = Color.Black;
             }
             catch (Exception ex)
             {
@@ -72,17 +72,23 @@ namespace WinFormsApp1
                 dgvRentalMovies.DataSource = null;
                 dgvRentalMovies.Columns.Clear();
 
-                DataTable moviesTable = db.GetMovies();   // Retrieve the customer data as a DataTable
+                DataTable moviesTable = db.GetMovies();
 
-
-                dgvRentalMovies.DataSource = moviesTable; // Bind the DataTable to the DataGridView
+                dgvRentalMovies.DataSource = moviesTable;
 
                 // rename columns
                 dgvRentalMovies.Columns["MovieID"].HeaderText = "Movie ID";
+                //dgvRentalMovies.Columns["MovieID"].Visible = false;
                 dgvRentalMovies.Columns["MovieName"].HeaderText = "Movie Name";
                 dgvRentalMovies.Columns["MovieType"].HeaderText = "Type";
                 dgvRentalMovies.Columns["DistributionFee"].HeaderText = "Distribution Fee";
                 dgvRentalMovies.Columns["NumberOfCopies"].HeaderText = "Number Of Copies";
+                if (dgvRentalMovies.Columns.Contains("AvailableCopies"))
+                {
+                    dgvRentalMovies.Columns["AvailableCopies"].HeaderText = "Available";
+                }
+
+                dgvRentalMovies.DefaultCellStyle.ForeColor = Color.Black;
             }
             catch (Exception ex)
             {
@@ -584,103 +590,131 @@ namespace WinFormsApp1
 
         private void dispenseButton_Click(object sender, EventArgs e)
         {
+            if ((dgvRentalCustomers.CurrentRow == null) || (dgvRentalMovies.CurrentRow == null))
+            {
+                MessageBox.Show("Please select a customer and a movie.");
+                return;
+            }
+            int customerID = Convert.ToInt32(dgvRentalCustomers.CurrentRow.Cells["CustomerID"].Value);
+            string custFirstName = Convert.ToString(dgvRentalCustomers.CurrentRow.Cells["FirstName"].Value);
+            string custLastName = Convert.ToString(dgvRentalCustomers.CurrentRow.Cells["LastName"].Value);
 
+            int movieID = Convert.ToInt32(dgvRentalMovies.CurrentRow.Cells["MovieID"].Value);
+            string movieName = Convert.ToString(dgvRentalMovies.CurrentRow.Cells["MovieName"].Value);
+
+
+            SqlTransaction rentalTransaction = null;
             try
             {
-                if ((dgvRentalCustomers.CurrentRow != null) && (dgvRentalMovies.CurrentRow != null))
+                rentalTransaction = db.myConnection.BeginTransaction();
+                db.myCommand.Transaction = rentalTransaction;
+
+                // Check if customer is already renting the selected movie
+                db.myCommand.Parameters.Clear();
+                db.myCommand.Parameters.AddWithValue("@movieID", movieID);
+                db.myCommand.Parameters.AddWithValue("@customerID", customerID);
+                db.query("SELECT COUNT(*) FROM RentalOrder " +
+                    "WHERE MovieID = @movieID " +
+                    "AND CustomerID = @customerID " +
+                    "AND ReturnDateTime IS NULL");
+
+                bool isRenting = db.myReader.Read() && (Convert.ToInt32(db.myReader[0]) > 0);
+                if (isRenting)
                 {
-                    int customerID = Convert.ToInt32(dgvRentalCustomers.CurrentRow.Cells["CustomerID"].Value);
-                    int movieID = Convert.ToInt32(dgvRentalMovies.CurrentRow.Cells["MovieID"].Value);
-                    MessageBox.Show("Selected CustomerID: " + customerID + "\nSelected MovieID: " + movieID);
+                    rentalTransaction.Rollback();
+                    MessageBox.Show($"{custFirstName} {custLastName} is already renting {movieName}.");
+                    return;
+                }
 
-                    // Check total number of copies for selected movie
+
+                // Check total number of copies for selected movie
+                db.myCommand.Parameters.Clear();
+                db.myCommand.Parameters.AddWithValue("@movieID", movieID);
+                db.query("SELECT NumberOfCopies FROM Movie WHERE MovieID = @movieID");
+
+                int totalCopies = db.myReader.Read() ? Convert.ToInt32(db.myReader["NumberOfCopies"]) : 0;
+                db.myReader.Close();
+
+                // Check how many copies are currently rented out
+                db.myCommand.Parameters.Clear();
+                db.myCommand.Parameters.AddWithValue("@movieID", movieID);
+                db.query("SELECT COUNT(*) AS NumRentedOut " +
+                    "FROM RentalOrder " +
+                    "WHERE MovieID = @movieID " +
+                    "AND ReturnDateTime is NULL");
+
+                int numRentedOut = db.myReader.Read() ? Convert.ToInt32(db.myReader["NumRentedOut"]) : 0;
+                db.myReader.Close();
+
+                // Create a new order if available
+                if (numRentedOut < totalCopies)
+                {
+                    string insertRental = "INSERT INTO RentalOrder (MovieID, CustomerID, EmployeeID, CheckoutDateTime)" +
+                        "VALUES (@movieID, @customerID, @employeeID, GETDATE())";
                     db.myCommand.Parameters.Clear();
                     db.myCommand.Parameters.AddWithValue("@movieID", movieID);
-                    db.query("SELECT NumberOfCopies FROM Movie WHERE MovieID = @movieID");
-                    int totalCopies = 0;
-                    if (db.myReader.Read())
-                    {
-                        totalCopies = Convert.ToInt32(db.myReader["NumberOfCopies"]);
-                    }
-                    db.myReader.Close();
+                    db.myCommand.Parameters.AddWithValue("@customerID", customerID);
+                    db.myCommand.Parameters.AddWithValue("@employeeID", employeeID);
+                    db.insert(insertRental);
 
-                    // Determine how many copies are currently rented out
+                    int newRentalID = Convert.ToInt32(db.myCommand.ExecuteScalar());
+                    string newOrderNum = newRentalID.ToString();
+
+                    rentalTransaction.Commit();
+                    MessageBox.Show("Order number: " + newOrderNum + "\nMovie: " + movieName + "\nNumber of Copies: "
+                        + $"\nMovie successfully rented to {custFirstName} {custLastName}!", "Order Confirmation");
+                    return;
+                }
+                else
+                {
+                    // If no available copies, check if customer is in queue
                     db.myCommand.Parameters.Clear();
                     db.myCommand.Parameters.AddWithValue("@movieID", movieID);
-                    db.query("SELECT COUNT(*) AS NumRentedOut " +
-                        "FROM RentalOrder " +
-                        "WHERE MovieID = @movieID " +
-                        "AND ReturnDateTime is NULL");
-                    int numRentedOut = 0;
-                    if (db.myReader.Read())
-                    {
-                        numRentedOut = Convert.ToInt32(db.myReader["NumRentedOut"]);
-                    }
+                    db.myCommand.Parameters.AddWithValue("@customerID", customerID);
+                    db.query("SELECT COUNT(*) AS MovieCount " +
+                        "FROM MovieQueue " +
+                        "WHERE MovieID = @movieID AND CustomerID = @customerID");
+
+                    int queue = db.myReader.Read() ? Convert.ToInt32(db.myReader["MovieCount"]) : 0;
                     db.myReader.Close();
 
-                    // Create new order if available
-                    if (numRentedOut < totalCopies)
+                    // If customer is already in the queue 
+                    if (queue > 0)
                     {
-                        string insertRental = "INSERT INTO RentalOrder (MovieID, CustomerID, EmployeeID, CheckoutDateTime)" +
-                            "VALUES (@movieID, @customerID, @employeeID, GETDATE())";
-                        db.myCommand.Parameters.Clear();
-                        db.myCommand.Parameters.AddWithValue("@movieID", movieID);
-                        db.myCommand.Parameters.AddWithValue("@customerID", customerID);
-                        db.myCommand.Parameters.AddWithValue("@employeeID", employeeID);
-                        db.insert(insertRental);
-
-                        MessageBox.Show("Movie successfully rented to customer.");
+                        rentalTransaction.Rollback();
+                        MessageBox.Show($"{movieName} is not available and customer is already in the queue.", "Movie Unavailable");
+                        return;
                     }
-                    // Movie is not available
+                    // Add them to the queue
                     else
                     {
                         db.myCommand.Parameters.Clear();
                         db.myCommand.Parameters.AddWithValue("@movieID", movieID);
-                        db.myCommand.Parameters.AddWithValue("@customerID", customerID);
-                        db.query("SELECT COUNT(*) AS MovieCount " +
-                            "WHERE MovieID = @movieID AND CustomerID = @customerID");
-                        int movieCount = 0;
+                        db.query("SELECT ISNULL(MAX(SortOrder), 0) AS MaxQueue " +
+                            "FROM MovieQueue WHERE MovieID = @movieID");
 
-                        if (db.myReader.Read())
-                        {
-                            movieCount = Convert.ToInt32(db.myReader["MovieCount"]);
-                        }
+                        // Determine the new sort order for the queue
+                        int maxQueue = db.myReader.Read() ? Convert.ToInt32(db.myReader["MaxQueue"]) : 0;
                         db.myReader.Close();
 
-                        if (movieCount == 0)
-                        {
-                            // Determine the new sort order
-                            db.myCommand.Parameters.Clear();
-                            db.myCommand.Parameters.AddWithValue("@movieID", movieID);
-                            db.query("SELECT ISNULL(MAX(SortOrder), 0) AS MaxQueue " +
-                                "FROM MovieQueue WHERE MovieID = @movieID");
-                            int maxQueue = 0;
-                            if (db.myReader.Read())
-                            {
-                                maxQueue = Convert.ToInt32(db.myReader["MaxQueue"]);
-                            }
-                            db.myReader.Close();
+                        string insertMovieQueue = "INSERT INTO MovieQueue (MovieID, CustomerID, SortOrder) " +
+                            "VALUES (@movieID, @customerID, @sortOrder)";
+                        db.myCommand.Parameters.Clear();
+                        db.myCommand.Parameters.AddWithValue("@movieID", movieID);
+                        db.myCommand.Parameters.AddWithValue("@customerID", customerID);
+                        db.myCommand.Parameters.AddWithValue("@sortOrder", maxQueue + 1);
+                        db.insert(insertMovieQueue);
 
-                            int newSortOrder = maxQueue + 1;
-
-                            db.myCommand.Parameters.Clear();
-                            db.myCommand.Parameters.AddWithValue("@movieID", movieID);
-                            db.myCommand.Parameters.AddWithValue("@customerID", customerID);
-                            db.myCommand.Parameters.AddWithValue("@sortOrder", newSortOrder);
-                            db.insert("INSERT INTO MovieQueue (MovieID, CustomerID, SortOrder) " +
-                                "VALUES (@movieID, @customerID, @sortOrder");
-                            MessageBox.Show("Movie is not available. Customer has been added to the queue.");
-                        }
-                        else
-                        {
-                            MessageBox.Show("Movie is not available and customer is already in the queue.");
-                        }
+                        rentalTransaction.Commit();
+                        MessageBox.Show($"{movieName} is not available. " +
+                            $"{custFirstName} {custLastName} has been added to the queue!\n" +
+                            $"Place in line: {maxQueue + 1}", "Movie Unavailable");
                     }
-
                 }
             }
             catch (Exception ex)
             {
+                rentalTransaction?.Rollback();
                 MessageBox.Show("Error dispensing movie: " + ex.Message);
             }
         }
@@ -700,9 +734,9 @@ namespace WinFormsApp1
 
         }
 
-        private void returnButton_Click(object sender, EventArgs e)
+        private void rentalUpdateButton_Click(object sender, EventArgs e)
         {
-
+            LoadMoviesIntoDataGridView();
         }
     }
 }

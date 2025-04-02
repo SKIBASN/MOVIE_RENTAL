@@ -39,6 +39,7 @@ namespace WinFormsApp1
             Customer = new TabPage();
             Movie = new TabPage();
             Rental = new TabPage();
+            rentalUpdateButton = new Button();
             label2 = new Label();
             dgvRentalMovies = new DataGridView();
             movieIdColumn = new DataGridViewTextBoxColumn();
@@ -77,7 +78,6 @@ namespace WinFormsApp1
             customerID = new DataGridViewTextBoxColumn();
             customerFirstName = new DataGridViewTextBoxColumn();
             customerLastName = new DataGridViewTextBoxColumn();
-            returnButton = new Button();
             tabControl1.SuspendLayout();
             Rental.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvRentalMovies).BeginInit();
@@ -129,7 +129,7 @@ namespace WinFormsApp1
             // Rental
             // 
             Rental.BackColor = Color.Firebrick;
-            Rental.Controls.Add(returnButton);
+            Rental.Controls.Add(rentalUpdateButton);
             Rental.Controls.Add(label2);
             Rental.Controls.Add(dgvRentalMovies);
             Rental.Controls.Add(dispenseButton);
@@ -145,6 +145,18 @@ namespace WinFormsApp1
             Rental.TabIndex = 2;
             Rental.Text = "Rental";
             // 
+            // rentalUpdateButton
+            // 
+            rentalUpdateButton.BackColor = Color.White;
+            rentalUpdateButton.ForeColor = SystemColors.ControlText;
+            rentalUpdateButton.Location = new Point(594, 510);
+            rentalUpdateButton.Name = "rentalUpdateButton";
+            rentalUpdateButton.Size = new Size(204, 54);
+            rentalUpdateButton.TabIndex = 6;
+            rentalUpdateButton.Text = "Update";
+            rentalUpdateButton.UseVisualStyleBackColor = false;
+            rentalUpdateButton.Click += rentalUpdateButton_Click;
+            // 
             // label2
             // 
             label2.AutoSize = true;
@@ -159,6 +171,8 @@ namespace WinFormsApp1
             // 
             // dgvRentalMovies
             // 
+            dgvRentalMovies.AllowUserToAddRows = false;
+            dgvRentalMovies.AllowUserToDeleteRows = false;
             dgvRentalMovies.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle1.BackColor = SystemColors.Control;
@@ -178,12 +192,13 @@ namespace WinFormsApp1
             dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
             dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
             dgvRentalMovies.DefaultCellStyle = dataGridViewCellStyle2;
-            dgvRentalMovies.Location = new Point(442, 253);
+            dgvRentalMovies.Location = new Point(442, 276);
             dgvRentalMovies.MultiSelect = false;
             dgvRentalMovies.Name = "dgvRentalMovies";
+            dgvRentalMovies.ReadOnly = true;
             dgvRentalMovies.RowHeadersWidth = 51;
             dgvRentalMovies.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvRentalMovies.Size = new Size(949, 186);
+            dgvRentalMovies.Size = new Size(949, 215);
             dgvRentalMovies.TabIndex = 4;
             dgvRentalMovies.CellContentClick += dgvRentalMovies_CellContentClick;
             // 
@@ -192,41 +207,46 @@ namespace WinFormsApp1
             movieIdColumn.HeaderText = "Movie ID";
             movieIdColumn.MinimumWidth = 6;
             movieIdColumn.Name = "movieIdColumn";
+            movieIdColumn.ReadOnly = true;
             // 
             // movieNameColumn
             // 
             movieNameColumn.HeaderText = "Name";
             movieNameColumn.MinimumWidth = 6;
             movieNameColumn.Name = "movieNameColumn";
+            movieNameColumn.ReadOnly = true;
             // 
             // movieTypeColumn
             // 
             movieTypeColumn.HeaderText = "Type";
             movieTypeColumn.MinimumWidth = 6;
             movieTypeColumn.Name = "movieTypeColumn";
+            movieTypeColumn.ReadOnly = true;
             // 
             // feeColumn
             // 
             feeColumn.HeaderText = "Distribution Fee";
             feeColumn.MinimumWidth = 6;
             feeColumn.Name = "feeColumn";
+            feeColumn.ReadOnly = true;
             // 
             // numCopiesColumn
             // 
             numCopiesColumn.HeaderText = "Number of Copies";
             numCopiesColumn.MinimumWidth = 6;
             numCopiesColumn.Name = "numCopiesColumn";
+            numCopiesColumn.ReadOnly = true;
             // 
             // dispenseButton
             // 
             dispenseButton.BackColor = SystemColors.Control;
             dispenseButton.ForeColor = SystemColors.ControlText;
-            dispenseButton.Location = new Point(568, 485);
+            dispenseButton.Location = new Point(1029, 510);
             dispenseButton.Name = "dispenseButton";
             dispenseButton.Size = new Size(204, 54);
             dispenseButton.TabIndex = 3;
             dispenseButton.Text = "Dispense";
-            dispenseButton.UseVisualStyleBackColor = false;
+            dispenseButton.UseVisualStyleBackColor = true;
             dispenseButton.Click += dispenseButton_Click;
             // 
             // label1
@@ -234,7 +254,7 @@ namespace WinFormsApp1
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 19.8000011F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label1.ForeColor = Color.White;
-            label1.Location = new Point(38, 253);
+            label1.Location = new Point(38, 276);
             label1.Name = "label1";
             label1.Size = new Size(248, 46);
             label1.TabIndex = 2;
@@ -243,6 +263,8 @@ namespace WinFormsApp1
             // 
             // dgvRentalCustomers
             // 
+            dgvRentalCustomers.AllowUserToAddRows = false;
+            dgvRentalCustomers.AllowUserToDeleteRows = false;
             dgvRentalCustomers.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
             dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle3.BackColor = SystemColors.Control;
@@ -265,9 +287,10 @@ namespace WinFormsApp1
             dgvRentalCustomers.Location = new Point(442, 30);
             dgvRentalCustomers.MultiSelect = false;
             dgvRentalCustomers.Name = "dgvRentalCustomers";
+            dgvRentalCustomers.ReadOnly = true;
             dgvRentalCustomers.RowHeadersWidth = 51;
             dgvRentalCustomers.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvRentalCustomers.Size = new Size(949, 186);
+            dgvRentalCustomers.Size = new Size(949, 214);
             dgvRentalCustomers.TabIndex = 0;
             dgvRentalCustomers.CellContentClick += dgvRentalCustomers_CellContentClick;
             // 
@@ -276,6 +299,7 @@ namespace WinFormsApp1
             custIdColumn.HeaderText = "Customer ID";
             custIdColumn.MinimumWidth = 6;
             custIdColumn.Name = "custIdColumn";
+            custIdColumn.ReadOnly = true;
             custIdColumn.Width = 161;
             // 
             // ssnColumn
@@ -283,6 +307,7 @@ namespace WinFormsApp1
             ssnColumn.HeaderText = "SSN";
             ssnColumn.MinimumWidth = 6;
             ssnColumn.Name = "ssnColumn";
+            ssnColumn.ReadOnly = true;
             ssnColumn.Width = 87;
             // 
             // LastNameColumn
@@ -290,6 +315,7 @@ namespace WinFormsApp1
             LastNameColumn.HeaderText = "Last Name";
             LastNameColumn.MinimumWidth = 6;
             LastNameColumn.Name = "LastNameColumn";
+            LastNameColumn.ReadOnly = true;
             LastNameColumn.Width = 142;
             // 
             // firstNameColumn
@@ -297,6 +323,7 @@ namespace WinFormsApp1
             firstNameColumn.HeaderText = "First Name";
             firstNameColumn.MinimumWidth = 6;
             firstNameColumn.Name = "firstNameColumn";
+            firstNameColumn.ReadOnly = true;
             firstNameColumn.Width = 145;
             // 
             // addressColumn
@@ -304,6 +331,7 @@ namespace WinFormsApp1
             addressColumn.HeaderText = "Address";
             addressColumn.MinimumWidth = 6;
             addressColumn.Name = "addressColumn";
+            addressColumn.ReadOnly = true;
             addressColumn.Width = 127;
             // 
             // cityColumn
@@ -311,6 +339,7 @@ namespace WinFormsApp1
             cityColumn.HeaderText = "City";
             cityColumn.MinimumWidth = 6;
             cityColumn.Name = "cityColumn";
+            cityColumn.ReadOnly = true;
             cityColumn.Width = 84;
             // 
             // stateColumn
@@ -318,6 +347,7 @@ namespace WinFormsApp1
             stateColumn.HeaderText = "State";
             stateColumn.MinimumWidth = 6;
             stateColumn.Name = "stateColumn";
+            stateColumn.ReadOnly = true;
             stateColumn.Width = 96;
             // 
             // zipColumn
@@ -325,6 +355,7 @@ namespace WinFormsApp1
             zipColumn.HeaderText = "Zip Code";
             zipColumn.MinimumWidth = 6;
             zipColumn.Name = "zipColumn";
+            zipColumn.ReadOnly = true;
             zipColumn.Width = 128;
             // 
             // emailColumn
@@ -332,12 +363,14 @@ namespace WinFormsApp1
             emailColumn.HeaderText = "Email";
             emailColumn.MinimumWidth = 6;
             emailColumn.Name = "emailColumn";
+            emailColumn.ReadOnly = true;
             // 
             // accountNumColumn
             // 
             accountNumColumn.HeaderText = "Account Number";
             accountNumColumn.MinimumWidth = 6;
             accountNumColumn.Name = "accountNumColumn";
+            accountNumColumn.ReadOnly = true;
             accountNumColumn.Width = 205;
             // 
             // accCreatedColumn
@@ -345,6 +378,7 @@ namespace WinFormsApp1
             accCreatedColumn.HeaderText = "Date Joined";
             accCreatedColumn.MinimumWidth = 6;
             accCreatedColumn.Name = "accCreatedColumn";
+            accCreatedColumn.ReadOnly = true;
             accCreatedColumn.Width = 155;
             // 
             // creditNumColumn
@@ -352,6 +386,7 @@ namespace WinFormsApp1
             creditNumColumn.HeaderText = "Credit Card Number";
             creditNumColumn.MinimumWidth = 6;
             creditNumColumn.Name = "creditNumColumn";
+            creditNumColumn.ReadOnly = true;
             creditNumColumn.Width = 235;
             // 
             // ReportPage
@@ -555,18 +590,6 @@ namespace WinFormsApp1
             customerLastName.Name = "customerLastName";
             customerLastName.Width = 125;
             // 
-            // returnButton
-            // 
-            returnButton.BackColor = SystemColors.Control;
-            returnButton.ForeColor = SystemColors.ControlText;
-            returnButton.Location = new Point(956, 485);
-            returnButton.Name = "returnButton";
-            returnButton.Size = new Size(204, 54);
-            returnButton.TabIndex = 6;
-            returnButton.Text = "Return";
-            returnButton.UseVisualStyleBackColor = false;
-            returnButton.Click += returnButton_Click;
-            // 
             // NavScreen
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -636,6 +659,6 @@ namespace WinFormsApp1
         private DataGridViewTextBoxColumn movieTypeColumn;
         private DataGridViewTextBoxColumn feeColumn;
         private DataGridViewTextBoxColumn numCopiesColumn;
-        private Button returnButton;
+        private Button rentalUpdateButton;
     }
 }
