@@ -35,8 +35,6 @@ namespace WinFormsApp1
         {
             InitializeComponent();
             db = DT;
-            LoadMovies();
-            LoadActors();
             // Initialize result with a TextBox instance
             // Add result to the form's controls
 
@@ -105,7 +103,8 @@ namespace WinFormsApp1
 
         private void Movie_Click(object sender, EventArgs e)
         {
-
+	    LoadMovies();
+            LoadActors();
         }
 
         private void Customer_Click(object sender, EventArgs e)
