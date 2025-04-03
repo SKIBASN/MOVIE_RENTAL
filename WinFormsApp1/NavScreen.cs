@@ -15,6 +15,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.IO.Pipes;
 using static System.ComponentModel.Design.ObjectSelectorEditor;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Reflection.PortableExecutable;
+using System.Security.Principal;
+using System.Transactions;
+using System.Data.Common;
 
 namespace WinFormsApp1
 {
@@ -30,6 +34,8 @@ namespace WinFormsApp1
             InitializeComponent();
             db = new Database(); // Initialize the object and create the connection
             LoadCustomers();
+            LoadMovies();
+            LoadActors();
             btnAdd.Click += BtnAdd_Click;
             btnUpdate.Click += BtnUpdate_Click;
             btnDelete.Click += BtnDelete_Click;
@@ -161,6 +167,62 @@ namespace WinFormsApp1
             }
         }
 
+        private void LoadMovies()
+        {
+            try
+            {
+                if (db.myConnection.State == ConnectionState.Open)
+                {
+                    db.myConnection.Close();  // Close the connection if it's open
+                }
+                db.myConnection.Open();
+                string query = "SELECT * FROM Movie";
+                SqlCommand cmd = new SqlCommand(query, db.myConnection);
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                DataTable table = new DataTable();
+                adapter.Fill(table);
+                var filteredRows = table.AsEnumerable()
+                .Where(row => row.Field<string>("MovieName") != "DeletedMovie3561")
+                .CopyToDataTable();
+                dgvMovies.DataSource = filteredRows;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error loading Movies.");
+            }
+            if (db.myConnection.State == ConnectionState.Open)
+            {
+                db.myConnection.Close();
+            }
+
+        }
+        private void LoadActors()
+        {
+            try
+            {
+                if (db.myConnection.State == ConnectionState.Open)
+                {
+                    db.myConnection.Close();  // Close the connection if it's open
+                }
+                db.myConnection.Open();
+                string query = "SELECT * FROM Actor";
+                SqlCommand cmd = new SqlCommand(query, db.myConnection);
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                DataTable table = new DataTable();
+                adapter.Fill(table);
+                dgvActors.DataSource = table;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error loading Actors.");
+            }
+            if (db.myConnection.State == ConnectionState.Open)
+            {
+                db.myConnection.Close();
+            }
+
+        }
+
         private void Report_Click(object sender, EventArgs e)
         {
 
@@ -168,7 +230,7 @@ namespace WinFormsApp1
 
         private void Movie_Click(object sender, EventArgs e)
         {
-
+	          
         }
 
         private void Customer_Click(object sender, EventArgs e)
@@ -625,7 +687,226 @@ namespace WinFormsApp1
 
         private void NavScreen_Load(object sender, EventArgs e)
         {
-             
+
+        }
+
+        private void comboBox1_SelectedIndexChanged_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label1_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dataGridView1_CellContentClick_1(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void dataGridView1_CellContentClick_2(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dataGridView1_CellContentClick_3(object sender, DataGridViewCellEventArgs e)
+        {
+            dgvMovies.RowTemplate.Height = 30;
+            dgvMovies.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label5_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtBoxCopies_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void BtnMovieAdd_Click_1(object sender, EventArgs e)
+        {
+            try
+            {
+                if (db.myConnection.State == ConnectionState.Open)
+                {
+                    db.myConnection.Close();  // Close the connection if it's open
+                }
+                db.myConnection.Open();
+                string insertQuery = "INSERT INTO Movie(MovieName, MovieType, DistributionFee, NumberOfCopies) " +
+                                     "VALUES (@MovieName, @MovieType, @DistributionFee, @NumberOfCopies)";
+                db.myCommand.CommandText = insertQuery;
+                db.myCommand.Parameters.Clear();
+                db.myCommand.Parameters.AddWithValue("@MovieName", txtBoxName.Text);
+                db.myCommand.Parameters.AddWithValue("@MovieType", txtBoxType.Text);
+                db.myCommand.Parameters.AddWithValue("@DistributionFee", txtBoxDFee.Text);
+                db.myCommand.Parameters.AddWithValue("@NumberOfCopies", txtBoxCopies.Text);
+
+
+                db.myCommand.ExecuteNonQuery();
+                MessageBox.Show("Movies added successfully!");
+                LoadMovies();
+                if (db.myConnection.State == ConnectionState.Open)
+                {
+                    db.myConnection.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains("Error converting data type nvarchar to numeric"))
+            {
+                
+                MessageBox.Show("Please make sure that the Dsitribution Fee and/or the # Copies are an int.", 
+                                "Data Conversion Error", 
+                                MessageBoxButtons.OK, 
+                                MessageBoxIcon.Error);
+            }
+            else
+            {
+                // Handle other SQL errors
+                MessageBox.Show("An unexpected error occurred. Please try again later.",
+                                "Database Error",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Error);
+            }
+            }
+        }
+
+        private void BtnMovieUpdate_Click(object sender, EventArgs e)
+        {
+            if (dgvMovies.CurrentRow == null) return;
+
+            try
+            {
+                if (db.myConnection.State == ConnectionState.Open)
+                {
+                    db.myConnection.Close();  // Close the connection if it's open
+                }
+                db.myConnection.Open();
+                int id = Convert.ToInt32(dgvMovies.CurrentRow.Cells["MovieID"].Value);
+                string updateQuery = "UPDATE Movie SET MovieName = @MovieName, MovieType = @MovieType, DistributionFee = @DistributionFee, NumberOfCopies = @NumberOfCopies WHERE MovieID = @ID";
+                db.myCommand.CommandText = updateQuery;
+                db.myCommand.Parameters.Clear();
+                db.myCommand.Parameters.AddWithValue("@ID", txtBoxMovieID.Text);
+                db.myCommand.Parameters.AddWithValue("@MovieName", txtBoxName.Text);
+                db.myCommand.Parameters.AddWithValue("@MovieType", txtBoxType.Text);
+                db.myCommand.Parameters.AddWithValue("@DistributionFee", txtBoxDFee.Text);
+                db.myCommand.Parameters.AddWithValue("@NumberOfCopies", txtBoxCopies.Text);
+
+                db.myCommand.ExecuteNonQuery();
+                MessageBox.Show("Movie updated successfully!");
+                LoadMovies();
+                if (db.myConnection.State == ConnectionState.Open)
+                {
+                    db.myConnection.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error");
+            }
+        }
+
+        private void BtnMovieDelete_Click(object sender, EventArgs e)
+        {
+            if (dgvMovies.CurrentRow == null) return;
+
+            try
+            {
+                if (db.myConnection.State == ConnectionState.Open)
+                {
+                    db.myConnection.Close();  // Close the connection if it's open
+                }
+                db.myConnection.Open();
+                string replacedTextName = "DeletedMovie3561";
+                string replacedTextType = "Comedy";
+                int replacedTextFee = 0;
+                int id = Convert.ToInt32(dgvMovies.CurrentRow.Cells["MovieID"].Value);
+                string updateQuery = "UPDATE Movie SET MovieName = @MovieName, MovieType = @MovieType, DistributionFee = @DistributionFee, NumberOfCopies = @NumberOfCopies WHERE MovieID = @ID";
+                db.myCommand.CommandText = updateQuery;
+                db.myCommand.Parameters.Clear();
+                db.myCommand.Parameters.AddWithValue("@ID", txtBoxMovieID.Text);
+                db.myCommand.Parameters.AddWithValue("@MovieName", replacedTextName);
+                db.myCommand.Parameters.AddWithValue("@MovieType", replacedTextType);
+                db.myCommand.Parameters.AddWithValue("@DistributionFee", replacedTextFee);
+                db.myCommand.Parameters.AddWithValue("@NumberOfCopies", replacedTextFee);
+
+                db.myCommand.ExecuteNonQuery();
+                MessageBox.Show("Movie deleted successfully!");
+                LoadMovies();
+                if (db.myConnection.State == ConnectionState.Open)
+                {
+                    db.myConnection.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error");
+            }
+        }
+
+        private void label7_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            try
+            {
+                if (db.myConnection.State == ConnectionState.Open)
+                {
+                    db.myConnection.Close();  // Close the connection if it's open
+                }
+                db.myConnection.Open();
+                string insertQuery = "INSERT INTO AppearedIn(MovieID, ActorID) " +
+                                     "VALUES (@MovieID, @ActorID)";
+                db.myCommand.CommandText = insertQuery;
+                db.myCommand.Parameters.Clear();
+                db.myCommand.Parameters.AddWithValue("@MovieID", txtBoxMovieIDActor.Text);
+                db.myCommand.Parameters.AddWithValue("@ActorID", txtBoxActorIDAI.Text);
+
+
+
+                db.myCommand.ExecuteNonQuery();
+                MessageBox.Show("Actor added successfully!");
+                if (db.myConnection.State == ConnectionState.Open)
+                {
+                    db.myConnection.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error");
+            }
+        }
+
+        private void dgvActors_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            dgvMovies.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            dgvMovies.RowTemplate.Height = 30;
         }
     }
-}
+
