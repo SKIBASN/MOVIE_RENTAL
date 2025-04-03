@@ -16,7 +16,6 @@ namespace WinFormsApp1
 
         public Database()
         {
-            //String connectionString = "Server=KADENW; Database=TEAM4CMPT291DATABASE; Trusted_Connection=yes;";
             this.myConnection = new SqlConnection(connectionString);
         }
 
