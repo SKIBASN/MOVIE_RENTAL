@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
 using System.Diagnostics.Eventing.Reader;
+using System.Windows.Forms;
 
 namespace WinFormsApp1
 {
@@ -14,13 +15,14 @@ namespace WinFormsApp1
         public SqlCommand myCommand;
         public SqlDataReader myReader;
 
+
         public Database()
         {
+            //String connectionString = "Server=DESKTOP-MNUPRSE; Database=TEAM4CMPT291DATABASE; Trusted_Connection=yes;";
+            //this.myConnection = new SqlConnection(connectionString);
+            String connectionString = "Server=192.168.1.190;Database=TEAM4CMPT291DATABASE;User Id=sa;Password=YourPassword123;";
             this.myConnection = new SqlConnection(connectionString);
-        }
 
-        public void OpenConnection()
-        {
             try
             {
                 if (myConnection.State == System.Data.ConnectionState.Closed)
@@ -56,13 +58,13 @@ namespace WinFormsApp1
         }
         public void insert(string insert_statement)
         {
-            OpenConnection();
+            
             myCommand.CommandText = insert_statement;
             myCommand.ExecuteNonQuery();
         }
         public void Date_Param_query(string query_string, DateTime param1, DateTime param2)
         {
-            OpenConnection();
+            
             myCommand.CommandText = query_string;
 
             // Add parameters to the command
@@ -73,7 +75,7 @@ namespace WinFormsApp1
         }
         public void ID_Param_query(string query_string, String param1)
         {
-            OpenConnection();
+            
             myCommand.CommandText = query_string;
 
             // Add parameters to the command 
@@ -83,7 +85,7 @@ namespace WinFormsApp1
         }
         public bool VID_Param_query(string query_string, String param1)
         {
-            OpenConnection();
+            
             myCommand.CommandText = query_string;
 
             // Add parameters to the command  
@@ -103,8 +105,45 @@ namespace WinFormsApp1
         }
 
         public void query(string query_string)
+        public void AddCustomer(string firstName, string lastName, string address, string city, string state, string zip, string email, string accountNumber, string creditCardNumber)
         {
-            OpenConnection();
+            try
+            {
+                string query = @"INSERT INTO Customer 
+                (FirstName, LastName, Address, City, State, ZipCode, EmailAddress, AccountNumber, AccountCreateDate, CreditCardNumber)
+                VALUES 
+                (@FirstName, @LastName, @Address, @City, @State, @ZipCode, @EmailAddress, @AccountNumber, GETDATE(), @CreditCardNumber);";
+
+                SqlCommand command = new SqlCommand(query, myConnection);
+                command.Parameters.AddWithValue("@FirstName", firstName);
+                command.Parameters.AddWithValue("@LastName", lastName);
+                command.Parameters.AddWithValue("@Address", address);
+                command.Parameters.AddWithValue("@City", city);
+                command.Parameters.AddWithValue("@State", state);
+                command.Parameters.AddWithValue("@ZipCode", zip);
+                command.Parameters.AddWithValue("@EmailAddress", email);
+                command.Parameters.AddWithValue("@AccountNumber", accountNumber);
+                command.Parameters.AddWithValue("@CreditCardNumber", creditCardNumber);
+
+                command.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error adding customer: " + ex.Message);
+            }
+        }
+
+        // Optional: Legacy manual insert method
+        /*
+        public void insert(String insert_statement)
+        {
+            this.myCommand.CommandText = insert_statement;
+            this.myCommand.ExecuteNonQuery();
+        }
+
+        public void query(String query_string)
+        {
+            
             myCommand.CommandText = query_string;
             myReader = myCommand.ExecuteReader();
         }
@@ -170,5 +209,9 @@ namespace WinFormsApp1
             }
         }
 
+            this.myCommand.CommandText = query_string;
+            this.myReader = this.myCommand.ExecuteReader();
+        }
+        */
     }
 }

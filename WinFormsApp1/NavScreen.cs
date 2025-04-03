@@ -8,10 +8,10 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Serialization;
-using Microsoft.VisualBasic.ApplicationServices;
+using System.Data.SqlClient;
+using Microsoft.VisualBasic.mitApplicationServices;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Data.SqlClient;
 using System.IO.Pipes;
 using static System.ComponentModel.Design.ObjectSelectorEditor;
 using static System.Runtime.InteropServices.JavaScript.JSType;
@@ -26,18 +26,145 @@ namespace WinFormsApp1
     {
         public Database db;
         private int choice = 0;
-
-
         // Change the type of 'result' from 'object' to 'Control' to access the 'Visible' property
         private Control result;
 
         public NavScreen(Database DT)
         {
             InitializeComponent();
-            db = DT;
-            // Initialize result with a TextBox instance
-            // Add result to the form's controls
+            db = new Database(); // Initialize the object and create the connection
+            LoadCustomers();
+            LoadMovies();
+            LoadActors();
+            btnAdd.Click += BtnAdd_Click;
+            btnUpdate.Click += BtnUpdate_Click;
+            btnDelete.Click += BtnDelete_Click;
+        }
 
+        private void LoadCustomers()
+        {
+            try
+            {
+                string query = "SELECT * FROM Customer";
+                SqlCommand cmd = new SqlCommand(query, db.myConnection);
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                DataTable table = new DataTable();
+                adapter.Fill(table);
+                dgvCustomers.DataSource = table;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error loading customers.");
+            }
+        }
+
+        // New validation method to ensure all customer fields have input
+        private bool ValidateCustomerInputs()
+        {
+            if (string.IsNullOrWhiteSpace(txtFirstName.Text) ||
+                string.IsNullOrWhiteSpace(txtLastName.Text) ||
+                string.IsNullOrWhiteSpace(txtAddress.Text) ||
+                string.IsNullOrWhiteSpace(txtCity.Text) ||
+                string.IsNullOrWhiteSpace(txtState.Text) ||
+                string.IsNullOrWhiteSpace(txtZip.Text) ||
+                string.IsNullOrWhiteSpace(txtEmail.Text) ||
+                string.IsNullOrWhiteSpace(txtAccount.Text) ||
+                string.IsNullOrWhiteSpace(txtCredit.Text))
+            {
+                MessageBox.Show("All fields must be filled out.", "Validation Error");
+                return false;
+            }
+            return true;
+        }
+
+        private void BtnAdd_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // Validate input fields before proceeding
+                if (!ValidateCustomerInputs())
+                    return;
+
+                string insertQuery = "INSERT INTO Customer (FirstName, LastName, Address, City, State, ZipCode, EmailAddress, AccountNumber, CreditCardNumber) " +
+                                     "VALUES (@FirstName, @LastName, @Address, @City, @State, @Zip, @Email, @Account, @Credit)";
+                db.myCommand.CommandText = insertQuery;
+                db.myCommand.Parameters.Clear();
+                db.myCommand.Parameters.AddWithValue("@FirstName", txtFirstName.Text);
+                db.myCommand.Parameters.AddWithValue("@LastName", txtLastName.Text);
+                db.myCommand.Parameters.AddWithValue("@Address", txtAddress.Text);
+                db.myCommand.Parameters.AddWithValue("@City", txtCity.Text);
+                db.myCommand.Parameters.AddWithValue("@State", txtState.Text);
+                db.myCommand.Parameters.AddWithValue("@Zip", txtZip.Text);
+                db.myCommand.Parameters.AddWithValue("@Email", txtEmail.Text);
+                db.myCommand.Parameters.AddWithValue("@Account", txtAccount.Text);
+                db.myCommand.Parameters.AddWithValue("@Credit", txtCredit.Text);
+
+                db.myCommand.ExecuteNonQuery();
+                MessageBox.Show("Customer added successfully!");
+                LoadCustomers();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error");
+            }
+        }
+
+        private void BtnUpdate_Click(object sender, EventArgs e)
+        {
+            if (dgvCustomers.CurrentRow == null) return;
+
+            try
+            {
+                // Validate input fields before updating
+                if (!ValidateCustomerInputs())
+                    return;
+
+                int id = Convert.ToInt32(dgvCustomers.CurrentRow.Cells["CustomerID"].Value);
+                string updateQuery = "UPDATE Customer SET FirstName = @FirstName, LastName = @LastName, Address = @Address, City = @City, State = @State, " +
+                                     "ZipCode = @Zip, EmailAddress = @Email, AccountNumber = @Account, CreditCardNumber = @Credit WHERE CustomerID = @ID";
+                db.myCommand.CommandText = updateQuery;
+                db.myCommand.Parameters.Clear();
+                db.myCommand.Parameters.AddWithValue("@ID", id);
+                db.myCommand.Parameters.AddWithValue("@FirstName", txtFirstName.Text);
+                db.myCommand.Parameters.AddWithValue("@LastName", txtLastName.Text);
+                db.myCommand.Parameters.AddWithValue("@Address", txtAddress.Text);
+                db.myCommand.Parameters.AddWithValue("@City", txtCity.Text);
+                db.myCommand.Parameters.AddWithValue("@State", txtState.Text);
+                db.myCommand.Parameters.AddWithValue("@Zip", txtZip.Text);
+                db.myCommand.Parameters.AddWithValue("@Email", txtEmail.Text);
+                db.myCommand.Parameters.AddWithValue("@Account", txtAccount.Text);
+                db.myCommand.Parameters.AddWithValue("@Credit", txtCredit.Text);
+
+                db.myCommand.ExecuteNonQuery();
+                MessageBox.Show("Customer updated successfully!");
+                LoadCustomers();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error");
+            }
+        }
+
+        private void BtnDelete_Click(object sender, EventArgs e)
+        {
+            if (dgvCustomers.CurrentRow == null) return;
+
+            try
+            {
+                int id = Convert.ToInt32(dgvCustomers.CurrentRow.Cells["CustomerID"].Value);
+                string deleteQuery = "DELETE FROM Customer WHERE CustomerID = @ID";
+                db.myCommand.CommandText = deleteQuery;
+                db.myCommand.Parameters.Clear();
+                db.myCommand.Parameters.AddWithValue("@ID", id);
+                db.myCommand.ExecuteNonQuery();
+
+                MessageBox.Show("Customer deleted successfully!");
+                LoadCustomers();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error");
+            }
         }
 
         private void LoadMovies()
@@ -103,8 +230,7 @@ namespace WinFormsApp1
 
         private void Movie_Click(object sender, EventArgs e)
         {
-	    LoadMovies();
-            LoadActors();
+	          
         }
 
         private void Customer_Click(object sender, EventArgs e)
@@ -185,7 +311,6 @@ namespace WinFormsApp1
                 cal2.Visible = true;
                 EnterR.Visible = true;
 
-
                 Specif.Visible = false;
 
                 choice = 3;
@@ -229,7 +354,6 @@ namespace WinFormsApp1
         {
             DateSelect1.Text = cal1.SelectionStart.ToShortDateString();
         }
-
 
         private void cal2_DateChanged(object sender, DateRangeEventArgs e)
         {
@@ -288,10 +412,8 @@ namespace WinFormsApp1
                         MessageBox.Show(e3.ToString(), "Error");
                     }
                 }
-
                 else if (choice == 1) // Top 5 rented movies in date range
                 {
-
                     try
                     {
                         string query = @"
@@ -369,15 +491,13 @@ namespace WinFormsApp1
                                         SELECT MovieID, MovieName,  numb_of_rentals
                                         FROM RankedMovies
                                         WHERE rnk <= 3
-                                        ORDER BY numb_of_rentals DESC;"
-                        ;
+                                        ORDER BY numb_of_rentals DESC;";
                         System.String empID = Specif.Text;
                         if (string.IsNullOrWhiteSpace(empID))
                         {
                             ErrorMes.Text = "Empty Employee ID.";
                             RepRes.Rows.Clear();
                             RepRes.Columns.Clear();
-
                         }
                         else
                         {
@@ -385,8 +505,6 @@ namespace WinFormsApp1
                                             SELECT *
                                             FROM Employee
                                             WHERE EmployeeID = @VID;";
-
-
                             bool empExists = db.VID_Param_query(Vquery, empID);
                             if (!empExists)
                             {
@@ -394,7 +512,6 @@ namespace WinFormsApp1
                                 RepRes.Rows.Clear();
                                 RepRes.Columns.Clear();
                                 db.myReader.Close();
-
                             }
                             else
                             {
@@ -409,12 +526,11 @@ namespace WinFormsApp1
                                 RepRes.Rows.Clear();
                                 while (db.myReader.Read())
                                 {
-                                    RepRes.Rows.Add(db.myReader["MovieID"].ToString(), db.myReader["MovieName"].ToString(), db.myReader["Numb_of_rentals"].ToString());
+                                    RepRes.Rows.Add(db.myReader["MovieID"].ToString(), db.myReader["MovieName"].ToString(), db.myReader["numb_of_rentals"].ToString());
                                 }
 
                                 db.myReader.Close();
                             }
-
                         }
                     }
                     catch (Exception e3)
@@ -441,7 +557,6 @@ namespace WinFormsApp1
                                         FROM RankedMovies
                                         WHERE rank <= 3
                                         ORDER BY numb_of_rentals DESC;";
-
                         if (!DateTime.TryParse(DateSelect1.Text, out date1) || !DateTime.TryParse(DateSelect2.Text, out date2))
                         {
                             ErrorMes.Text = "Invalid Date Range.";
@@ -472,7 +587,7 @@ namespace WinFormsApp1
                             RepRes.Rows.Clear();
                             while (db.myReader.Read())
                             {
-                                RepRes.Rows.Add(db.myReader["MovieType"].ToString(), db.myReader["Numb_of_rentals"].ToString());
+                                RepRes.Rows.Add(db.myReader["MovieType"].ToString(), db.myReader["numb_of_rentals"].ToString());
                             }
 
                             db.myReader.Close();
@@ -500,26 +615,21 @@ namespace WinFormsApp1
                                     SELECT MovieName, MovieID, numb_of_rentals
                                     FROM RankedMovies
                                     WHERE rank <= 3
-                                    ORDER BY numb_of_rentals DESC;
-        ";
+                                    ORDER BY numb_of_rentals DESC;";
                         System.String actorID = Specif.Text;
-
                         if (string.IsNullOrWhiteSpace(actorID))
                         {
                             ErrorMes.Text = "Empty Actor ID.";
                             RepRes.Rows.Clear();
                             RepRes.Columns.Clear();
-
                         }
                         else
                         {
-                            //check is actorID is valid
+                            // Check if actorID is valid
                             string Vquery = @"
                                             SELECT *
                                             FROM Actor
                                             WHERE ActorID = @VID;";
-
-
                             bool actorExists = db.VID_Param_query(Vquery, actorID);
                             if (!actorExists)
                             {
@@ -532,7 +642,6 @@ namespace WinFormsApp1
                             {
                                 ErrorMes.Text = "";
                                 db.myReader.Close();
-
                                 db.ID_Param_query(query, actorID);
 
                                 RepRes.Columns.Add("MovieID", "Movie ID");
@@ -542,7 +651,7 @@ namespace WinFormsApp1
                                 RepRes.Rows.Clear();
                                 while (db.myReader.Read())
                                 {
-                                    RepRes.Rows.Add(db.myReader["MovieID"].ToString(), db.myReader["MovieName"].ToString(), db.myReader["Numb_of_rentals"].ToString());
+                                    RepRes.Rows.Add(db.myReader["MovieID"].ToString(), db.myReader["MovieName"].ToString(), db.myReader["numb_of_rentals"].ToString());
                                 }
 
                                 db.myReader.Close();
@@ -553,11 +662,9 @@ namespace WinFormsApp1
                     {
                         MessageBox.Show(e3.ToString(), "Error");
                     }
-
                 }
             }
         }
-
 
         private void Specif_TextChanged(object sender, EventArgs e)
         {
@@ -802,5 +909,4 @@ namespace WinFormsApp1
             dgvMovies.RowTemplate.Height = 30;
         }
     }
-}
-   
+
