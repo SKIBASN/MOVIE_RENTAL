@@ -133,7 +133,22 @@ namespace WinFormsApp1
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            if (myReader != null)
+            {
+                myReader.Close();
+                myReader = null;
+            }
+            if (myCommand != null)
+            {
+                myCommand.Dispose();
+                myCommand = null;
+            }
+            if (myConnection != null)
+            {
+                myConnection.Close();
+                myConnection.Dispose();
+                myConnection = null;
+            }
         }
 
 

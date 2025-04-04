@@ -382,7 +382,7 @@ namespace WinFormsApp1
                                         FROM Customer C
                                         JOIN (
                                         SELECT CustomerID, COUNT(*) AS Numb_of_rentals 
-                                        FROM Rental 
+                                        FROM RentalOrder 
                                         GROUP BY CustomerID
                                         ) R 
                                         ON R.CustomerID = C.CustomerID
@@ -423,7 +423,7 @@ namespace WinFormsApp1
                                         M.MovieName, 
                                         COUNT(*) AS Numb_of_Rentals,
                                         DENSE_RANK() OVER (ORDER BY COUNT(*) DESC) AS rnk
-                                        FROM Rental R
+                                        FROM RentalOrder R
                                         JOIN Movie M ON R.MovieID = M.MovieID
                                         WHERE R.CheckoutDateTime BETWEEN @date1 AND @date2
                                         GROUP BY M.MovieID, M.MovieName
@@ -484,7 +484,7 @@ namespace WinFormsApp1
                                         WITH RankedMovies AS (
                                         SELECT r.MovieID, m.MovieName, COUNT(*) AS numb_of_rentals,
                                         DENSE_RANK() OVER (ORDER BY COUNT(*) DESC) AS rnk
-                                        FROM rental r, movie m
+                                        FROM rentalOrder r, movie m
 	                                    WHERE r.EmployeeID= @ID and r.MovieID=m.MovieID
                                         GROUP BY r.MovieID, m.MovieName
                                         )
@@ -548,7 +548,7 @@ namespace WinFormsApp1
                                         WITH RankedMovies AS (
                                         SELECT m.MovieType, COUNT(*) AS numb_of_rentals,
                                         DENSE_RANK() OVER (ORDER BY COUNT(*) DESC) AS rank
-                                        FROM rental r
+                                        FROM rentalOrder r
                                         JOIN movie m ON m.MovieID = r.MovieID
                                         WHERE r.CheckoutDateTime BETWEEN @Date1 AND @Date2
                                         GROUP BY m.MovieType
@@ -606,7 +606,7 @@ namespace WinFormsApp1
                                     WITH RankedMovies AS (
                                         SELECT m.MovieName, r.MovieID, COUNT(*) AS numb_of_rentals,
                                                DENSE_RANK() OVER (ORDER BY COUNT(*) DESC) AS rank
-                                        FROM Rental r
+                                        FROM RentalOrder r
                                         JOIN AppearedIn a ON r.MovieID = a.MovieID
                                         JOIN Movie m ON r.MovieID = m.MovieID
                                         WHERE a.ActorID = @ID
