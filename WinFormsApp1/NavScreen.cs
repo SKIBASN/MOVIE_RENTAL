@@ -211,7 +211,7 @@ namespace WinFormsApp1
             {
                 using (db = new Database()) // Ensure proper disposal
                 {
-                    db.myConnection.Open();
+                   
                     string query = "SELECT * FROM Actor";
                     SqlCommand cmd = new SqlCommand(query, db.myConnection);
                     SqlDataAdapter adapter = new SqlDataAdapter(cmd);

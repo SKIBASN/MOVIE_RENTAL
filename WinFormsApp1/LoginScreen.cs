@@ -57,6 +57,7 @@ namespace WinFormsApp1
                     if (Database.VerifyPassword(enteredPassword, storedHash))
                     {
                         status.Text = "Login successful";
+                        
                         NavScreen f2 = new NavScreen(db);
                         f2.Show();
                         this.Hide();
