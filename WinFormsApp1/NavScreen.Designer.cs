@@ -31,10 +31,10 @@ namespace WinFormsApp1
         {
             components = new System.ComponentModel.Container();
             Button BtnMovieUpdate;
-            DataGridViewCellStyle dataGridViewCellStyle5 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle6 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle7 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle8 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
             tabControl1 = new TabControl();
             Customer = new TabPage();
             lblFirstName = new Label();
@@ -95,6 +95,8 @@ namespace WinFormsApp1
             Specif = new TextBox();
             ReportSelection = new ComboBox();
             databaseBindingSource = new BindingSource(components);
+            label9 = new Label();
+            txtSIN = new TextBox();
             BtnMovieUpdate = new Button();
             tabControl1.SuspendLayout();
             Customer.SuspendLayout();
@@ -129,12 +131,14 @@ namespace WinFormsApp1
             tabControl1.Location = new Point(9, 0);
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new Size(1248, 492);
+            tabControl1.Size = new Size(1191, 492);
             tabControl1.TabIndex = 0;
             // 
             // Customer
             // 
             Customer.BackColor = Color.Firebrick;
+            Customer.Controls.Add(txtSIN);
+            Customer.Controls.Add(label9);
             Customer.Controls.Add(lblFirstName);
             Customer.Controls.Add(lblLastName);
             Customer.Controls.Add(lblAddress);
@@ -161,7 +165,7 @@ namespace WinFormsApp1
             Customer.Location = new Point(4, 46);
             Customer.Name = "Customer";
             Customer.Padding = new Padding(3);
-            Customer.Size = new Size(1240, 442);
+            Customer.Size = new Size(1183, 442);
             Customer.TabIndex = 0;
             Customer.Text = "Customer";
             Customer.Click += Customer_Click;
@@ -170,7 +174,7 @@ namespace WinFormsApp1
             // 
             lblFirstName.AutoSize = true;
             lblFirstName.ForeColor = Color.White;
-            lblFirstName.Location = new Point(18, 28);
+            lblFirstName.Location = new Point(19, 30);
             lblFirstName.Name = "lblFirstName";
             lblFirstName.Size = new Size(67, 15);
             lblFirstName.TabIndex = 0;
@@ -190,7 +194,7 @@ namespace WinFormsApp1
             // 
             lblAddress.AutoSize = true;
             lblAddress.ForeColor = Color.White;
-            lblAddress.Location = new Point(23, 123);
+            lblAddress.Location = new Point(27, 114);
             lblAddress.Name = "lblAddress";
             lblAddress.Size = new Size(52, 15);
             lblAddress.TabIndex = 2;
@@ -200,7 +204,7 @@ namespace WinFormsApp1
             // 
             lblCity.AutoSize = true;
             lblCity.ForeColor = Color.White;
-            lblCity.Location = new Point(30, 158);
+            lblCity.Location = new Point(38, 153);
             lblCity.Name = "lblCity";
             lblCity.Size = new Size(31, 15);
             lblCity.TabIndex = 3;
@@ -210,7 +214,7 @@ namespace WinFormsApp1
             // 
             lblState.AutoSize = true;
             lblState.ForeColor = Color.White;
-            lblState.Location = new Point(23, 197);
+            lblState.Location = new Point(24, 192);
             lblState.Name = "lblState";
             lblState.Size = new Size(56, 15);
             lblState.TabIndex = 4;
@@ -220,7 +224,7 @@ namespace WinFormsApp1
             // 
             lblZip.AutoSize = true;
             lblZip.ForeColor = Color.White;
-            lblZip.Location = new Point(23, 235);
+            lblZip.Location = new Point(27, 227);
             lblZip.Name = "lblZip";
             lblZip.Size = new Size(58, 15);
             lblZip.TabIndex = 5;
@@ -258,15 +262,16 @@ namespace WinFormsApp1
             // 
             // txtFirstName
             // 
-            txtFirstName.Location = new Point(105, 26);
+            txtFirstName.Location = new Point(154, 27);
             txtFirstName.Margin = new Padding(3, 2, 3, 2);
             txtFirstName.Name = "txtFirstName";
             txtFirstName.Size = new Size(88, 23);
             txtFirstName.TabIndex = 9;
+            txtFirstName.TextChanged += txtFirstName_TextChanged;
             // 
             // txtLastName
             // 
-            txtLastName.Location = new Point(105, 71);
+            txtLastName.Location = new Point(154, 63);
             txtLastName.Margin = new Padding(3, 2, 3, 2);
             txtLastName.Name = "txtLastName";
             txtLastName.Size = new Size(88, 23);
@@ -274,7 +279,7 @@ namespace WinFormsApp1
             // 
             // txtAddress
             // 
-            txtAddress.Location = new Point(105, 115);
+            txtAddress.Location = new Point(154, 106);
             txtAddress.Margin = new Padding(3, 2, 3, 2);
             txtAddress.Name = "txtAddress";
             txtAddress.Size = new Size(88, 23);
@@ -282,7 +287,7 @@ namespace WinFormsApp1
             // 
             // txtCity
             // 
-            txtCity.Location = new Point(105, 150);
+            txtCity.Location = new Point(154, 150);
             txtCity.Margin = new Padding(3, 2, 3, 2);
             txtCity.Name = "txtCity";
             txtCity.Size = new Size(88, 23);
@@ -291,7 +296,7 @@ namespace WinFormsApp1
             // 
             // txtState
             // 
-            txtState.Location = new Point(105, 189);
+            txtState.Location = new Point(154, 189);
             txtState.Margin = new Padding(3, 2, 3, 2);
             txtState.Name = "txtState";
             txtState.Size = new Size(88, 23);
@@ -299,7 +304,7 @@ namespace WinFormsApp1
             // 
             // txtZip
             // 
-            txtZip.Location = new Point(105, 227);
+            txtZip.Location = new Point(154, 227);
             txtZip.Margin = new Padding(3, 2, 3, 2);
             txtZip.Name = "txtZip";
             txtZip.Size = new Size(88, 23);
@@ -307,7 +312,7 @@ namespace WinFormsApp1
             // 
             // txtEmail
             // 
-            txtEmail.Location = new Point(105, 264);
+            txtEmail.Location = new Point(154, 269);
             txtEmail.Margin = new Padding(3, 2, 3, 2);
             txtEmail.Name = "txtEmail";
             txtEmail.Size = new Size(88, 23);
@@ -315,7 +320,7 @@ namespace WinFormsApp1
             // 
             // txtAccount
             // 
-            txtAccount.Location = new Point(105, 302);
+            txtAccount.Location = new Point(154, 305);
             txtAccount.Margin = new Padding(3, 2, 3, 2);
             txtAccount.Name = "txtAccount";
             txtAccount.Size = new Size(88, 23);
@@ -323,7 +328,7 @@ namespace WinFormsApp1
             // 
             // txtCredit
             // 
-            txtCredit.Location = new Point(105, 343);
+            txtCredit.Location = new Point(154, 343);
             txtCredit.Margin = new Padding(3, 2, 3, 2);
             txtCredit.Name = "txtCredit";
             txtCredit.Size = new Size(88, 23);
@@ -370,10 +375,10 @@ namespace WinFormsApp1
             // 
             // dgvCustomers
             // 
-            dgvCustomers.Location = new Point(437, 142);
+            dgvCustomers.Location = new Point(406, 30);
             dgvCustomers.Margin = new Padding(3, 2, 3, 2);
             dgvCustomers.Name = "dgvCustomers";
-            dgvCustomers.Size = new Size(455, 255);
+            dgvCustomers.Size = new Size(751, 376);
             dgvCustomers.TabIndex = 21;
             dgvCustomers.CellContentClick += dgvCustomers_CellContentClick;
             // 
@@ -404,7 +409,7 @@ namespace WinFormsApp1
             Movie.Location = new Point(4, 46);
             Movie.Name = "Movie";
             Movie.Padding = new Padding(3);
-            Movie.Size = new Size(1240, 442);
+            Movie.Size = new Size(1183, 442);
             Movie.TabIndex = 1;
             Movie.Text = "Movie";
             Movie.Click += Movie_Click;
@@ -412,14 +417,14 @@ namespace WinFormsApp1
             // dgvActors
             // 
             dgvActors.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle5.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle5.BackColor = SystemColors.Window;
-            dataGridViewCellStyle5.Font = new Font("Segoe UI", 20F);
-            dataGridViewCellStyle5.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle5.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = DataGridViewTriState.False;
-            dgvActors.DefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = SystemColors.Window;
+            dataGridViewCellStyle1.Font = new Font("Segoe UI", 20F);
+            dataGridViewCellStyle1.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.False;
+            dgvActors.DefaultCellStyle = dataGridViewCellStyle1;
             dgvActors.Location = new Point(748, 220);
             dgvActors.Margin = new Padding(3, 2, 3, 2);
             dgvActors.Name = "dgvActors";
@@ -601,14 +606,14 @@ namespace WinFormsApp1
             // dgvMovies
             // 
             dgvMovies.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle6.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle6.BackColor = SystemColors.Window;
-            dataGridViewCellStyle6.Font = new Font("Segoe UI", 20F);
-            dataGridViewCellStyle6.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle6.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle6.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle6.WrapMode = DataGridViewTriState.False;
-            dgvMovies.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = SystemColors.Window;
+            dataGridViewCellStyle2.Font = new Font("Segoe UI", 20F);
+            dataGridViewCellStyle2.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
+            dgvMovies.DefaultCellStyle = dataGridViewCellStyle2;
             dgvMovies.Location = new Point(748, 9);
             dgvMovies.Margin = new Padding(3, 2, 3, 2);
             dgvMovies.Name = "dgvMovies";
@@ -623,7 +628,7 @@ namespace WinFormsApp1
             Rental.Location = new Point(4, 46);
             Rental.Name = "Rental";
             Rental.Padding = new Padding(3);
-            Rental.Size = new Size(1240, 442);
+            Rental.Size = new Size(1183, 442);
             Rental.TabIndex = 2;
             Rental.Text = "Rental";
             // 
@@ -648,7 +653,7 @@ namespace WinFormsApp1
             Report.Margin = new Padding(0);
             Report.Name = "Report";
             Report.Padding = new Padding(3);
-            Report.Size = new Size(1240, 442);
+            Report.Size = new Size(1183, 442);
             Report.TabIndex = 3;
             Report.Text = "Report";
             Report.Click += Report_Click;
@@ -670,8 +675,8 @@ namespace WinFormsApp1
             // 
             RepRes.AllowUserToAddRows = false;
             RepRes.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle7.WrapMode = DataGridViewTriState.True;
-            RepRes.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
+            RepRes.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle3;
             RepRes.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
             RepRes.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             RepRes.BackgroundColor = SystemColors.ButtonHighlight;
@@ -680,8 +685,8 @@ namespace WinFormsApp1
             RepRes.Name = "RepRes";
             RepRes.ReadOnly = true;
             RepRes.RowHeadersWidth = 10;
-            dataGridViewCellStyle8.WrapMode = DataGridViewTriState.True;
-            RepRes.RowsDefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle4.WrapMode = DataGridViewTriState.True;
+            RepRes.RowsDefaultCellStyle = dataGridViewCellStyle4;
             RepRes.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             RepRes.ShowCellToolTips = false;
             RepRes.Size = new Size(678, 282);
@@ -807,6 +812,25 @@ namespace WinFormsApp1
             // 
             databaseBindingSource.DataSource = typeof(Database);
             // 
+            // label9
+            // 
+            label9.AutoSize = true;
+            label9.ForeColor = Color.White;
+            label9.Location = new Point(3, 391);
+            label9.Name = "label9";
+            label9.Size = new Size(133, 15);
+            label9.TabIndex = 22;
+            label9.Text = "Social Security Number:";
+            label9.Click += label9_Click;
+            // 
+            // txtSIN
+            // 
+            txtSIN.Location = new Point(154, 388);
+            txtSIN.Margin = new Padding(3, 2, 3, 2);
+            txtSIN.Name = "txtSIN";
+            txtSIN.Size = new Size(88, 23);
+            txtSIN.TabIndex = 23;
+            // 
             // NavScreen
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -897,5 +921,7 @@ namespace WinFormsApp1
         private Label lblEmail;
         private Label lblAccount;
         private Label lblCredit;
+        private Label label9;
+        private TextBox txtSIN;
     }
 }

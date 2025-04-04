@@ -103,18 +103,19 @@ namespace WinFormsApp1
                 return false; // No data
             }
         }
-        public void AddCustomer(string firstName, string lastName, string address, string city, string state, string zip, string email, string accountNumber, string creditCardNumber)
+        public void AddCustomer(string SocialSecurityNum, string firstName, string lastName, string address, string city, string state, string zip, string email, string accountNumber, string creditCardNumber)
         {
             try
             {
                 string query = @"INSERT INTO Customer 
-                (FirstName, LastName, Address, City, State, ZipCode, EmailAddress, AccountNumber, AccountCreateDate, CreditCardNumber)
+                (SocialSecurityNum, FirstName, LastName, Address, City, State, ZipCode, EmailAddress, AccountNumber, AccountCreateDate, CreditCardNumber)
                 VALUES 
-                (@FirstName, @LastName, @Address, @City, @State, @ZipCode, @EmailAddress, @AccountNumber, GETDATE(), @CreditCardNumber);";
+                (@SIN, @FirstName, @LastName, @Address, @City, @State, @ZipCode, @EmailAddress, @AccountNumber, GETDATE(), @CreditCardNumber);";
 
                 SqlCommand command = new SqlCommand(query, myConnection);
                 command.Parameters.AddWithValue("@FirstName", firstName);
                 command.Parameters.AddWithValue("@LastName", lastName);
+                command.Parameters.AddWithValue("@SIN", SocialSecurityNum);
                 command.Parameters.AddWithValue("@Address", address);
                 command.Parameters.AddWithValue("@City", city);
                 command.Parameters.AddWithValue("@State", state);

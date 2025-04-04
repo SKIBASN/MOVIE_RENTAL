@@ -62,6 +62,7 @@ namespace WinFormsApp1
         private bool ValidateCustomerInputs()
         {
             if (string.IsNullOrWhiteSpace(txtFirstName.Text) ||
+                string.IsNullOrWhiteSpace(txtSIN.Text) ||
                 string.IsNullOrWhiteSpace(txtLastName.Text) ||
                 string.IsNullOrWhiteSpace(txtAddress.Text) ||
                 string.IsNullOrWhiteSpace(txtCity.Text) ||
@@ -81,27 +82,31 @@ namespace WinFormsApp1
         {
             try
             {
-                // Validate input fields before proceeding
-                if (!ValidateCustomerInputs())
-                    return;
+                using (db = new Database()) // Ensure proper disposal
+                {
+                    // Validate input fields before proceeding
+                    if (!ValidateCustomerInputs())
+                        return;
 
-                string insertQuery = "INSERT INTO Customer (FirstName, LastName, Address, City, State, ZipCode, EmailAddress, AccountNumber, CreditCardNumber) " +
-                                     "VALUES (@FirstName, @LastName, @Address, @City, @State, @Zip, @Email, @Account, @Credit)";
-                db.myCommand.CommandText = insertQuery;
-                db.myCommand.Parameters.Clear();
-                db.myCommand.Parameters.AddWithValue("@FirstName", txtFirstName.Text);
-                db.myCommand.Parameters.AddWithValue("@LastName", txtLastName.Text);
-                db.myCommand.Parameters.AddWithValue("@Address", txtAddress.Text);
-                db.myCommand.Parameters.AddWithValue("@City", txtCity.Text);
-                db.myCommand.Parameters.AddWithValue("@State", txtState.Text);
-                db.myCommand.Parameters.AddWithValue("@Zip", txtZip.Text);
-                db.myCommand.Parameters.AddWithValue("@Email", txtEmail.Text);
-                db.myCommand.Parameters.AddWithValue("@Account", txtAccount.Text);
-                db.myCommand.Parameters.AddWithValue("@Credit", txtCredit.Text);
+                    string insertQuery = "INSERT INTO Customer (SocialSecurityNum, FirstName, LastName, Address, City, State, ZipCode, EmailAddress, AccountNumber, CreditCardNumber) " +
+                                         "VALUES (@SIN, @FirstName, @LastName, @Address, @City, @State, @Zip, @Email, @Account, @Credit)";
+                    db.myCommand.CommandText = insertQuery;
+                    db.myCommand.Parameters.Clear();
+                    db.myCommand.Parameters.AddWithValue("@FirstName", txtFirstName.Text);
+                    db.myCommand.Parameters.AddWithValue("@LastName", txtLastName.Text);
+                    db.myCommand.Parameters.AddWithValue("@SIN", txtSIN.Text);
+                    db.myCommand.Parameters.AddWithValue("@Address", txtAddress.Text);
+                    db.myCommand.Parameters.AddWithValue("@City", txtCity.Text);
+                    db.myCommand.Parameters.AddWithValue("@State", txtState.Text);
+                    db.myCommand.Parameters.AddWithValue("@Zip", txtZip.Text);
+                    db.myCommand.Parameters.AddWithValue("@Email", txtEmail.Text);
+                    db.myCommand.Parameters.AddWithValue("@Account", txtAccount.Text);
+                    db.myCommand.Parameters.AddWithValue("@Credit", txtCredit.Text);
 
-                db.myCommand.ExecuteNonQuery();
-                MessageBox.Show("Customer added successfully!");
-                LoadCustomers();
+                    db.myCommand.ExecuteNonQuery();
+                    MessageBox.Show("Customer added successfully!");
+                    LoadCustomers();
+                }
             }
             catch (Exception ex)
             {
@@ -111,33 +116,39 @@ namespace WinFormsApp1
 
         private void BtnUpdate_Click(object sender, EventArgs e)
         {
+
             if (dgvCustomers.CurrentRow == null) return;
 
             try
             {
                 // Validate input fields before updating
-                if (!ValidateCustomerInputs())
-                    return;
+                using (db = new Database()) // Ensure proper disposal
+                {
+                    if (!ValidateCustomerInputs())
+                        return;
 
-                int id = Convert.ToInt32(dgvCustomers.CurrentRow.Cells["CustomerID"].Value);
-                string updateQuery = "UPDATE Customer SET FirstName = @FirstName, LastName = @LastName, Address = @Address, City = @City, State = @State, " +
-                                     "ZipCode = @Zip, EmailAddress = @Email, AccountNumber = @Account, CreditCardNumber = @Credit WHERE CustomerID = @ID";
-                db.myCommand.CommandText = updateQuery;
-                db.myCommand.Parameters.Clear();
-                db.myCommand.Parameters.AddWithValue("@ID", id);
-                db.myCommand.Parameters.AddWithValue("@FirstName", txtFirstName.Text);
-                db.myCommand.Parameters.AddWithValue("@LastName", txtLastName.Text);
-                db.myCommand.Parameters.AddWithValue("@Address", txtAddress.Text);
-                db.myCommand.Parameters.AddWithValue("@City", txtCity.Text);
-                db.myCommand.Parameters.AddWithValue("@State", txtState.Text);
-                db.myCommand.Parameters.AddWithValue("@Zip", txtZip.Text);
-                db.myCommand.Parameters.AddWithValue("@Email", txtEmail.Text);
-                db.myCommand.Parameters.AddWithValue("@Account", txtAccount.Text);
-                db.myCommand.Parameters.AddWithValue("@Credit", txtCredit.Text);
+                    int id = Convert.ToInt32(dgvCustomers.CurrentRow.Cells["CustomerID"].Value);
+                    string updateQuery = "UPDATE Customer SET SocialSecurityNum= @SIN, FirstName = @FirstName, LastName = @LastName, Address = @Address, City = @City, State = @State, " +
+                                         "ZipCode = @Zip, EmailAddress = @Email, AccountNumber = @Account, CreditCardNumber = @Credit WHERE CustomerID = @ID";
+                    db.myCommand.CommandText = updateQuery;
+                    db.myCommand.Parameters.Clear();
+                    db.myCommand.Parameters.AddWithValue("@ID", id);
+                    db.myCommand.Parameters.AddWithValue("@FirstName", txtFirstName.Text);
+                    db.myCommand.Parameters.AddWithValue("@SIN", txtSIN.Text);
+                    db.myCommand.Parameters.AddWithValue("@LastName", txtLastName.Text);
+                    db.myCommand.Parameters.AddWithValue("@Address", txtAddress.Text);
+                    db.myCommand.Parameters.AddWithValue("@City", txtCity.Text);
+                    db.myCommand.Parameters.AddWithValue("@State", txtState.Text);
+                    db.myCommand.Parameters.AddWithValue("@Zip", txtZip.Text);
+                    db.myCommand.Parameters.AddWithValue("@Email", txtEmail.Text);
+                    db.myCommand.Parameters.AddWithValue("@Account", txtAccount.Text);
+                    db.myCommand.Parameters.AddWithValue("@Credit", txtCredit.Text);
 
-                db.myCommand.ExecuteNonQuery();
-                MessageBox.Show("Customer updated successfully!");
-                LoadCustomers();
+                    db.myCommand.ExecuteNonQuery();
+                    MessageBox.Show("Customer updated successfully!");
+                    LoadCustomers();
+                    dgvCustomers.Refresh();
+                }
             }
             catch (Exception ex)
             {
@@ -151,15 +162,18 @@ namespace WinFormsApp1
 
             try
             {
-                int id = Convert.ToInt32(dgvCustomers.CurrentRow.Cells["CustomerID"].Value);
-                string deleteQuery = "DELETE FROM Customer WHERE CustomerID = @ID";
-                db.myCommand.CommandText = deleteQuery;
-                db.myCommand.Parameters.Clear();
-                db.myCommand.Parameters.AddWithValue("@ID", id);
-                db.myCommand.ExecuteNonQuery();
+                using (db = new Database()) // Ensure proper disposal
+                {
+                    int id = Convert.ToInt32(dgvCustomers.CurrentRow.Cells["CustomerID"].Value);
+                    string deleteQuery = "DELETE FROM Customer WHERE CustomerID = @ID";
+                    db.myCommand.CommandText = deleteQuery;
+                    db.myCommand.Parameters.Clear();
+                    db.myCommand.Parameters.AddWithValue("@ID", id);
+                    db.myCommand.ExecuteNonQuery();
 
-                MessageBox.Show("Customer deleted successfully!");
-                LoadCustomers();
+                    MessageBox.Show("Customer deleted successfully!");
+                    LoadCustomers();
+                }
             }
             catch (Exception ex)
             {
@@ -171,55 +185,46 @@ namespace WinFormsApp1
         {
             try
             {
-                if (db.myConnection.State == ConnectionState.Open)
+                using (db = new Database()) // Ensure proper disposal
                 {
-                    db.myConnection.Close();  // Close the connection if it's open
+                    string query = "SELECT * FROM Movie";
+                    SqlCommand cmd = new SqlCommand(query, db.myConnection);
+                    SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                    DataTable table = new DataTable();
+                    adapter.Fill(table);
+                    var filteredRows = table.AsEnumerable()
+                    .Where(row => row.Field<string>("MovieName") != "DeletedMovie3561")
+                    .CopyToDataTable();
+                    dgvMovies.DataSource = filteredRows;
                 }
-                db.myConnection.Open();
-                string query = "SELECT * FROM Movie";
-                SqlCommand cmd = new SqlCommand(query, db.myConnection);
-                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
-                DataTable table = new DataTable();
-                adapter.Fill(table);
-                var filteredRows = table.AsEnumerable()
-                .Where(row => row.Field<string>("MovieName") != "DeletedMovie3561")
-                .CopyToDataTable();
-                dgvMovies.DataSource = filteredRows;
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Error loading Movies.");
             }
-            if (db.myConnection.State == ConnectionState.Open)
-            {
-                db.myConnection.Close();
-            }
+
 
         }
         private void LoadActors()
         {
             try
             {
-                if (db.myConnection.State == ConnectionState.Open)
+                using (db = new Database()) // Ensure proper disposal
                 {
-                    db.myConnection.Close();  // Close the connection if it's open
+                    db.myConnection.Open();
+                    string query = "SELECT * FROM Actor";
+                    SqlCommand cmd = new SqlCommand(query, db.myConnection);
+                    SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                    DataTable table = new DataTable();
+                    adapter.Fill(table);
+                    dgvActors.DataSource = table;
                 }
-                db.myConnection.Open();
-                string query = "SELECT * FROM Actor";
-                SqlCommand cmd = new SqlCommand(query, db.myConnection);
-                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
-                DataTable table = new DataTable();
-                adapter.Fill(table);
-                dgvActors.DataSource = table;
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Error loading Actors.");
             }
-            if (db.myConnection.State == ConnectionState.Open)
-            {
-                db.myConnection.Close();
-            }
+
 
         }
 
@@ -916,6 +921,16 @@ namespace WinFormsApp1
         }
 
         private void label8_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtFirstName_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label9_Click(object sender, EventArgs e)
         {
 
         }

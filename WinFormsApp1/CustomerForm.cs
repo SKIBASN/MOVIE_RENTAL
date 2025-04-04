@@ -111,17 +111,18 @@ namespace WinFormsApp1
         private void BtnAddCustomer_Click(object sender, EventArgs e)
         {
             Database db = new Database();
-            db.AddCustomer(
-                txtFirstName.Text,
-                txtLastName.Text,
-                txtAddress.Text,
-                txtCity.Text,
-                txtState.Text,
-                txtZipCode.Text,
-                txtEmail.Text,
-                txtAccountNumber.Text,
-                txtCreditCard.Text
-            );
+            //db.AddCustomer(
+            //    txtSIN.Text,
+            //    txtFirstName.Text,
+            //    txtLastName.Text,
+            //    txtAddress.Text,
+            //    txtCity.Text,
+            //    txtState.Text,
+            //    txtZipCode.Text,
+            //    txtEmail.Text,
+            //    txtAccountNumber.Text,
+            //    txtCreditCard.Text
+            //);
             MessageBox.Show("Customer added successfully!");
             LoadCustomers();
             ClearForm();
