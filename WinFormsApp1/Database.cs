@@ -19,6 +19,7 @@ namespace WinFormsApp1
         public SqlCommand myCommand;
         public SqlDataReader myReader;
 
+
         public Database()
         {
             String connectionString = "Server=BRIGHT-THINKPAD; Database=TEAM4CMPT291DATABASE; Trusted_Connection=yes;";
@@ -112,7 +113,7 @@ namespace WinFormsApp1
 
         public void insert(string insert_statement)
         {
-            //OpenConnection();
+            
             myCommand.CommandText = insert_statement;
             myCommand.ExecuteNonQuery();
         }
@@ -127,7 +128,7 @@ namespace WinFormsApp1
 
         public void Date_Param_query(string query_string, DateTime param1, DateTime param2)
         {
-            //OpenConnection();
+            
             myCommand.CommandText = query_string;
 
             // Add parameters to the command
@@ -138,7 +139,7 @@ namespace WinFormsApp1
         }
         public void ID_Param_query(string query_string, String param1)
         {
-            //OpenConnection();
+            
             myCommand.CommandText = query_string;
 
             // Add parameters to the command 
@@ -148,7 +149,7 @@ namespace WinFormsApp1
         }
         public bool VID_Param_query(string query_string, String param1)
         {
-            //OpenConnection();
+            
             myCommand.CommandText = query_string;
 
             // Add parameters to the command  
@@ -166,8 +167,57 @@ namespace WinFormsApp1
                 return false; // No data
             }
         }
+        public void AddCustomer(string SocialSecurityNum, string firstName, string lastName, string address, string city, string state, string zip, string email, string accountNumber, string creditCardNumber)
+        {
+            try
+            {
+                string query = @"INSERT INTO Customer 
+                (SocialSecurityNum, FirstName, LastName, Address, City, State, ZipCode, EmailAddress, AccountNumber, AccountCreateDate, CreditCardNumber)
+                VALUES 
+                (@SIN, @FirstName, @LastName, @Address, @City, @State, @ZipCode, @EmailAddress, @AccountNumber, GETDATE(), @CreditCardNumber);";
 
-        public void query(string query_string)
+                SqlCommand command = new SqlCommand(query, myConnection);
+                command.Parameters.AddWithValue("@FirstName", firstName);
+                command.Parameters.AddWithValue("@LastName", lastName);
+                command.Parameters.AddWithValue("@SIN", SocialSecurityNum);
+                command.Parameters.AddWithValue("@Address", address);
+                command.Parameters.AddWithValue("@City", city);
+                command.Parameters.AddWithValue("@State", state);
+                command.Parameters.AddWithValue("@ZipCode", zip);
+                command.Parameters.AddWithValue("@EmailAddress", email);
+                command.Parameters.AddWithValue("@AccountNumber", accountNumber);
+                command.Parameters.AddWithValue("@CreditCardNumber", creditCardNumber);
+
+                command.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error adding customer: " + ex.Message);
+            }
+        }
+
+        public void Dispose()
+        {
+            if (myReader != null)
+            {
+                myReader.Close();
+                myReader = null;
+            }
+            if (myCommand != null)
+            {
+                myCommand.Dispose();
+                myCommand = null;
+            }
+            if (myConnection != null)
+            {
+                myConnection.Close();
+                myConnection.Dispose();
+                myConnection = null;
+            }
+        }
+
+
+        public void query(String query_string)
         {
             //OpenConnection();
             if (myReader != null && !myReader.IsClosed)
@@ -227,27 +277,5 @@ namespace WinFormsApp1
             }
 
         }
-
-
-
-        public void Dispose()
-        {
-            if (myReader != null)
-            {
-                myReader.Dispose();
-                myReader = null;
-            }
-            if (myCommand != null)
-            {
-                myCommand.Dispose();
-                myCommand = null;
-            }
-            if (myConnection != null)
-            {
-                myConnection.Dispose();
-                myConnection = null;
-            }
-        }
-
     }
 }

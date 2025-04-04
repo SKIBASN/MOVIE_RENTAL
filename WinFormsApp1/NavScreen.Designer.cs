@@ -29,6 +29,12 @@ namespace WinFormsApp1
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
+            Button BtnMovieUpdate;
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle7 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle8 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle9 = new DataGridViewCellStyle();
@@ -37,7 +43,49 @@ namespace WinFormsApp1
             DataGridViewCellStyle dataGridViewCellStyle12 = new DataGridViewCellStyle();
             tabControl1 = new TabControl();
             Customer = new TabPage();
+            lblFirstName = new Label();
+            lblLastName = new Label();
+            lblAddress = new Label();
+            lblCity = new Label();
+            lblState = new Label();
+            lblZip = new Label();
+            lblEmail = new Label();
+            lblAccount = new Label();
+            lblCredit = new Label();
+            txtFirstName = new TextBox();
+            txtLastName = new TextBox();
+            txtAddress = new TextBox();
+            txtCity = new TextBox();
+            txtState = new TextBox();
+            txtZip = new TextBox();
+            txtEmail = new TextBox();
+            txtAccount = new TextBox();
+            txtCredit = new TextBox();
+            btnAdd = new Button();
+            btnUpdate = new Button();
+            btnDelete = new Button();
+            dgvCustomers = new DataGridView();
             Movie = new TabPage();
+            dgvActors = new DataGridView();
+            button1 = new Button();
+            txtBoxActorIDAI = new TextBox();
+            txtBoxMovieIDActor = new TextBox();
+            label8 = new Label();
+            label7 = new Label();
+            label1 = new Label();
+            txtBoxMovieID = new TextBox();
+            label6 = new Label();
+            BtnMovieDelete = new Button();
+            BtnMovieAdd = new Button();
+            txtBoxCopies = new TextBox();
+            label5 = new Label();
+            txtBoxDFee = new TextBox();
+            label4 = new Label();
+            txtBoxType = new TextBox();
+            label3 = new Label();
+            label2 = new Label();
+            txtBoxName = new TextBox();
+            dgvMovies = new DataGridView();
             Rental = new TabPage();
             rentalUpdateButton = new Button();
             label2 = new Label();
@@ -75,17 +123,40 @@ namespace WinFormsApp1
             SpecifTitle1 = new Label();
             Specif = new TextBox();
             ReportSelection = new ComboBox();
+            databaseBindingSource = new BindingSource(components);
+            label9 = new Label();
+            txtSIN = new TextBox();
+            BtnMovieUpdate = new Button();
             customerID = new DataGridViewTextBoxColumn();
             customerFirstName = new DataGridViewTextBoxColumn();
             customerLastName = new DataGridViewTextBoxColumn();
             showQueueBtn = new Button();
             tabControl1.SuspendLayout();
+            Customer.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvCustomers).BeginInit();
+            Movie.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvActors).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dgvMovies).BeginInit();
+            Report.SuspendLayout();
             Rental.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvRentalMovies).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dgvRentalCustomers).BeginInit();
             ReportPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)RepRes).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)databaseBindingSource).BeginInit();
             SuspendLayout();
+            // 
+            // BtnMovieUpdate
+            // 
+            BtnMovieUpdate.Font = new Font("Segoe UI", 16F);
+            BtnMovieUpdate.Location = new Point(507, 278);
+            BtnMovieUpdate.Margin = new Padding(3, 2, 3, 2);
+            BtnMovieUpdate.Name = "BtnMovieUpdate";
+            BtnMovieUpdate.Size = new Size(106, 45);
+            BtnMovieUpdate.TabIndex = 11;
+            BtnMovieUpdate.Text = "Update";
+            BtnMovieUpdate.UseVisualStyleBackColor = true;
+            BtnMovieUpdate.Click += BtnMovieUpdate_Click;
             // 
             // tabControl1
             // 
@@ -94,38 +165,510 @@ namespace WinFormsApp1
             tabControl1.Controls.Add(Rental);
             tabControl1.Controls.Add(ReportPage);
             tabControl1.Font = new Font("Segoe UI", 20F);
+            tabControl1.Location = new Point(9, 0);
             tabControl1.ItemSize = new Size(151, 50);
             tabControl1.Location = new Point(0, 0);
             tabControl1.Margin = new Padding(3, 4, 3, 4);
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
+            tabControl1.Size = new Size(1191, 492);
             tabControl1.Size = new Size(1426, 656);
             tabControl1.TabIndex = 0;
             // 
             // Customer
             // 
             Customer.BackColor = Color.Firebrick;
+            Customer.Controls.Add(txtSIN);
+            Customer.Controls.Add(label9);
+            Customer.Controls.Add(lblFirstName);
+            Customer.Controls.Add(lblLastName);
+            Customer.Controls.Add(lblAddress);
+            Customer.Controls.Add(lblCity);
+            Customer.Controls.Add(lblState);
+            Customer.Controls.Add(lblZip);
+            Customer.Controls.Add(lblEmail);
+            Customer.Controls.Add(lblAccount);
+            Customer.Controls.Add(lblCredit);
+            Customer.Controls.Add(txtFirstName);
+            Customer.Controls.Add(txtLastName);
+            Customer.Controls.Add(txtAddress);
+            Customer.Controls.Add(txtCity);
+            Customer.Controls.Add(txtState);
+            Customer.Controls.Add(txtZip);
+            Customer.Controls.Add(txtEmail);
+            Customer.Controls.Add(txtAccount);
+            Customer.Controls.Add(txtCredit);
+            Customer.Controls.Add(btnAdd);
+            Customer.Controls.Add(btnUpdate);
+            Customer.Controls.Add(btnDelete);
+            Customer.Controls.Add(dgvCustomers);
             Customer.Font = new Font("Segoe UI", 9F);
             Customer.Location = new Point(4, 54);
             Customer.Margin = new Padding(3, 4, 3, 4);
             Customer.Name = "Customer";
+            Customer.Padding = new Padding(3);
+            Customer.Size = new Size(1183, 442);
             Customer.Padding = new Padding(3, 4, 3, 4);
             Customer.Size = new Size(1418, 598);
             Customer.TabIndex = 0;
             Customer.Text = "Customer";
             Customer.Click += Customer_Click;
             // 
+            // lblFirstName
+            // 
+            lblFirstName.AutoSize = true;
+            lblFirstName.ForeColor = Color.White;
+            lblFirstName.Location = new Point(19, 30);
+            lblFirstName.Name = "lblFirstName";
+            lblFirstName.Size = new Size(67, 15);
+            lblFirstName.TabIndex = 0;
+            lblFirstName.Text = "First Name:";
+            // 
+            // lblLastName
+            // 
+            lblLastName.AutoSize = true;
+            lblLastName.ForeColor = Color.White;
+            lblLastName.Location = new Point(23, 74);
+            lblLastName.Name = "lblLastName";
+            lblLastName.Size = new Size(66, 15);
+            lblLastName.TabIndex = 1;
+            lblLastName.Text = "Last Name:";
+            // 
+            // lblAddress
+            // 
+            lblAddress.AutoSize = true;
+            lblAddress.ForeColor = Color.White;
+            lblAddress.Location = new Point(27, 114);
+            lblAddress.Name = "lblAddress";
+            lblAddress.Size = new Size(52, 15);
+            lblAddress.TabIndex = 2;
+            lblAddress.Text = "Address:";
+            // 
+            // lblCity
+            // 
+            lblCity.AutoSize = true;
+            lblCity.ForeColor = Color.White;
+            lblCity.Location = new Point(38, 153);
+            lblCity.Name = "lblCity";
+            lblCity.Size = new Size(31, 15);
+            lblCity.TabIndex = 3;
+            lblCity.Text = "City:";
+            // 
+            // lblState
+            // 
+            lblState.AutoSize = true;
+            lblState.ForeColor = Color.White;
+            lblState.Location = new Point(24, 192);
+            lblState.Name = "lblState";
+            lblState.Size = new Size(56, 15);
+            lblState.TabIndex = 4;
+            lblState.Text = "Province:";
+            // 
+            // lblZip
+            // 
+            lblZip.AutoSize = true;
+            lblZip.ForeColor = Color.White;
+            lblZip.Location = new Point(27, 227);
+            lblZip.Name = "lblZip";
+            lblZip.Size = new Size(58, 15);
+            lblZip.TabIndex = 5;
+            lblZip.Text = "Zip Code:";
+            // 
+            // lblEmail
+            // 
+            lblEmail.AutoSize = true;
+            lblEmail.ForeColor = Color.White;
+            lblEmail.Location = new Point(30, 272);
+            lblEmail.Name = "lblEmail";
+            lblEmail.Size = new Size(39, 15);
+            lblEmail.TabIndex = 6;
+            lblEmail.Text = "Email:";
+            // 
+            // lblAccount
+            // 
+            lblAccount.AutoSize = true;
+            lblAccount.ForeColor = Color.White;
+            lblAccount.Location = new Point(24, 305);
+            lblAccount.Name = "lblAccount";
+            lblAccount.Size = new Size(65, 15);
+            lblAccount.TabIndex = 7;
+            lblAccount.Text = "Account #:";
+            // 
+            // lblCredit
+            // 
+            lblCredit.AutoSize = true;
+            lblCredit.ForeColor = Color.White;
+            lblCredit.Location = new Point(19, 346);
+            lblCredit.Name = "lblCredit";
+            lblCredit.Size = new Size(70, 15);
+            lblCredit.TabIndex = 8;
+            lblCredit.Text = "Credit Card:";
+            // 
+            // txtFirstName
+            // 
+            txtFirstName.Location = new Point(154, 27);
+            txtFirstName.Margin = new Padding(3, 2, 3, 2);
+            txtFirstName.Name = "txtFirstName";
+            txtFirstName.Size = new Size(88, 23);
+            txtFirstName.TabIndex = 9;
+            txtFirstName.TextChanged += txtFirstName_TextChanged;
+            // 
+            // txtLastName
+            // 
+            txtLastName.Location = new Point(154, 63);
+            txtLastName.Margin = new Padding(3, 2, 3, 2);
+            txtLastName.Name = "txtLastName";
+            txtLastName.Size = new Size(88, 23);
+            txtLastName.TabIndex = 10;
+            // 
+            // txtAddress
+            // 
+            txtAddress.Location = new Point(154, 106);
+            txtAddress.Margin = new Padding(3, 2, 3, 2);
+            txtAddress.Name = "txtAddress";
+            txtAddress.Size = new Size(88, 23);
+            txtAddress.TabIndex = 11;
+            // 
+            // txtCity
+            // 
+            txtCity.Location = new Point(154, 150);
+            txtCity.Margin = new Padding(3, 2, 3, 2);
+            txtCity.Name = "txtCity";
+            txtCity.Size = new Size(88, 23);
+            txtCity.TabIndex = 12;
+            txtCity.TextChanged += txtCity_TextChanged;
+            // 
+            // txtState
+            // 
+            txtState.Location = new Point(154, 189);
+            txtState.Margin = new Padding(3, 2, 3, 2);
+            txtState.Name = "txtState";
+            txtState.Size = new Size(88, 23);
+            txtState.TabIndex = 13;
+            // 
+            // txtZip
+            // 
+            txtZip.Location = new Point(154, 227);
+            txtZip.Margin = new Padding(3, 2, 3, 2);
+            txtZip.Name = "txtZip";
+            txtZip.Size = new Size(88, 23);
+            txtZip.TabIndex = 14;
+            // 
+            // txtEmail
+            // 
+            txtEmail.Location = new Point(154, 269);
+            txtEmail.Margin = new Padding(3, 2, 3, 2);
+            txtEmail.Name = "txtEmail";
+            txtEmail.Size = new Size(88, 23);
+            txtEmail.TabIndex = 15;
+            // 
+            // txtAccount
+            // 
+            txtAccount.Location = new Point(154, 305);
+            txtAccount.Margin = new Padding(3, 2, 3, 2);
+            txtAccount.Name = "txtAccount";
+            txtAccount.Size = new Size(88, 23);
+            txtAccount.TabIndex = 16;
+            // 
+            // txtCredit
+            // 
+            txtCredit.Location = new Point(154, 343);
+            txtCredit.Margin = new Padding(3, 2, 3, 2);
+            txtCredit.Name = "txtCredit";
+            txtCredit.Size = new Size(88, 23);
+            txtCredit.TabIndex = 17;
+            // 
+            // btnAdd
+            // 
+            btnAdd.BackColor = Color.White;
+            btnAdd.FlatStyle = FlatStyle.Flat;
+            btnAdd.ForeColor = Color.Black;
+            btnAdd.Location = new Point(261, 20);
+            btnAdd.Margin = new Padding(3, 2, 3, 2);
+            btnAdd.Name = "btnAdd";
+            btnAdd.Size = new Size(66, 33);
+            btnAdd.TabIndex = 18;
+            btnAdd.Text = "Add";
+            btnAdd.UseVisualStyleBackColor = false;
+            // 
+            // btnUpdate
+            // 
+            btnUpdate.BackColor = Color.White;
+            btnUpdate.FlatStyle = FlatStyle.Flat;
+            btnUpdate.ForeColor = Color.Black;
+            btnUpdate.Location = new Point(261, 63);
+            btnUpdate.Margin = new Padding(3, 2, 3, 2);
+            btnUpdate.Name = "btnUpdate";
+            btnUpdate.Size = new Size(66, 31);
+            btnUpdate.TabIndex = 19;
+            btnUpdate.Text = "Update";
+            btnUpdate.UseVisualStyleBackColor = false;
+            // 
+            // btnDelete
+            // 
+            btnDelete.BackColor = Color.White;
+            btnDelete.FlatStyle = FlatStyle.Flat;
+            btnDelete.ForeColor = Color.Black;
+            btnDelete.Location = new Point(261, 106);
+            btnDelete.Margin = new Padding(3, 2, 3, 2);
+            btnDelete.Name = "btnDelete";
+            btnDelete.Size = new Size(66, 33);
+            btnDelete.TabIndex = 20;
+            btnDelete.Text = "Delete";
+            btnDelete.UseVisualStyleBackColor = false;
+            // 
+            // dgvCustomers
+            // 
+            dgvCustomers.Location = new Point(406, 30);
+            dgvCustomers.Margin = new Padding(3, 2, 3, 2);
+            dgvCustomers.Name = "dgvCustomers";
+            dgvCustomers.Size = new Size(751, 376);
+            dgvCustomers.TabIndex = 21;
+            dgvCustomers.CellContentClick += dgvCustomers_CellContentClick;
+            // 
             // Movie
             // 
             Movie.BackColor = Color.Firebrick;
+            Movie.Controls.Add(dgvActors);
+            Movie.Controls.Add(button1);
+            Movie.Controls.Add(txtBoxActorIDAI);
+            Movie.Controls.Add(txtBoxMovieIDActor);
+            Movie.Controls.Add(label8);
+            Movie.Controls.Add(label7);
+            Movie.Controls.Add(label1);
+            Movie.Controls.Add(txtBoxMovieID);
+            Movie.Controls.Add(label6);
+            Movie.Controls.Add(BtnMovieDelete);
+            Movie.Controls.Add(BtnMovieUpdate);
+            Movie.Controls.Add(BtnMovieAdd);
+            Movie.Controls.Add(txtBoxCopies);
+            Movie.Controls.Add(label5);
+            Movie.Controls.Add(txtBoxDFee);
+            Movie.Controls.Add(label4);
+            Movie.Controls.Add(txtBoxType);
+            Movie.Controls.Add(label3);
+            Movie.Controls.Add(label2);
+            Movie.Controls.Add(txtBoxName);
+            Movie.Controls.Add(dgvMovies);
+            Movie.Location = new Point(4, 46);
             Movie.Location = new Point(4, 54);
             Movie.Margin = new Padding(3, 4, 3, 4);
             Movie.Name = "Movie";
+            Movie.Padding = new Padding(3);
+            Movie.Size = new Size(1183, 442);
             Movie.Padding = new Padding(3, 4, 3, 4);
             Movie.Size = new Size(1418, 598);
             Movie.TabIndex = 1;
             Movie.Text = "Movie";
             Movie.Click += Movie_Click;
+            // 
+            // dgvActors
+            // 
+            dgvActors.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = SystemColors.Window;
+            dataGridViewCellStyle1.Font = new Font("Segoe UI", 20F);
+            dataGridViewCellStyle1.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.False;
+            dgvActors.DefaultCellStyle = dataGridViewCellStyle1;
+            dgvActors.Location = new Point(748, 220);
+            dgvActors.Margin = new Padding(3, 2, 3, 2);
+            dgvActors.Name = "dgvActors";
+            dgvActors.RowHeadersWidth = 51;
+            dgvActors.Size = new Size(475, 188);
+            dgvActors.TabIndex = 21;
+            dgvActors.CellContentClick += dgvActors_CellContentClick;
+            // 
+            // button1
+            // 
+            button1.Font = new Font("Segoe UI", 16F);
+            button1.Location = new Point(114, 158);
+            button1.Margin = new Padding(3, 2, 3, 2);
+            button1.Name = "button1";
+            button1.Size = new Size(119, 47);
+            button1.TabIndex = 20;
+            button1.Text = "Add";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click_1;
+            // 
+            // txtBoxActorIDAI
+            // 
+            txtBoxActorIDAI.Location = new Point(189, 97);
+            txtBoxActorIDAI.Margin = new Padding(3, 2, 3, 2);
+            txtBoxActorIDAI.Name = "txtBoxActorIDAI";
+            txtBoxActorIDAI.Size = new Size(179, 43);
+            txtBoxActorIDAI.TabIndex = 19;
+            // 
+            // txtBoxMovieIDActor
+            // 
+            txtBoxMovieIDActor.Location = new Point(189, 52);
+            txtBoxMovieIDActor.Margin = new Padding(3, 2, 3, 2);
+            txtBoxMovieIDActor.Name = "txtBoxMovieIDActor";
+            txtBoxMovieIDActor.Size = new Size(179, 43);
+            txtBoxMovieIDActor.TabIndex = 18;
+            txtBoxMovieIDActor.TextChanged += textBox1_TextChanged;
+            // 
+            // label8
+            // 
+            label8.AutoSize = true;
+            label8.Location = new Point(15, 97);
+            label8.Name = "label8";
+            label8.Size = new Size(113, 37);
+            label8.TabIndex = 17;
+            label8.Text = "Actor ID";
+            label8.Click += label8_Click;
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Location = new Point(15, 52);
+            label7.Name = "label7";
+            label7.Size = new Size(117, 37);
+            label7.TabIndex = 16;
+            label7.Text = "MovieID";
+            label7.Click += label7_Click;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(15, 9);
+            label1.Name = "label1";
+            label1.Size = new Size(175, 37);
+            label1.TabIndex = 15;
+            label1.Text = "Add An Actor";
+            // 
+            // txtBoxMovieID
+            // 
+            txtBoxMovieID.Location = new Point(544, 18);
+            txtBoxMovieID.Margin = new Padding(3, 2, 3, 2);
+            txtBoxMovieID.Name = "txtBoxMovieID";
+            txtBoxMovieID.Size = new Size(179, 43);
+            txtBoxMovieID.TabIndex = 14;
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Location = new Point(397, 22);
+            label6.Name = "label6";
+            label6.Size = new Size(117, 37);
+            label6.TabIndex = 13;
+            label6.Text = "MovieID";
+            // 
+            // BtnMovieDelete
+            // 
+            BtnMovieDelete.Font = new Font("Segoe UI", 16F);
+            BtnMovieDelete.Location = new Point(635, 278);
+            BtnMovieDelete.Margin = new Padding(3, 2, 3, 2);
+            BtnMovieDelete.Name = "BtnMovieDelete";
+            BtnMovieDelete.Size = new Size(99, 45);
+            BtnMovieDelete.TabIndex = 12;
+            BtnMovieDelete.Text = "Delete";
+            BtnMovieDelete.UseVisualStyleBackColor = true;
+            BtnMovieDelete.Click += BtnMovieDelete_Click;
+            // 
+            // BtnMovieAdd
+            // 
+            BtnMovieAdd.Font = new Font("Segoe UI", 16F);
+            BtnMovieAdd.Location = new Point(382, 278);
+            BtnMovieAdd.Margin = new Padding(3, 2, 3, 2);
+            BtnMovieAdd.Name = "BtnMovieAdd";
+            BtnMovieAdd.Size = new Size(99, 45);
+            BtnMovieAdd.TabIndex = 10;
+            BtnMovieAdd.Text = "Add";
+            BtnMovieAdd.UseVisualStyleBackColor = true;
+            BtnMovieAdd.Click += BtnMovieAdd_Click_1;
+            // 
+            // txtBoxCopies
+            // 
+            txtBoxCopies.Location = new Point(544, 220);
+            txtBoxCopies.Margin = new Padding(3, 2, 3, 2);
+            txtBoxCopies.Name = "txtBoxCopies";
+            txtBoxCopies.Size = new Size(179, 43);
+            txtBoxCopies.TabIndex = 9;
+            txtBoxCopies.TextChanged += txtBoxCopies_TextChanged;
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Location = new Point(397, 220);
+            label5.Name = "label5";
+            label5.Size = new Size(121, 37);
+            label5.TabIndex = 8;
+            label5.Text = "# Copies";
+            label5.Click += label5_Click;
+            // 
+            // txtBoxDFee
+            // 
+            txtBoxDFee.Location = new Point(544, 171);
+            txtBoxDFee.Margin = new Padding(3, 2, 3, 2);
+            txtBoxDFee.Name = "txtBoxDFee";
+            txtBoxDFee.Size = new Size(179, 43);
+            txtBoxDFee.TabIndex = 7;
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Location = new Point(397, 171);
+            label4.Name = "label4";
+            label4.Size = new Size(90, 37);
+            label4.TabIndex = 6;
+            label4.Text = "D. Fee";
+            // 
+            // txtBoxType
+            // 
+            txtBoxType.Location = new Point(544, 118);
+            txtBoxType.Margin = new Padding(3, 2, 3, 2);
+            txtBoxType.Name = "txtBoxType";
+            txtBoxType.Size = new Size(179, 43);
+            txtBoxType.TabIndex = 5;
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(397, 118);
+            label3.Name = "label3";
+            label3.Size = new Size(73, 37);
+            label3.TabIndex = 4;
+            label3.Text = "Type";
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new Point(397, 68);
+            label2.Name = "label2";
+            label2.Size = new Size(88, 37);
+            label2.TabIndex = 3;
+            label2.Text = "Name";
+            label2.Click += label2_Click;
+            // 
+            // txtBoxName
+            // 
+            txtBoxName.Location = new Point(544, 66);
+            txtBoxName.Margin = new Padding(3, 2, 3, 2);
+            txtBoxName.Name = "txtBoxName";
+            txtBoxName.Size = new Size(179, 43);
+            txtBoxName.TabIndex = 2;
+            // 
+            // dgvMovies
+            // 
+            dgvMovies.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = SystemColors.Window;
+            dataGridViewCellStyle2.Font = new Font("Segoe UI", 20F);
+            dataGridViewCellStyle2.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
+            dgvMovies.DefaultCellStyle = dataGridViewCellStyle2;
+            dgvMovies.Location = new Point(748, 9);
+            dgvMovies.Margin = new Padding(3, 2, 3, 2);
+            dgvMovies.Name = "dgvMovies";
+            dgvMovies.RowHeadersWidth = 51;
+            dgvMovies.Size = new Size(475, 188);
+            dgvMovies.TabIndex = 1;
+            dgvMovies.CellContentClick += dataGridView1_CellContentClick_3;
             // 
             // Rental
             // 
@@ -141,9 +684,8 @@ namespace WinFormsApp1
             Rental.Location = new Point(4, 54);
             Rental.Margin = new Padding(3, 4, 3, 4);
             Rental.Name = "Rental";
-            Rental.Padding = new Padding(3, 4, 3, 4);
-            Rental.RightToLeft = RightToLeft.No;
-            Rental.Size = new Size(1418, 598);
+            Rental.Padding = new Padding(3);
+            Rental.Size = new Size(1183, 442);
             Rental.TabIndex = 2;
             Rental.Text = "Rental";
             // 
@@ -328,6 +870,29 @@ namespace WinFormsApp1
             firstNameColumn.ReadOnly = true;
             firstNameColumn.Width = 145;
             // 
+            Report.BackColor = Color.Firebrick;
+            Report.Controls.Add(ErrorMes);
+            Report.Controls.Add(RepRes);
+            Report.Controls.Add(EnterR);
+            Report.Controls.Add(SpecifTitle2);
+            Report.Controls.Add(cal2);
+            Report.Controls.Add(DateSelect2);
+            Report.Controls.Add(DateSelect1);
+            Report.Controls.Add(cal1);
+            Report.Controls.Add(PickReportTitle);
+            Report.Controls.Add(SpecifTitle1);
+            Report.Controls.Add(Specif);
+            Report.Controls.Add(ReportSelection);
+            Report.Font = new Font("Segoe UI", 20F);
+            Report.ForeColor = SystemColors.ActiveBorder;
+            Report.Location = new Point(4, 46);
+            Report.Margin = new Padding(0);
+            Report.Name = "Report";
+            Report.Padding = new Padding(3);
+            Report.Size = new Size(1183, 442);
+            Report.TabIndex = 3;
+            Report.Text = "Report";
+            Report.Click += Report_Click;
             // addressColumn
             // 
             addressColumn.HeaderText = "Address";
@@ -435,6 +1000,8 @@ namespace WinFormsApp1
             // 
             RepRes.AllowUserToAddRows = false;
             RepRes.AllowUserToDeleteRows = false;
+            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
+            RepRes.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle3;
             dataGridViewCellStyle11.WrapMode = DataGridViewTriState.True;
             RepRes.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle11;
             RepRes.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
@@ -446,6 +1013,8 @@ namespace WinFormsApp1
             RepRes.Name = "RepRes";
             RepRes.ReadOnly = true;
             RepRes.RowHeadersWidth = 10;
+            dataGridViewCellStyle4.WrapMode = DataGridViewTriState.True;
+            RepRes.RowsDefaultCellStyle = dataGridViewCellStyle4;
             dataGridViewCellStyle12.WrapMode = DataGridViewTriState.True;
             RepRes.RowsDefaultCellStyle = dataGridViewCellStyle12;
             RepRes.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
@@ -574,6 +1143,29 @@ namespace WinFormsApp1
             ReportSelection.Text = "Who are the top 3 customers with the most rentals?";
             ReportSelection.SelectedIndexChanged += comboBox1_SelectedIndexChanged;
             // 
+            // databaseBindingSource
+            // 
+            databaseBindingSource.DataSource = typeof(Database);
+            // 
+            // label9
+            // 
+            label9.AutoSize = true;
+            label9.ForeColor = Color.White;
+            label9.Location = new Point(3, 391);
+            label9.Name = "label9";
+            label9.Size = new Size(133, 15);
+            label9.TabIndex = 22;
+            label9.Text = "Social Security Number:";
+            label9.Click += label9_Click;
+            // 
+            // txtSIN
+            // 
+            txtSIN.Location = new Point(154, 388);
+            txtSIN.Margin = new Padding(3, 2, 3, 2);
+            txtSIN.Name = "txtSIN";
+            txtSIN.Size = new Size(88, 23);
+            txtSIN.TabIndex = 23;
+            // 
             // customerID
             // 
             customerID.MinimumWidth = 6;
@@ -608,6 +1200,7 @@ namespace WinFormsApp1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(1199, 522);
             ClientSize = new Size(1424, 696);
             Controls.Add(tabControl1);
             Margin = new Padding(3, 4, 3, 4);
@@ -615,6 +1208,15 @@ namespace WinFormsApp1
             Text = "NavScreen";
             Load += NavScreen_Load;
             tabControl1.ResumeLayout(false);
+            Customer.ResumeLayout(false);
+            Customer.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvCustomers).EndInit();
+            Movie.ResumeLayout(false);
+            Movie.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvActors).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dgvMovies).EndInit();
+            Report.ResumeLayout(false);
+            Report.PerformLayout();
             Rental.ResumeLayout(false);
             Rental.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dgvRentalMovies).EndInit();
@@ -622,6 +1224,7 @@ namespace WinFormsApp1
             ReportPage.ResumeLayout(false);
             ReportPage.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)RepRes).EndInit();
+            ((System.ComponentModel.ISupportInitialize)databaseBindingSource).EndInit();
             ResumeLayout(false);
         }
 
@@ -652,6 +1255,55 @@ namespace WinFormsApp1
         private Button EnterR;
         private DataGridView RepRes;
         private TextBox ErrorMes;
+        private BindingSource databaseBindingSource;
+        private DataGridView dgvMovies;
+        private Label label2;
+        private TextBox txtBoxName;
+        private Label label5;
+        private TextBox txtBoxDFee;
+        private Label label4;
+        private TextBox txtBoxType;
+        private Label label3;
+        private TextBox txtBoxCopies;
+        private Button BtnMovieDelete;
+        private Button BtnMovieUpdate;
+        private Button BtnMovieAdd;
+        private TextBox txtBoxMovieID;
+        private Label label6;
+        private Label label8;
+        private Label label7;
+        private Label label1;
+        private Button button1;
+        private TextBox txtBoxActorIDAI;
+        private TextBox txtBoxMovieIDActor;
+        private DataGridView dgvActors;
+        private MonthCalendar cal;
+        private Button Enter;
+        private Label DateSelect;
+        private TextBox txtFirstName;
+        private TextBox txtLastName;
+        private TextBox txtAddress;
+        private TextBox txtCity;
+        private TextBox txtState;
+        private TextBox txtZip;
+        private TextBox txtEmail;
+        private TextBox txtAccount;
+        private TextBox txtCredit;
+        private Button btnAdd;
+        private Button btnUpdate;
+        private Button btnDelete;
+        private DataGridView dgvCustomers;
+        private Label lblFirstName;
+        private Label lblLastName;
+        private Label lblAddress;
+        private Label lblCity;
+        private Label lblState;
+        private Label lblZip;
+        private Label lblEmail;
+        private Label lblAccount;
+        private Label lblCredit;
+        private Label label9;
+        private TextBox txtSIN;
         private Label label1;
         private Button dispenseButton;
         private Label label2;
