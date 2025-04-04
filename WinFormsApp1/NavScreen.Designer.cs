@@ -31,12 +31,34 @@ namespace WinFormsApp1
         {
             components = new System.ComponentModel.Container();
             Button BtnMovieUpdate;
-            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle13 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle14 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle15 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle16 = new DataGridViewCellStyle();
             tabControl1 = new TabControl();
             Customer = new TabPage();
+            lblFirstName = new Label();
+            lblLastName = new Label();
+            lblAddress = new Label();
+            lblCity = new Label();
+            lblState = new Label();
+            lblZip = new Label();
+            lblEmail = new Label();
+            lblAccount = new Label();
+            lblCredit = new Label();
+            txtFirstName = new TextBox();
+            txtLastName = new TextBox();
+            txtAddress = new TextBox();
+            txtCity = new TextBox();
+            txtState = new TextBox();
+            txtZip = new TextBox();
+            txtEmail = new TextBox();
+            txtAccount = new TextBox();
+            txtCredit = new TextBox();
+            btnAdd = new Button();
+            btnUpdate = new Button();
+            btnDelete = new Button();
+            dgvCustomers = new DataGridView();
             Movie = new TabPage();
             dgvActors = new DataGridView();
             button1 = new Button();
@@ -75,6 +97,8 @@ namespace WinFormsApp1
             databaseBindingSource = new BindingSource(components);
             BtnMovieUpdate = new Button();
             tabControl1.SuspendLayout();
+            Customer.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvCustomers).BeginInit();
             Movie.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvActors).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dgvMovies).BeginInit();
@@ -86,9 +110,10 @@ namespace WinFormsApp1
             // BtnMovieUpdate
             // 
             BtnMovieUpdate.Font = new Font("Segoe UI", 16F);
-            BtnMovieUpdate.Location = new Point(579, 370);
+            BtnMovieUpdate.Location = new Point(507, 278);
+            BtnMovieUpdate.Margin = new Padding(3, 2, 3, 2);
             BtnMovieUpdate.Name = "BtnMovieUpdate";
-            BtnMovieUpdate.Size = new Size(121, 60);
+            BtnMovieUpdate.Size = new Size(106, 45);
             BtnMovieUpdate.TabIndex = 11;
             BtnMovieUpdate.Text = "Update";
             BtnMovieUpdate.UseVisualStyleBackColor = true;
@@ -101,97 +126,15 @@ namespace WinFormsApp1
             tabControl1.Controls.Add(Rental);
             tabControl1.Controls.Add(Report);
             tabControl1.Font = new Font("Segoe UI", 20F);
-            tabControl1.Location = new Point(10, 0);
-            tabControl1.Margin = new Padding(3, 4, 3, 4);
+            tabControl1.Location = new Point(9, 0);
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new Size(1426, 656);
+            tabControl1.Size = new Size(1248, 492);
             tabControl1.TabIndex = 0;
             // 
             // Customer
             // 
             Customer.BackColor = Color.Firebrick;
-            Customer.Font = new Font("Segoe UI", 9F);
-            Customer.Location = new Point(4, 54);
-            Customer.Margin = new Padding(3, 4, 3, 4);
-            Customer.Name = "Customer";
-            Customer.Padding = new Padding(3, 4, 3, 4);
-            Customer.Size = new Size(1418, 598);
-            Customer.TabIndex = 0;
-            Customer.Text = "Customer";
-            Customer.Click += Customer_Click;
-
-            // Text Box
-            Label lblFirstName = new Label();
-            Label lblLastName = new Label();
-            Label lblAddress = new Label();
-            Label lblCity = new Label();
-            Label lblState = new Label();
-            Label lblZip = new Label();
-            Label lblEmail = new Label();
-            Label lblAccount = new Label();
-            Label lblCredit = new Label();
-
-            // Label Text
-            lblFirstName.Text = "First Name:";
-            lblLastName.Text = "Last Name:";
-            lblAddress.Text = "Address:";
-            lblCity.Text = "City:";
-            lblState.Text = "Province:";
-            lblZip.Text = "Zip Code:";
-            lblEmail.Text = "Email:";
-            lblAccount.Text = "Account #:";
-            lblCredit.Text = "Credit Card:";
-
-            // Label Positions
-            int topPadding = 20;
-            lblFirstName.Location = new Point(20, topPadding + 0);
-            lblLastName.Location = new Point(20, topPadding + 30);
-            lblAddress.Location = new Point(20, topPadding + 60);
-            lblCity.Location = new Point(20, topPadding + 90);
-            lblState.Location = new Point(20, topPadding + 120);
-            lblZip.Location = new Point(20, topPadding + 150);
-            lblEmail.Location = new Point(20, topPadding + 180);
-            lblAccount.Location = new Point(20, topPadding + 210);
-            lblCredit.Location = new Point(20, topPadding + 240);
-
-            // Add this right after defining label positions
-            lblFirstName.AutoSize = true;
-            lblLastName.AutoSize = true;
-            lblAddress.AutoSize = true;
-            lblCity.AutoSize = true;
-            lblState.AutoSize = true;
-            lblZip.AutoSize = true;
-            lblEmail.AutoSize = true;
-            lblAccount.AutoSize = true;
-            lblCredit.AutoSize = true;
-
-            lblFirstName.ForeColor = Color.White;
-            lblLastName.ForeColor = Color.White;
-            lblAddress.ForeColor = Color.White;
-            lblCity.ForeColor = Color.White;
-            lblState.ForeColor = Color.White;
-            lblZip.ForeColor = Color.White;
-            lblEmail.ForeColor = Color.White;
-            lblAccount.ForeColor = Color.White;
-            lblCredit.ForeColor = Color.White;
-
-            // Instantiate controls
-            txtFirstName = new TextBox();
-            txtLastName = new TextBox();
-            txtAddress = new TextBox();
-            txtCity = new TextBox();
-            txtState = new TextBox();
-            txtZip = new TextBox();
-            txtEmail = new TextBox();
-            txtAccount = new TextBox();
-            txtCredit = new TextBox();
-            btnAdd = new Button();
-            btnUpdate = new Button();
-            btnDelete = new Button();
-            dgvCustomers = new DataGridView();
-
-            // Customer Controls
             Customer.Controls.Add(lblFirstName);
             Customer.Controls.Add(lblLastName);
             Customer.Controls.Add(lblAddress);
@@ -201,39 +144,6 @@ namespace WinFormsApp1
             Customer.Controls.Add(lblEmail);
             Customer.Controls.Add(lblAccount);
             Customer.Controls.Add(lblCredit);
-
-            // color for buttons + styling
-            btnAdd.BackColor = Color.White;
-            btnAdd.ForeColor = Color.Black;
-
-            btnUpdate.BackColor = Color.White;
-            btnUpdate.ForeColor = Color.Black;
-
-            btnDelete.BackColor = Color.White;
-            btnDelete.ForeColor = Color.Black;
-            btnAdd.FlatStyle = FlatStyle.Flat;
-            btnUpdate.FlatStyle = FlatStyle.Flat;
-            btnDelete.FlatStyle = FlatStyle.Flat;
-
-            txtFirstName.Location = new Point(120, topPadding + 0);
-            txtLastName.Location = new Point(120, topPadding + 30);
-            txtAddress.Location = new Point(120, topPadding + 60);
-            txtCity.Location = new Point(120, topPadding + 90);
-            txtState.Location = new Point(120, topPadding + 120);
-            txtZip.Location = new Point(120, topPadding + 150);
-            txtEmail.Location = new Point(120, topPadding + 180);
-            txtAccount.Location = new Point(120, topPadding + 210);
-            txtCredit.Location = new Point(120, topPadding + 240);
-            btnAdd.Location = new Point(20, topPadding + 300);
-            btnUpdate.Location = new Point(100, topPadding + 300);
-            btnDelete.Location = new Point(180, topPadding + 300);
-            btnAdd.Text = "Add";
-            btnUpdate.Text = "Update";
-            btnDelete.Text = "Delete";
-            dgvCustomers.Location = new Point(250, 20);
-            dgvCustomers.Size = new Size(520, 340);
-
-            // Add controls to Customer tab
             Customer.Controls.Add(txtFirstName);
             Customer.Controls.Add(txtLastName);
             Customer.Controls.Add(txtAddress);
@@ -247,6 +157,225 @@ namespace WinFormsApp1
             Customer.Controls.Add(btnUpdate);
             Customer.Controls.Add(btnDelete);
             Customer.Controls.Add(dgvCustomers);
+            Customer.Font = new Font("Segoe UI", 9F);
+            Customer.Location = new Point(4, 46);
+            Customer.Name = "Customer";
+            Customer.Padding = new Padding(3);
+            Customer.Size = new Size(1240, 442);
+            Customer.TabIndex = 0;
+            Customer.Text = "Customer";
+            Customer.Click += Customer_Click;
+            // 
+            // lblFirstName
+            // 
+            lblFirstName.AutoSize = true;
+            lblFirstName.ForeColor = Color.White;
+            lblFirstName.Location = new Point(18, 28);
+            lblFirstName.Name = "lblFirstName";
+            lblFirstName.Size = new Size(67, 15);
+            lblFirstName.TabIndex = 0;
+            lblFirstName.Text = "First Name:";
+            // 
+            // lblLastName
+            // 
+            lblLastName.AutoSize = true;
+            lblLastName.ForeColor = Color.White;
+            lblLastName.Location = new Point(23, 74);
+            lblLastName.Name = "lblLastName";
+            lblLastName.Size = new Size(66, 15);
+            lblLastName.TabIndex = 1;
+            lblLastName.Text = "Last Name:";
+            // 
+            // lblAddress
+            // 
+            lblAddress.AutoSize = true;
+            lblAddress.ForeColor = Color.White;
+            lblAddress.Location = new Point(23, 123);
+            lblAddress.Name = "lblAddress";
+            lblAddress.Size = new Size(52, 15);
+            lblAddress.TabIndex = 2;
+            lblAddress.Text = "Address:";
+            // 
+            // lblCity
+            // 
+            lblCity.AutoSize = true;
+            lblCity.ForeColor = Color.White;
+            lblCity.Location = new Point(30, 158);
+            lblCity.Name = "lblCity";
+            lblCity.Size = new Size(31, 15);
+            lblCity.TabIndex = 3;
+            lblCity.Text = "City:";
+            // 
+            // lblState
+            // 
+            lblState.AutoSize = true;
+            lblState.ForeColor = Color.White;
+            lblState.Location = new Point(23, 197);
+            lblState.Name = "lblState";
+            lblState.Size = new Size(56, 15);
+            lblState.TabIndex = 4;
+            lblState.Text = "Province:";
+            // 
+            // lblZip
+            // 
+            lblZip.AutoSize = true;
+            lblZip.ForeColor = Color.White;
+            lblZip.Location = new Point(23, 235);
+            lblZip.Name = "lblZip";
+            lblZip.Size = new Size(58, 15);
+            lblZip.TabIndex = 5;
+            lblZip.Text = "Zip Code:";
+            // 
+            // lblEmail
+            // 
+            lblEmail.AutoSize = true;
+            lblEmail.ForeColor = Color.White;
+            lblEmail.Location = new Point(30, 272);
+            lblEmail.Name = "lblEmail";
+            lblEmail.Size = new Size(39, 15);
+            lblEmail.TabIndex = 6;
+            lblEmail.Text = "Email:";
+            // 
+            // lblAccount
+            // 
+            lblAccount.AutoSize = true;
+            lblAccount.ForeColor = Color.White;
+            lblAccount.Location = new Point(24, 305);
+            lblAccount.Name = "lblAccount";
+            lblAccount.Size = new Size(65, 15);
+            lblAccount.TabIndex = 7;
+            lblAccount.Text = "Account #:";
+            // 
+            // lblCredit
+            // 
+            lblCredit.AutoSize = true;
+            lblCredit.ForeColor = Color.White;
+            lblCredit.Location = new Point(19, 346);
+            lblCredit.Name = "lblCredit";
+            lblCredit.Size = new Size(70, 15);
+            lblCredit.TabIndex = 8;
+            lblCredit.Text = "Credit Card:";
+            // 
+            // txtFirstName
+            // 
+            txtFirstName.Location = new Point(105, 26);
+            txtFirstName.Margin = new Padding(3, 2, 3, 2);
+            txtFirstName.Name = "txtFirstName";
+            txtFirstName.Size = new Size(88, 23);
+            txtFirstName.TabIndex = 9;
+            // 
+            // txtLastName
+            // 
+            txtLastName.Location = new Point(105, 71);
+            txtLastName.Margin = new Padding(3, 2, 3, 2);
+            txtLastName.Name = "txtLastName";
+            txtLastName.Size = new Size(88, 23);
+            txtLastName.TabIndex = 10;
+            // 
+            // txtAddress
+            // 
+            txtAddress.Location = new Point(105, 115);
+            txtAddress.Margin = new Padding(3, 2, 3, 2);
+            txtAddress.Name = "txtAddress";
+            txtAddress.Size = new Size(88, 23);
+            txtAddress.TabIndex = 11;
+            // 
+            // txtCity
+            // 
+            txtCity.Location = new Point(105, 150);
+            txtCity.Margin = new Padding(3, 2, 3, 2);
+            txtCity.Name = "txtCity";
+            txtCity.Size = new Size(88, 23);
+            txtCity.TabIndex = 12;
+            txtCity.TextChanged += txtCity_TextChanged;
+            // 
+            // txtState
+            // 
+            txtState.Location = new Point(105, 189);
+            txtState.Margin = new Padding(3, 2, 3, 2);
+            txtState.Name = "txtState";
+            txtState.Size = new Size(88, 23);
+            txtState.TabIndex = 13;
+            // 
+            // txtZip
+            // 
+            txtZip.Location = new Point(105, 227);
+            txtZip.Margin = new Padding(3, 2, 3, 2);
+            txtZip.Name = "txtZip";
+            txtZip.Size = new Size(88, 23);
+            txtZip.TabIndex = 14;
+            // 
+            // txtEmail
+            // 
+            txtEmail.Location = new Point(105, 264);
+            txtEmail.Margin = new Padding(3, 2, 3, 2);
+            txtEmail.Name = "txtEmail";
+            txtEmail.Size = new Size(88, 23);
+            txtEmail.TabIndex = 15;
+            // 
+            // txtAccount
+            // 
+            txtAccount.Location = new Point(105, 302);
+            txtAccount.Margin = new Padding(3, 2, 3, 2);
+            txtAccount.Name = "txtAccount";
+            txtAccount.Size = new Size(88, 23);
+            txtAccount.TabIndex = 16;
+            // 
+            // txtCredit
+            // 
+            txtCredit.Location = new Point(105, 343);
+            txtCredit.Margin = new Padding(3, 2, 3, 2);
+            txtCredit.Name = "txtCredit";
+            txtCredit.Size = new Size(88, 23);
+            txtCredit.TabIndex = 17;
+            // 
+            // btnAdd
+            // 
+            btnAdd.BackColor = Color.White;
+            btnAdd.FlatStyle = FlatStyle.Flat;
+            btnAdd.ForeColor = Color.Black;
+            btnAdd.Location = new Point(261, 20);
+            btnAdd.Margin = new Padding(3, 2, 3, 2);
+            btnAdd.Name = "btnAdd";
+            btnAdd.Size = new Size(66, 33);
+            btnAdd.TabIndex = 18;
+            btnAdd.Text = "Add";
+            btnAdd.UseVisualStyleBackColor = false;
+            // 
+            // btnUpdate
+            // 
+            btnUpdate.BackColor = Color.White;
+            btnUpdate.FlatStyle = FlatStyle.Flat;
+            btnUpdate.ForeColor = Color.Black;
+            btnUpdate.Location = new Point(261, 63);
+            btnUpdate.Margin = new Padding(3, 2, 3, 2);
+            btnUpdate.Name = "btnUpdate";
+            btnUpdate.Size = new Size(66, 31);
+            btnUpdate.TabIndex = 19;
+            btnUpdate.Text = "Update";
+            btnUpdate.UseVisualStyleBackColor = false;
+            // 
+            // btnDelete
+            // 
+            btnDelete.BackColor = Color.White;
+            btnDelete.FlatStyle = FlatStyle.Flat;
+            btnDelete.ForeColor = Color.Black;
+            btnDelete.Location = new Point(261, 106);
+            btnDelete.Margin = new Padding(3, 2, 3, 2);
+            btnDelete.Name = "btnDelete";
+            btnDelete.Size = new Size(66, 33);
+            btnDelete.TabIndex = 20;
+            btnDelete.Text = "Delete";
+            btnDelete.UseVisualStyleBackColor = false;
+            // 
+            // dgvCustomers
+            // 
+            dgvCustomers.Location = new Point(437, 142);
+            dgvCustomers.Margin = new Padding(3, 2, 3, 2);
+            dgvCustomers.Name = "dgvCustomers";
+            dgvCustomers.Size = new Size(455, 255);
+            dgvCustomers.TabIndex = 21;
+            dgvCustomers.CellContentClick += dgvCustomers_CellContentClick;
             // 
             // Movie
             // 
@@ -272,11 +401,10 @@ namespace WinFormsApp1
             Movie.Controls.Add(label2);
             Movie.Controls.Add(txtBoxName);
             Movie.Controls.Add(dgvMovies);
-            Movie.Location = new Point(4, 54);
-            Movie.Margin = new Padding(3, 4, 3, 4);
+            Movie.Location = new Point(4, 46);
             Movie.Name = "Movie";
-            Movie.Padding = new Padding(3, 4, 3, 4);
-            Movie.Size = new Size(1418, 598);
+            Movie.Padding = new Padding(3);
+            Movie.Size = new Size(1240, 442);
             Movie.TabIndex = 1;
             Movie.Text = "Movie";
             Movie.Click += Movie_Click;
@@ -284,27 +412,29 @@ namespace WinFormsApp1
             // dgvActors
             // 
             dgvActors.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = SystemColors.Window;
-            dataGridViewCellStyle1.Font = new Font("Segoe UI", 20F);
-            dataGridViewCellStyle1.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.False;
-            dgvActors.DefaultCellStyle = dataGridViewCellStyle1;
-            dgvActors.Location = new Point(855, 294);
+            dataGridViewCellStyle13.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle13.BackColor = SystemColors.Window;
+            dataGridViewCellStyle13.Font = new Font("Segoe UI", 20F);
+            dataGridViewCellStyle13.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle13.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle13.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle13.WrapMode = DataGridViewTriState.False;
+            dgvActors.DefaultCellStyle = dataGridViewCellStyle13;
+            dgvActors.Location = new Point(748, 220);
+            dgvActors.Margin = new Padding(3, 2, 3, 2);
             dgvActors.Name = "dgvActors";
             dgvActors.RowHeadersWidth = 51;
-            dgvActors.Size = new Size(543, 251);
+            dgvActors.Size = new Size(475, 188);
             dgvActors.TabIndex = 21;
             dgvActors.CellContentClick += dgvActors_CellContentClick;
             // 
             // button1
             // 
             button1.Font = new Font("Segoe UI", 16F);
-            button1.Location = new Point(130, 211);
+            button1.Location = new Point(114, 158);
+            button1.Margin = new Padding(3, 2, 3, 2);
             button1.Name = "button1";
-            button1.Size = new Size(136, 63);
+            button1.Size = new Size(119, 47);
             button1.TabIndex = 20;
             button1.Text = "Add";
             button1.UseVisualStyleBackColor = true;
@@ -312,34 +442,36 @@ namespace WinFormsApp1
             // 
             // txtBoxActorIDAI
             // 
-            txtBoxActorIDAI.Location = new Point(216, 129);
+            txtBoxActorIDAI.Location = new Point(189, 97);
+            txtBoxActorIDAI.Margin = new Padding(3, 2, 3, 2);
             txtBoxActorIDAI.Name = "txtBoxActorIDAI";
-            txtBoxActorIDAI.Size = new Size(204, 52);
+            txtBoxActorIDAI.Size = new Size(179, 43);
             txtBoxActorIDAI.TabIndex = 19;
             // 
             // txtBoxMovieIDActor
             // 
-            txtBoxMovieIDActor.Location = new Point(216, 70);
+            txtBoxMovieIDActor.Location = new Point(189, 52);
+            txtBoxMovieIDActor.Margin = new Padding(3, 2, 3, 2);
             txtBoxMovieIDActor.Name = "txtBoxMovieIDActor";
-            txtBoxMovieIDActor.Size = new Size(204, 52);
+            txtBoxMovieIDActor.Size = new Size(179, 43);
             txtBoxMovieIDActor.TabIndex = 18;
             txtBoxMovieIDActor.TextChanged += textBox1_TextChanged;
             // 
             // label8
             // 
             label8.AutoSize = true;
-            label8.Location = new Point(17, 129);
+            label8.Location = new Point(15, 97);
             label8.Name = "label8";
-            label8.Size = new Size(200, 46);
+            label8.Size = new Size(158, 37);
             label8.TabIndex = 17;
             label8.Text = "Actor Name";
             // 
             // label7
             // 
             label7.AutoSize = true;
-            label7.Location = new Point(17, 70);
+            label7.Location = new Point(15, 52);
             label7.Name = "label7";
-            label7.Size = new Size(146, 46);
+            label7.Size = new Size(117, 37);
             label7.TabIndex = 16;
             label7.Text = "MovieID";
             label7.Click += label7_Click;
@@ -347,34 +479,36 @@ namespace WinFormsApp1
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(17, 12);
+            label1.Location = new Point(15, 9);
             label1.Name = "label1";
-            label1.Size = new Size(223, 46);
+            label1.Size = new Size(175, 37);
             label1.TabIndex = 15;
             label1.Text = "Add An Actor";
             // 
             // txtBoxMovieID
             // 
-            txtBoxMovieID.Location = new Point(622, 24);
+            txtBoxMovieID.Location = new Point(544, 18);
+            txtBoxMovieID.Margin = new Padding(3, 2, 3, 2);
             txtBoxMovieID.Name = "txtBoxMovieID";
-            txtBoxMovieID.Size = new Size(204, 52);
+            txtBoxMovieID.Size = new Size(179, 43);
             txtBoxMovieID.TabIndex = 14;
             // 
             // label6
             // 
             label6.AutoSize = true;
-            label6.Location = new Point(454, 30);
+            label6.Location = new Point(397, 22);
             label6.Name = "label6";
-            label6.Size = new Size(146, 46);
+            label6.Size = new Size(117, 37);
             label6.TabIndex = 13;
             label6.Text = "MovieID";
             // 
             // BtnMovieDelete
             // 
             BtnMovieDelete.Font = new Font("Segoe UI", 16F);
-            BtnMovieDelete.Location = new Point(726, 370);
+            BtnMovieDelete.Location = new Point(635, 278);
+            BtnMovieDelete.Margin = new Padding(3, 2, 3, 2);
             BtnMovieDelete.Name = "BtnMovieDelete";
-            BtnMovieDelete.Size = new Size(113, 60);
+            BtnMovieDelete.Size = new Size(99, 45);
             BtnMovieDelete.TabIndex = 12;
             BtnMovieDelete.Text = "Delete";
             BtnMovieDelete.UseVisualStyleBackColor = true;
@@ -383,9 +517,10 @@ namespace WinFormsApp1
             // BtnMovieAdd
             // 
             BtnMovieAdd.Font = new Font("Segoe UI", 16F);
-            BtnMovieAdd.Location = new Point(436, 370);
+            BtnMovieAdd.Location = new Point(382, 278);
+            BtnMovieAdd.Margin = new Padding(3, 2, 3, 2);
             BtnMovieAdd.Name = "BtnMovieAdd";
-            BtnMovieAdd.Size = new Size(113, 60);
+            BtnMovieAdd.Size = new Size(99, 45);
             BtnMovieAdd.TabIndex = 10;
             BtnMovieAdd.Text = "Add";
             BtnMovieAdd.UseVisualStyleBackColor = true;
@@ -393,97 +528,101 @@ namespace WinFormsApp1
             // 
             // txtBoxCopies
             // 
-            txtBoxCopies.Location = new Point(622, 294);
+            txtBoxCopies.Location = new Point(544, 220);
+            txtBoxCopies.Margin = new Padding(3, 2, 3, 2);
             txtBoxCopies.Name = "txtBoxCopies";
-            txtBoxCopies.Size = new Size(204, 52);
+            txtBoxCopies.Size = new Size(179, 43);
             txtBoxCopies.TabIndex = 9;
             txtBoxCopies.TextChanged += txtBoxCopies_TextChanged;
             // 
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new Point(454, 294);
+            label5.Location = new Point(397, 220);
             label5.Name = "label5";
-            label5.Size = new Size(150, 46);
+            label5.Size = new Size(121, 37);
             label5.TabIndex = 8;
             label5.Text = "# Copies";
             label5.Click += label5_Click;
             // 
             // txtBoxDFee
             // 
-            txtBoxDFee.Location = new Point(622, 228);
+            txtBoxDFee.Location = new Point(544, 171);
+            txtBoxDFee.Margin = new Padding(3, 2, 3, 2);
             txtBoxDFee.Name = "txtBoxDFee";
-            txtBoxDFee.Size = new Size(204, 52);
+            txtBoxDFee.Size = new Size(179, 43);
             txtBoxDFee.TabIndex = 7;
             // 
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(454, 228);
+            label4.Location = new Point(397, 171);
             label4.Name = "label4";
-            label4.Size = new Size(113, 46);
+            label4.Size = new Size(90, 37);
             label4.TabIndex = 6;
             label4.Text = "D. Fee";
             // 
             // txtBoxType
             // 
-            txtBoxType.Location = new Point(622, 157);
+            txtBoxType.Location = new Point(544, 118);
+            txtBoxType.Margin = new Padding(3, 2, 3, 2);
             txtBoxType.Name = "txtBoxType";
-            txtBoxType.Size = new Size(204, 52);
+            txtBoxType.Size = new Size(179, 43);
             txtBoxType.TabIndex = 5;
             // 
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(454, 157);
+            label3.Location = new Point(397, 118);
             label3.Name = "label3";
-            label3.Size = new Size(90, 46);
+            label3.Size = new Size(73, 37);
             label3.TabIndex = 4;
             label3.Text = "Type";
             // 
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(454, 91);
+            label2.Location = new Point(397, 68);
             label2.Name = "label2";
-            label2.Size = new Size(109, 46);
+            label2.Size = new Size(88, 37);
             label2.TabIndex = 3;
             label2.Text = "Name";
             label2.Click += label2_Click;
             // 
             // txtBoxName
             // 
-            txtBoxName.Location = new Point(622, 88);
+            txtBoxName.Location = new Point(544, 66);
+            txtBoxName.Margin = new Padding(3, 2, 3, 2);
             txtBoxName.Name = "txtBoxName";
-            txtBoxName.Size = new Size(204, 52);
+            txtBoxName.Size = new Size(179, 43);
             txtBoxName.TabIndex = 2;
             // 
             // dgvMovies
             // 
             dgvMovies.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = SystemColors.Window;
-            dataGridViewCellStyle2.Font = new Font("Segoe UI", 20F);
-            dataGridViewCellStyle2.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
-            dgvMovies.DefaultCellStyle = dataGridViewCellStyle2;
-            dgvMovies.Location = new Point(855, 12);
+            dataGridViewCellStyle14.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle14.BackColor = SystemColors.Window;
+            dataGridViewCellStyle14.Font = new Font("Segoe UI", 20F);
+            dataGridViewCellStyle14.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle14.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle14.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle14.WrapMode = DataGridViewTriState.False;
+            dgvMovies.DefaultCellStyle = dataGridViewCellStyle14;
+            dgvMovies.Location = new Point(748, 9);
+            dgvMovies.Margin = new Padding(3, 2, 3, 2);
             dgvMovies.Name = "dgvMovies";
             dgvMovies.RowHeadersWidth = 51;
-            dgvMovies.Size = new Size(543, 251);
+            dgvMovies.Size = new Size(475, 188);
             dgvMovies.TabIndex = 1;
             dgvMovies.CellContentClick += dataGridView1_CellContentClick_3;
             // 
             // Rental
             // 
             Rental.BackColor = Color.Firebrick;
-            Rental.Location = new Point(4, 54);
-            Rental.Margin = new Padding(3, 4, 3, 4);
+            Rental.Location = new Point(4, 46);
             Rental.Name = "Rental";
-            Rental.Padding = new Padding(3, 4, 3, 4);
-            Rental.Size = new Size(1418, 598);
+            Rental.Padding = new Padding(3);
+            Rental.Size = new Size(1240, 442);
             Rental.TabIndex = 2;
             Rental.Text = "Rental";
             // 
@@ -504,11 +643,11 @@ namespace WinFormsApp1
             Report.Controls.Add(ReportSelection);
             Report.Font = new Font("Segoe UI", 20F);
             Report.ForeColor = SystemColors.ActiveBorder;
-            Report.Location = new Point(4, 54);
+            Report.Location = new Point(4, 46);
             Report.Margin = new Padding(0);
             Report.Name = "Report";
-            Report.Padding = new Padding(3, 4, 3, 4);
-            Report.Size = new Size(1418, 598);
+            Report.Padding = new Padding(3);
+            Report.Size = new Size(1240, 442);
             Report.TabIndex = 3;
             Report.Text = "Report";
             Report.Click += Report_Click;
@@ -519,10 +658,9 @@ namespace WinFormsApp1
             ErrorMes.BorderStyle = BorderStyle.None;
             ErrorMes.Font = new Font("Segoe UI", 20F);
             ErrorMes.ForeColor = Color.Yellow;
-            ErrorMes.Location = new Point(27, 513);
-            ErrorMes.Margin = new Padding(3, 4, 3, 4);
+            ErrorMes.Location = new Point(24, 385);
             ErrorMes.Name = "ErrorMes";
-            ErrorMes.Size = new Size(520, 45);
+            ErrorMes.Size = new Size(455, 36);
             ErrorMes.TabIndex = 14;
             ErrorMes.TextAlign = HorizontalAlignment.Center;
             ErrorMes.TextChanged += ErrorMes_TextChanged;
@@ -531,22 +669,21 @@ namespace WinFormsApp1
             // 
             RepRes.AllowUserToAddRows = false;
             RepRes.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
-            RepRes.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle15.WrapMode = DataGridViewTriState.True;
+            RepRes.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle15;
             RepRes.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
             RepRes.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             RepRes.BackgroundColor = SystemColors.ButtonHighlight;
             RepRes.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            RepRes.Location = new Point(624, 124);
-            RepRes.Margin = new Padding(3, 4, 3, 4);
+            RepRes.Location = new Point(546, 93);
             RepRes.Name = "RepRes";
             RepRes.ReadOnly = true;
             RepRes.RowHeadersWidth = 10;
-            dataGridViewCellStyle4.WrapMode = DataGridViewTriState.True;
-            RepRes.RowsDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle16.WrapMode = DataGridViewTriState.True;
+            RepRes.RowsDefaultCellStyle = dataGridViewCellStyle16;
             RepRes.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             RepRes.ShowCellToolTips = false;
-            RepRes.Size = new Size(775, 376);
+            RepRes.Size = new Size(678, 282);
             RepRes.TabIndex = 13;
             RepRes.CellContentClick += dataGridView1_CellContentClick;
             // 
@@ -556,10 +693,9 @@ namespace WinFormsApp1
             EnterR.FlatStyle = FlatStyle.Popup;
             EnterR.Font = new Font("Segoe UI", 20F);
             EnterR.ForeColor = Color.Black;
-            EnterR.Location = new Point(624, 513);
-            EnterR.Margin = new Padding(3, 4, 3, 4);
+            EnterR.Location = new Point(546, 385);
             EnterR.Name = "EnterR";
-            EnterR.Size = new Size(192, 60);
+            EnterR.Size = new Size(168, 45);
             EnterR.TabIndex = 12;
             EnterR.Text = "Enter";
             EnterR.UseVisualStyleBackColor = false;
@@ -570,17 +706,16 @@ namespace WinFormsApp1
             SpecifTitle2.AutoSize = true;
             SpecifTitle2.Font = new Font("Segoe UI", 15F);
             SpecifTitle2.ForeColor = SystemColors.ActiveCaptionText;
-            SpecifTitle2.Location = new Point(320, 155);
+            SpecifTitle2.Location = new Point(280, 116);
             SpecifTitle2.Name = "SpecifTitle2";
-            SpecifTitle2.Size = new Size(95, 35);
+            SpecifTitle2.Size = new Size(76, 28);
             SpecifTitle2.TabIndex = 10;
             SpecifTitle2.Text = "Specif2";
             SpecifTitle2.Visible = false;
             // 
             // cal2
             // 
-            cal2.Location = new Point(320, 219);
-            cal2.Margin = new Padding(10, 12, 10, 12);
+            cal2.Location = new Point(280, 164);
             cal2.Name = "cal2";
             cal2.TabIndex = 9;
             cal2.Visible = false;
@@ -592,9 +727,9 @@ namespace WinFormsApp1
             DateSelect2.BackColor = Color.Firebrick;
             DateSelect2.Font = new Font("Segoe UI", 15F);
             DateSelect2.ForeColor = SystemColors.ActiveCaptionText;
-            DateSelect2.Location = new Point(320, 447);
+            DateSelect2.Location = new Point(280, 335);
             DateSelect2.Name = "DateSelect2";
-            DateSelect2.Size = new Size(228, 35);
+            DateSelect2.Size = new Size(180, 28);
             DateSelect2.TabIndex = 8;
             DateSelect2.Text = "No Date Selected 2";
             DateSelect2.Visible = false;
@@ -605,9 +740,9 @@ namespace WinFormsApp1
             DateSelect1.BackColor = Color.Firebrick;
             DateSelect1.Font = new Font("Segoe UI", 15F);
             DateSelect1.ForeColor = SystemColors.ActiveCaptionText;
-            DateSelect1.Location = new Point(16, 447);
+            DateSelect1.Location = new Point(14, 335);
             DateSelect1.Name = "DateSelect1";
-            DateSelect1.Size = new Size(228, 35);
+            DateSelect1.Size = new Size(180, 28);
             DateSelect1.TabIndex = 7;
             DateSelect1.Text = "No Date Selected 1";
             DateSelect1.Visible = false;
@@ -615,8 +750,7 @@ namespace WinFormsApp1
             // 
             // cal1
             // 
-            cal1.Location = new Point(16, 219);
-            cal1.Margin = new Padding(10, 12, 10, 12);
+            cal1.Location = new Point(14, 164);
             cal1.Name = "cal1";
             cal1.TabIndex = 5;
             cal1.Visible = false;
@@ -628,9 +762,9 @@ namespace WinFormsApp1
             PickReportTitle.AutoSize = true;
             PickReportTitle.Font = new Font("Segoe UI", 15F);
             PickReportTitle.ForeColor = SystemColors.ActiveCaptionText;
-            PickReportTitle.Location = new Point(27, 51);
+            PickReportTitle.Location = new Point(24, 38);
             PickReportTitle.Name = "PickReportTitle";
-            PickReportTitle.Size = new Size(189, 35);
+            PickReportTitle.Size = new Size(150, 28);
             PickReportTitle.TabIndex = 4;
             PickReportTitle.Text = "Select A Report:";
             PickReportTitle.Click += label1_Click;
@@ -640,9 +774,9 @@ namespace WinFormsApp1
             SpecifTitle1.AutoSize = true;
             SpecifTitle1.Font = new Font("Segoe UI", 15F);
             SpecifTitle1.ForeColor = SystemColors.ActiveCaptionText;
-            SpecifTitle1.Location = new Point(7, 155);
+            SpecifTitle1.Location = new Point(6, 116);
             SpecifTitle1.Name = "SpecifTitle1";
-            SpecifTitle1.Size = new Size(95, 35);
+            SpecifTitle1.Size = new Size(76, 28);
             SpecifTitle1.TabIndex = 2;
             SpecifTitle1.Text = "Specif1";
             SpecifTitle1.Visible = false;
@@ -650,10 +784,9 @@ namespace WinFormsApp1
             // Specif
             // 
             Specif.Font = new Font("Segoe UI", 15F);
-            Specif.Location = new Point(16, 219);
-            Specif.Margin = new Padding(3, 4, 3, 4);
+            Specif.Location = new Point(14, 164);
             Specif.Name = "Specif";
-            Specif.Size = new Size(210, 41);
+            Specif.Size = new Size(184, 34);
             Specif.TabIndex = 1;
             Specif.Visible = false;
             // 
@@ -662,10 +795,9 @@ namespace WinFormsApp1
             ReportSelection.Font = new Font("Segoe UI", 15F);
             ReportSelection.FormattingEnabled = true;
             ReportSelection.Items.AddRange(new object[] { "Who are the top 3 customers with the most rentals?", "What are the top 3 movies that have been rented between two specific days?", "What are the 3 top movies a specific employee rented?", "What are the top 3 rented genre between two specific days?", "What are the top 3 rented movies with a specfic actor?" });
-            ReportSelection.Location = new Point(251, 40);
-            ReportSelection.Margin = new Padding(3, 4, 3, 4);
+            ReportSelection.Location = new Point(220, 30);
             ReportSelection.Name = "ReportSelection";
-            ReportSelection.Size = new Size(812, 43);
+            ReportSelection.Size = new Size(711, 36);
             ReportSelection.TabIndex = 0;
             ReportSelection.Text = "Who are the top 3 customers with the most rentals?";
             ReportSelection.SelectedIndexChanged += comboBox1_SelectedIndexChanged;
@@ -676,15 +808,17 @@ namespace WinFormsApp1
             // 
             // NavScreen
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1424, 696);
+            ClientSize = new Size(1199, 522);
             Controls.Add(tabControl1);
-            Margin = new Padding(3, 4, 3, 4);
             Name = "NavScreen";
             Text = "NavScreen";
             Load += NavScreen_Load;
             tabControl1.ResumeLayout(false);
+            Customer.ResumeLayout(false);
+            Customer.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvCustomers).EndInit();
             Movie.ResumeLayout(false);
             Movie.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dgvActors).EndInit();
@@ -753,5 +887,14 @@ namespace WinFormsApp1
         private Button btnUpdate;
         private Button btnDelete;
         private DataGridView dgvCustomers;
+        private Label lblFirstName;
+        private Label lblLastName;
+        private Label lblAddress;
+        private Label lblCity;
+        private Label lblState;
+        private Label lblZip;
+        private Label lblEmail;
+        private Label lblAccount;
+        private Label lblCredit;
     }
 }

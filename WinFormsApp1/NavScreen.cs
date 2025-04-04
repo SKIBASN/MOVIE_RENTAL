@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 using System.Data.SqlClient;
-using Microsoft.VisualBasic.mitApplicationServices;
+//using Microsoft.VisualBasic.mitApplicationServices;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.IO.Pipes;
@@ -230,7 +230,7 @@ namespace WinFormsApp1
 
         private void Movie_Click(object sender, EventArgs e)
         {
-	          
+
         }
 
         private void Customer_Click(object sender, EventArgs e)
@@ -771,21 +771,21 @@ namespace WinFormsApp1
             catch (Exception ex)
             {
                 if (ex.Message.Contains("Error converting data type nvarchar to numeric"))
-            {
-                
-                MessageBox.Show("Please make sure that the Dsitribution Fee and/or the # Copies are an int.", 
-                                "Data Conversion Error", 
-                                MessageBoxButtons.OK, 
-                                MessageBoxIcon.Error);
-            }
-            else
-            {
-                // Handle other SQL errors
-                MessageBox.Show("An unexpected error occurred. Please try again later.",
-                                "Database Error",
-                                MessageBoxButtons.OK,
-                                MessageBoxIcon.Error);
-            }
+                {
+
+                    MessageBox.Show("Please make sure that the Dsitribution Fee and/or the # Copies are an int.",
+                                    "Data Conversion Error",
+                                    MessageBoxButtons.OK,
+                                    MessageBoxIcon.Error);
+                }
+                else
+                {
+                    // Handle other SQL errors
+                    MessageBox.Show("An unexpected error occurred. Please try again later.",
+                                    "Database Error",
+                                    MessageBoxButtons.OK,
+                                    MessageBoxIcon.Error);
+                }
             }
         }
 
@@ -908,5 +908,16 @@ namespace WinFormsApp1
             dgvMovies.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             dgvMovies.RowTemplate.Height = 30;
         }
+
+        private void dgvCustomers_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void txtCity_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
+}
 

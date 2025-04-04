@@ -18,10 +18,10 @@ namespace WinFormsApp1
 
         public Database()
         {
-            //String connectionString = "Server=DESKTOP-MNUPRSE; Database=TEAM4CMPT291DATABASE; Trusted_Connection=yes;";
-            //this.myConnection = new SqlConnection(connectionString);
-            String connectionString = "Server=192.168.1.190;Database=TEAM4CMPT291DATABASE;User Id=sa;Password=YourPassword123;";
+            String connectionString = "Server=DESKTOP-MNUPRSE; Database=TEAM4CMPT291DATABASE; Trusted_Connection=yes;";
             this.myConnection = new SqlConnection(connectionString);
+            //String connectionString = "Server=192.168.1.190;Database=TEAM4CMPT291DATABASE;User Id=sa;Password=YourPassword123;";
+            //this.myConnection = new SqlConnection(connectionString);
 
             try
             {
@@ -103,8 +103,6 @@ namespace WinFormsApp1
                 return false; // No data
             }
         }
-
-        public void query(string query_string)
         public void AddCustomer(string firstName, string lastName, string address, string city, string state, string zip, string email, string accountNumber, string creditCardNumber)
         {
             try
@@ -133,13 +131,11 @@ namespace WinFormsApp1
             }
         }
 
-        // Optional: Legacy manual insert method
-        /*
-        public void insert(String insert_statement)
+        public void Dispose()
         {
-            this.myCommand.CommandText = insert_statement;
-            this.myCommand.ExecuteNonQuery();
+            throw new NotImplementedException();
         }
+
 
         public void query(String query_string)
         {
@@ -189,29 +185,5 @@ namespace WinFormsApp1
             }
 
         }
-
-        public void Dispose()
-        {
-            if (myReader != null)
-            {
-                myReader.Dispose();
-                myReader = null;
-            }
-            if (myCommand != null)
-            {
-                myCommand.Dispose();
-                myCommand = null;
-            }
-            if (myConnection != null)
-            {
-                myConnection.Dispose();
-                myConnection = null;
-            }
-        }
-
-            this.myCommand.CommandText = query_string;
-            this.myReader = this.myCommand.ExecuteReader();
-        }
-        */
     }
 }
