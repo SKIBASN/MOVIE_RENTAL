@@ -9,7 +9,6 @@ namespace WinFormsApp1
     public partial class LoginScreen : Form
     {
         public Database db;
-
         public LoginScreen()
         {
             InitializeComponent();
@@ -42,41 +41,39 @@ namespace WinFormsApp1
 
             try
             {
-                // Add parameters
                 db.myCommand.Parameters.Clear();
                 db.myCommand.Parameters.AddWithValue("@username", username);
 
-                db.query("SELECT Password FROM Employee WHERE Username = @username");
-                
+                db.query("SELECT EmployeeID, Password FROM Employee WHERE Username = @username");
 
                 if (db.myReader.Read())
                 {
 
                     string storedHash = db.myReader["Password"].ToString();
+                    bool loginSuccessful = Database.VerifyPassword(enteredPassword, storedHash);
 
-                    if (Database.VerifyPassword(enteredPassword, storedHash))
+                    if (loginSuccessful)
                     {
                         status.Text = "Login successful";
-                        
-                        NavScreen f2 = new NavScreen(db);
+                        int _employeeID = Convert.ToInt32(db.myReader["EmployeeID"]);
+                        db.myReader.Close();
+                        NavScreen f2 = new NavScreen(_employeeID, db);
                         f2.Show();
                         this.Hide();
                     }
                     else
                     {
-                        MessageBox.Show("Invalid Username or password.");
-                        status.Text = "Username or Password is incorrect";
+                        MessageBox.Show("Invalid username or password.");
+                        status.Text = "Username or password is incorrect";
+                        db.myReader.Close();
                     }
                 }
                 else
                 {
                     MessageBox.Show("Invalid Username or password.");
-                    status.Text = "Username or Password is incorrect";
+                    status.Text = "Username or password is incorrect";
                 }
                     
-                db.myReader.Close();
-
-
             }
             catch (Exception e3)
             {
@@ -87,7 +84,7 @@ namespace WinFormsApp1
         }
 
 
-                private void user_TextChanged(object sender, EventArgs e)
+        private void user_TextChanged(object sender, EventArgs e)
         {
 
         }

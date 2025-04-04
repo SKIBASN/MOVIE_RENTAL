@@ -5,6 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
 using System.Diagnostics.Eventing.Reader;
+using System.Data;
+using Microsoft.VisualBasic.Devices;
+using static System.ComponentModel.Design.ObjectSelectorEditor;
+using System.Diagnostics.Metrics;
 using System.Windows.Forms;
 
 namespace WinFormsApp1
@@ -18,24 +22,73 @@ namespace WinFormsApp1
 
         public Database()
         {
-            String connectionString = "Server=DESKTOP-MNUPRSE; Database=TEAM4CMPT291DATABASE; Trusted_Connection=yes;";
+            String connectionString = "Server=BRIGHT-THINKPAD; Database=TEAM4CMPT291DATABASE; Trusted_Connection=yes;";
             this.myConnection = new SqlConnection(connectionString);
-            //String connectionString = "Server=192.168.1.190;Database=TEAM4CMPT291DATABASE;User Id=sa;Password=YourPassword123;";
-            //this.myConnection = new SqlConnection(connectionString);
 
             try
             {
-                if (myConnection.State == System.Data.ConnectionState.Closed)
-                {
-                    myConnection.Open();
-                    myCommand = new SqlCommand { Connection = myConnection };
-                }
+                this.myConnection.Open(); // Open connection
+                this.myCommand = new SqlCommand();
+                this.myCommand.Connection = myConnection; // Link the command stream to the connection
             }
             catch (Exception e)
             {
                 MessageBox.Show(e.ToString(), "Error");
             }
+
         }
+
+        // DataTable class to retrieve customers from database
+        public DataTable GetCustomers()
+        {
+            DataTable dt = new DataTable();
+            try
+            {
+                query("SELECT * FROM Customer");
+                dt.Load(myReader);
+                myReader.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error retrieving customers: " + ex.Message);
+            }
+            return dt;
+        }
+
+        // DataTable class to retrieve movies from database
+        public DataTable GetMovies()
+        {
+            DataTable dt = new DataTable();
+            try
+            {
+                //query("SELECT * FROM Movie");
+
+                query(@"SELECT movie.*, " +
+                    "CASE WHEN (movie.NumberOfCopies - " +
+                     "  (SELECT COUNT(*) FROM RentalOrder rental " +
+                     "  WHERE rental.MovieID = movie.MovieID " +
+                     "      AND rental.ReturnDateTime IS NULL)) < 0" +
+
+                     "  THEN 0 " +
+                     "  ELSE " +
+                         "  (movie.NumberOfCopies - " +
+                         "  (SELECT COUNT(*) FROM RentalOrder rental " +
+                         "  WHERE rental.MovieID = movie.MovieID " +
+                         "      AND rental.ReturnDateTime IS NULL)) " +
+                     "END AS AvailableCopies " +
+                     "FROM Movie movie");
+                   
+                dt.Load(myReader);
+                myReader.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error retrieving movies: " + ex.Message);
+            }
+            return dt;
+        }
+
+
 
         // Hash an entered password
         public static string HashPassword(string password)
@@ -56,12 +109,22 @@ namespace WinFormsApp1
             string enteredHash = HashPassword(enteredPassword);
             return enteredHash == storedHash;
         }
+
+
         public void insert(string insert_statement)
         {
             
             myCommand.CommandText = insert_statement;
             myCommand.ExecuteNonQuery();
         }
+
+        public void delete(string delete_statement)
+        {
+            myCommand.CommandText = delete_statement;
+            myCommand.ExecuteNonQuery();
+        }
+
+
         public void Date_Param_query(string query_string, DateTime param1, DateTime param2)
         {
             
@@ -155,10 +218,16 @@ namespace WinFormsApp1
 
         public void query(String query_string)
         {
-            
-            myCommand.CommandText = query_string;
-            myReader = myCommand.ExecuteReader();
+            if (myReader != null && !myReader.IsClosed)
+            {
+                myReader.Close();
+            }
+            this.myCommand.CommandText = query_string;
+            this.myReader = this.myCommand.ExecuteReader();
         }
+
+
+
         // Convert existing passwords to hashes in the table
         public void ConvertPasswordsToHashes()
         {

@@ -42,9 +42,9 @@
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 30F);
-            label1.Location = new Point(166, 76);
+            label1.Location = new Point(190, 101);
             label1.Name = "label1";
-            label1.Size = new Size(152, 54);
+            label1.Size = new Size(189, 67);
             label1.TabIndex = 0;
             label1.Text = "User ID";
             label1.Click += label1_Click;
@@ -53,20 +53,20 @@
             // 
             PasswordTitle.AutoSize = true;
             PasswordTitle.Font = new Font("Segoe UI", 30F);
-            PasswordTitle.Location = new Point(152, 137);
+            PasswordTitle.Location = new Point(174, 183);
             PasswordTitle.Name = "PasswordTitle";
-            PasswordTitle.Size = new Size(188, 54);
+            PasswordTitle.Size = new Size(233, 67);
             PasswordTitle.TabIndex = 1;
             PasswordTitle.Text = "Password";
-            PasswordTitle.Visible = true;
             PasswordTitle.Click += PasswordTitle_Click;
             // 
             // button1
             // 
             button1.Font = new Font("Segoe UI", 20F);
-            button1.Location = new Point(166, 309);
+            button1.Location = new Point(456, 315);
+            button1.Margin = new Padding(3, 4, 3, 4);
             button1.Name = "button1";
-            button1.Size = new Size(109, 47);
+            button1.Size = new Size(125, 63);
             button1.TabIndex = 2;
             button1.Text = "Login";
             button1.UseVisualStyleBackColor = true;
@@ -75,31 +75,31 @@
             // user
             // 
             user.Font = new Font("Segoe UI", 20F);
-            user.Location = new Point(399, 87);
+            user.Location = new Point(456, 116);
+            user.Margin = new Padding(3, 4, 3, 4);
             user.Name = "user";
-            user.Size = new Size(192, 43);
+            user.Size = new Size(219, 52);
             user.TabIndex = 3;
             user.TextChanged += user_TextChanged;
             // 
             // password
             // 
             password.Font = new Font("Segoe UI", 20F);
-            password.Location = new Point(399, 148);
+            password.Location = new Point(456, 197);
+            password.Margin = new Padding(3, 4, 3, 4);
             password.Name = "password";
-            password.Size = new Size(192, 43);
+            password.Size = new Size(219, 52);
             password.TabIndex = 4;
-            password.Visible = true;
             password.TextChanged += password_TextChanged;
             // 
             // status
             // 
             status.AutoSize = true;
             status.Font = new Font("Segoe UI", 10F);
-            status.Location = new Point(379, 330);
+            status.Location = new Point(433, 440);
             status.Name = "status";
-            status.Size = new Size(83, 19);
+            status.Size = new Size(0, 23);
             status.TabIndex = 7;
-            //status.Text = "Loading ...";
             status.Visible = false;
             status.Click += label2_Click;
             // 
@@ -110,16 +110,17 @@
             // 
             // LoginScreen
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.Firebrick;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(914, 600);
             Controls.Add(status);
             Controls.Add(password);
             Controls.Add(user);
             Controls.Add(button1);
             Controls.Add(PasswordTitle);
             Controls.Add(label1);
+            Margin = new Padding(3, 4, 3, 4);
             Name = "LoginScreen";
             Text = "LoginScreen";
             Load += UserTitle_Load;
@@ -135,8 +136,8 @@
         private Button button1;
         private TextBox user;
         private TextBox password;
-        private RadioButton employee;
-        private RadioButton cust;
+        //private RadioButton employee;
+        //private RadioButton cust;
         private Label status;
         private FileSystemWatcher fileSystemWatcher1;
     }

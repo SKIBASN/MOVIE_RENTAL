@@ -19,26 +19,31 @@ using System.Reflection.PortableExecutable;
 using System.Security.Principal;
 using System.Transactions;
 using System.Data.Common;
+using System.Collections;
 
 namespace WinFormsApp1
 {
     public partial class NavScreen : Form
     {
+        private readonly int employeeID;
         public Database db;
         private int choice = 0;
         // Change the type of 'result' from 'object' to 'Control' to access the 'Visible' property
         private Control result;
 
-        public NavScreen(Database DT)
+        public NavScreen(int _employeeID, Database DT)
         {
             InitializeComponent();
-            db = new Database(); // Initialize the object and create the connection
+            db = DT;
+            employeeID = _employeeID;
             LoadCustomers();
             LoadMovies();
             LoadActors();
             btnAdd.Click += BtnAdd_Click;
             btnUpdate.Click += BtnUpdate_Click;
             btnDelete.Click += BtnDelete_Click;
+            LoadCustomersIntoDataGridView();
+            LoadMoviesIntoDataGridView();
         }
 
         private void LoadCustomers()
@@ -55,6 +60,37 @@ namespace WinFormsApp1
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Error loading customers.");
+            }
+        }
+        private void LoadCustomersIntoDataGridView()
+        {
+            try
+            {
+                dgvRentalCustomers.DataSource = null;
+                dgvRentalCustomers.Columns.Clear();
+
+                DataTable customersTable = db.GetCustomers();
+
+                dgvRentalCustomers.DataSource = customersTable;
+
+                // rename columns
+                dgvRentalCustomers.Columns["CustomerID"].HeaderText = "Customer ID";
+                dgvRentalCustomers.Columns["SocialSecurityNum"].HeaderText = "SSN";
+                dgvRentalCustomers.Columns["FirstName"].HeaderText = "First Name";
+                dgvRentalCustomers.Columns["LastName"].HeaderText = "Last Name";
+                dgvRentalCustomers.Columns["ZipCode"].HeaderText = "Zip Code";
+                dgvRentalCustomers.Columns["EmailAddress"].HeaderText = "Email Address";
+                dgvRentalCustomers.Columns["AccountNumber"].HeaderText = "Account Number";
+                //dgvRentalCustomers.Columns["AccountCreateDate"].HeaderText = "Date Joined";
+                dgvRentalCustomers.Columns["AccountCreateDate"].Visible = false;
+                dgvRentalCustomers.Columns["CreditCardNumber"].HeaderText = "Credit Card Number";
+
+
+                dgvRentalCustomers.DefaultCellStyle.ForeColor = Color.Black;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error loading customer data: " + ex.Message);
             }
         }
 
@@ -82,31 +118,29 @@ namespace WinFormsApp1
         {
             try
             {
-                using (db = new Database()) // Ensure proper disposal
-                {
                     // Validate input fields before proceeding
-                    if (!ValidateCustomerInputs())
-                        return;
+                if (!ValidateCustomerInputs())
+                    return;
 
-                    string insertQuery = "INSERT INTO Customer (SocialSecurityNum, FirstName, LastName, Address, City, State, ZipCode, EmailAddress, AccountNumber, CreditCardNumber) " +
-                                         "VALUES (@SIN, @FirstName, @LastName, @Address, @City, @State, @Zip, @Email, @Account, @Credit)";
-                    db.myCommand.CommandText = insertQuery;
-                    db.myCommand.Parameters.Clear();
-                    db.myCommand.Parameters.AddWithValue("@FirstName", txtFirstName.Text);
-                    db.myCommand.Parameters.AddWithValue("@LastName", txtLastName.Text);
-                    db.myCommand.Parameters.AddWithValue("@SIN", txtSIN.Text);
-                    db.myCommand.Parameters.AddWithValue("@Address", txtAddress.Text);
-                    db.myCommand.Parameters.AddWithValue("@City", txtCity.Text);
-                    db.myCommand.Parameters.AddWithValue("@State", txtState.Text);
-                    db.myCommand.Parameters.AddWithValue("@Zip", txtZip.Text);
-                    db.myCommand.Parameters.AddWithValue("@Email", txtEmail.Text);
-                    db.myCommand.Parameters.AddWithValue("@Account", txtAccount.Text);
-                    db.myCommand.Parameters.AddWithValue("@Credit", txtCredit.Text);
+                string insertQuery = "INSERT INTO Customer (SocialSecurityNum, FirstName, LastName, Address, City, State, ZipCode, EmailAddress, AccountNumber, CreditCardNumber) " +
+                                        "VALUES (@SIN, @FirstName, @LastName, @Address, @City, @State, @Zip, @Email, @Account, @Credit)";
+                db.myCommand.CommandText = insertQuery;
+                db.myCommand.Parameters.Clear();
+                db.myCommand.Parameters.AddWithValue("@FirstName", txtFirstName.Text);
+                db.myCommand.Parameters.AddWithValue("@LastName", txtLastName.Text);
+                db.myCommand.Parameters.AddWithValue("@SIN", txtSIN.Text);
+                db.myCommand.Parameters.AddWithValue("@Address", txtAddress.Text);
+                db.myCommand.Parameters.AddWithValue("@City", txtCity.Text);
+                db.myCommand.Parameters.AddWithValue("@State", txtState.Text);
+                db.myCommand.Parameters.AddWithValue("@Zip", txtZip.Text);
+                db.myCommand.Parameters.AddWithValue("@Email", txtEmail.Text);
+                db.myCommand.Parameters.AddWithValue("@Account", txtAccount.Text);
+                db.myCommand.Parameters.AddWithValue("@Credit", txtCredit.Text);
 
-                    db.myCommand.ExecuteNonQuery();
-                    MessageBox.Show("Customer added successfully!");
-                    LoadCustomers();
-                }
+                db.myCommand.ExecuteNonQuery();
+                MessageBox.Show("Customer added successfully!");
+                LoadCustomers();
+                
             }
             catch (Exception ex)
             {
@@ -122,33 +156,32 @@ namespace WinFormsApp1
             try
             {
                 // Validate input fields before updating
-                using (db = new Database()) // Ensure proper disposal
-                {
-                    if (!ValidateCustomerInputs())
-                        return;
+                
+                if (!ValidateCustomerInputs())
+                    return;
 
-                    int id = Convert.ToInt32(dgvCustomers.CurrentRow.Cells["CustomerID"].Value);
-                    string updateQuery = "UPDATE Customer SET SocialSecurityNum= @SIN, FirstName = @FirstName, LastName = @LastName, Address = @Address, City = @City, State = @State, " +
-                                         "ZipCode = @Zip, EmailAddress = @Email, AccountNumber = @Account, CreditCardNumber = @Credit WHERE CustomerID = @ID";
-                    db.myCommand.CommandText = updateQuery;
-                    db.myCommand.Parameters.Clear();
-                    db.myCommand.Parameters.AddWithValue("@ID", id);
-                    db.myCommand.Parameters.AddWithValue("@FirstName", txtFirstName.Text);
-                    db.myCommand.Parameters.AddWithValue("@SIN", txtSIN.Text);
-                    db.myCommand.Parameters.AddWithValue("@LastName", txtLastName.Text);
-                    db.myCommand.Parameters.AddWithValue("@Address", txtAddress.Text);
-                    db.myCommand.Parameters.AddWithValue("@City", txtCity.Text);
-                    db.myCommand.Parameters.AddWithValue("@State", txtState.Text);
-                    db.myCommand.Parameters.AddWithValue("@Zip", txtZip.Text);
-                    db.myCommand.Parameters.AddWithValue("@Email", txtEmail.Text);
-                    db.myCommand.Parameters.AddWithValue("@Account", txtAccount.Text);
-                    db.myCommand.Parameters.AddWithValue("@Credit", txtCredit.Text);
+                int id = Convert.ToInt32(dgvCustomers.CurrentRow.Cells["CustomerID"].Value);
+                string updateQuery = "UPDATE Customer SET SocialSecurityNum= @SIN, FirstName = @FirstName, LastName = @LastName, Address = @Address, City = @City, State = @State, " +
+                                        "ZipCode = @Zip, EmailAddress = @Email, AccountNumber = @Account, CreditCardNumber = @Credit WHERE CustomerID = @ID";
+                db.myCommand.CommandText = updateQuery;
+                db.myCommand.Parameters.Clear();
+                db.myCommand.Parameters.AddWithValue("@ID", id);
+                db.myCommand.Parameters.AddWithValue("@FirstName", txtFirstName.Text);
+                db.myCommand.Parameters.AddWithValue("@SIN", txtSIN.Text);
+                db.myCommand.Parameters.AddWithValue("@LastName", txtLastName.Text);
+                db.myCommand.Parameters.AddWithValue("@Address", txtAddress.Text);
+                db.myCommand.Parameters.AddWithValue("@City", txtCity.Text);
+                db.myCommand.Parameters.AddWithValue("@State", txtState.Text);
+                db.myCommand.Parameters.AddWithValue("@Zip", txtZip.Text);
+                db.myCommand.Parameters.AddWithValue("@Email", txtEmail.Text);
+                db.myCommand.Parameters.AddWithValue("@Account", txtAccount.Text);
+                db.myCommand.Parameters.AddWithValue("@Credit", txtCredit.Text);
 
-                    db.myCommand.ExecuteNonQuery();
-                    MessageBox.Show("Customer updated successfully!");
-                    LoadCustomers();
-                    dgvCustomers.Refresh();
-                }
+                db.myCommand.ExecuteNonQuery();
+                MessageBox.Show("Customer updated successfully!");
+                LoadCustomers();
+                dgvCustomers.Refresh();
+                
             }
             catch (Exception ex)
             {
@@ -162,18 +195,17 @@ namespace WinFormsApp1
 
             try
             {
-                using (db = new Database()) // Ensure proper disposal
-                {
-                    int id = Convert.ToInt32(dgvCustomers.CurrentRow.Cells["CustomerID"].Value);
-                    string deleteQuery = "DELETE FROM Customer WHERE CustomerID = @ID";
-                    db.myCommand.CommandText = deleteQuery;
-                    db.myCommand.Parameters.Clear();
-                    db.myCommand.Parameters.AddWithValue("@ID", id);
-                    db.myCommand.ExecuteNonQuery();
+                
+                int id = Convert.ToInt32(dgvCustomers.CurrentRow.Cells["CustomerID"].Value);
+                string deleteQuery = "DELETE FROM Customer WHERE CustomerID = @ID";
+                db.myCommand.CommandText = deleteQuery;
+                db.myCommand.Parameters.Clear();
+                db.myCommand.Parameters.AddWithValue("@ID", id);
+                db.myCommand.ExecuteNonQuery();
 
-                    MessageBox.Show("Customer deleted successfully!");
-                    LoadCustomers();
-                }
+                MessageBox.Show("Customer deleted successfully!");
+                LoadCustomers();
+                
             }
             catch (Exception ex)
             {
@@ -185,18 +217,18 @@ namespace WinFormsApp1
         {
             try
             {
-                using (db = new Database()) // Ensure proper disposal
-                {
-                    string query = "SELECT * FROM Movie";
-                    SqlCommand cmd = new SqlCommand(query, db.myConnection);
-                    SqlDataAdapter adapter = new SqlDataAdapter(cmd);
-                    DataTable table = new DataTable();
-                    adapter.Fill(table);
-                    var filteredRows = table.AsEnumerable()
-                    .Where(row => row.Field<string>("MovieName") != "DeletedMovie3561")
-                    .CopyToDataTable();
-                    dgvMovies.DataSource = filteredRows;
-                }
+                
+                
+                string query = "SELECT * FROM Movie";
+                SqlCommand cmd = new SqlCommand(query, db.myConnection);
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                DataTable table = new DataTable();
+                adapter.Fill(table);
+                var filteredRows = table.AsEnumerable()
+                .Where(row => row.Field<string>("MovieName") != "DeletedMovie3561")
+                .CopyToDataTable();
+                dgvMovies.DataSource = filteredRows;
+                
             }
             catch (Exception ex)
             {
@@ -209,22 +241,56 @@ namespace WinFormsApp1
         {
             try
             {
-                using (db = new Database()) // Ensure proper disposal
-                {
-                   
-                    string query = "SELECT * FROM Actor";
-                    SqlCommand cmd = new SqlCommand(query, db.myConnection);
-                    SqlDataAdapter adapter = new SqlDataAdapter(cmd);
-                    DataTable table = new DataTable();
-                    adapter.Fill(table);
-                    dgvActors.DataSource = table;
-                }
+               
+
+                string query = "SELECT * FROM Actor";
+                SqlCommand cmd = new SqlCommand(query, db.myConnection);
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                DataTable table = new DataTable();
+                adapter.Fill(table);
+                dgvActors.DataSource = table;
+                
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Error loading Actors.");
             }
 
+
+        }
+
+        private void LoadMoviesIntoDataGridView()
+        {
+            try
+            {
+                dgvRentalMovies.DataSource = null;
+                dgvRentalMovies.Columns.Clear();
+
+                DataTable moviesTable = db.GetMovies();
+
+                dgvRentalMovies.DataSource = moviesTable;
+
+                // rename columns
+                dgvRentalMovies.Columns["MovieID"].Visible = false;
+                dgvRentalMovies.Columns["MovieName"].HeaderText = "Movie Name";
+                dgvRentalMovies.Columns["MovieType"].HeaderText = "Type";
+                dgvRentalMovies.Columns["DistributionFee"].HeaderText = "Distribution Fee";
+                dgvRentalMovies.Columns["NumberOfCopies"].HeaderText = "Number Of Copies";
+                if (dgvRentalMovies.Columns.Contains("AvailableCopies"))
+                {
+                    dgvRentalMovies.Columns["AvailableCopies"].HeaderText = "Available";
+                }
+
+                dgvRentalMovies.DefaultCellStyle.ForeColor = Color.Black;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error loading customer data: " + ex.Message);
+            }
+        }
+
+        private void Rental_Click(object sender, EventArgs e)
+        {
 
         }
 
@@ -243,6 +309,10 @@ namespace WinFormsApp1
 
         }
 
+
+        //
+        /* For Report Screen */
+        //
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (ReportSelection.SelectedIndex == 0) // Assuming 0 is the index for "Who are the top 3 customers with the most rentals?"
@@ -372,8 +442,9 @@ namespace WinFormsApp1
 
         private void EnterR_Click(object sender, EventArgs e)
         {
-            using (db = new Database()) // Ensure proper disposal
-            {
+            //using (db = new Database()) // Ensure proper disposal
+          
+            
                 //db.myCommand.Parameters.Clear(); // Always clear parameters before use
 
                 if (choice == 0) // Top 3 customers with most rentals
@@ -667,7 +738,7 @@ namespace WinFormsApp1
                     {
                         MessageBox.Show(e3.ToString(), "Error");
                     }
-                }
+                
             }
         }
 
@@ -693,6 +764,7 @@ namespace WinFormsApp1
         private void NavScreen_Load(object sender, EventArgs e)
         {
 
+
         }
 
         private void comboBox1_SelectedIndexChanged_1(object sender, EventArgs e)
@@ -703,6 +775,283 @@ namespace WinFormsApp1
         private void label1_Click_1(object sender, EventArgs e)
         {
 
+        }
+
+        private void dispenseButton_Click(object sender, EventArgs e)
+        {
+            if ((dgvRentalCustomers.CurrentRow == null) || (dgvRentalMovies.CurrentRow == null))
+            {
+                MessageBox.Show("Please select a customer and a movie.");
+                return;
+            }
+            int customerID = Convert.ToInt32(dgvRentalCustomers.CurrentRow.Cells["CustomerID"].Value);
+            string custFirstName = Convert.ToString(dgvRentalCustomers.CurrentRow.Cells["FirstName"].Value);
+            string custLastName = Convert.ToString(dgvRentalCustomers.CurrentRow.Cells["LastName"].Value);
+
+            int movieID = Convert.ToInt32(dgvRentalMovies.CurrentRow.Cells["MovieID"].Value);
+            string movieName = Convert.ToString(dgvRentalMovies.CurrentRow.Cells["MovieName"].Value);
+
+
+            SqlTransaction rentalTransaction = null;
+            try
+            {
+                rentalTransaction = db.myConnection.BeginTransaction();
+                db.myCommand.Transaction = rentalTransaction;
+
+                // Determine total number of copies for selected movie
+                db.myCommand.Parameters.Clear();
+                db.myCommand.Parameters.AddWithValue("@movieID", movieID);
+                db.query("SELECT NumberOfCopies FROM Movie WHERE MovieID = @movieID");
+                int totalCopies = db.myReader.Read() ? Convert.ToInt32(db.myReader["NumberOfCopies"]) : 0;
+                db.myReader.Close();
+
+                // Determine how many copies are currently rented out
+                db.myCommand.Parameters.Clear();
+                db.myCommand.Parameters.AddWithValue("@movieID", movieID);
+                db.query("SELECT COUNT(*) AS NumRentedOut " +
+                    "FROM RentalOrder " +
+                    "WHERE MovieID = @movieID " +
+                    "AND ReturnDateTime is NULL");
+                int numRentedOut = db.myReader.Read() ? Convert.ToInt32(db.myReader["NumRentedOut"]) : 0;
+                db.myReader.Close();
+
+                // Check if customer is currently renting the selected movie
+                db.myCommand.Parameters.Clear();
+                db.myCommand.Parameters.AddWithValue("@movieID", movieID);
+                db.myCommand.Parameters.AddWithValue("@customerID", customerID);
+                db.query("SELECT COUNT(*) FROM RentalOrder " +
+                    "WHERE MovieID = @movieID " +
+                    "AND CustomerID = @customerID " +
+                    "AND ReturnDateTime IS NULL");
+                bool isRenting = db.myReader.Read() && (Convert.ToInt32(db.myReader[0]) > 0);
+                db.myReader.Close();
+
+                if (isRenting)
+                {
+                    rentalTransaction.Rollback();
+                    MessageBox.Show($"{custFirstName} {custLastName} is already renting {movieName}.");
+                    return;
+                }
+
+                // Determine sort order value if there is one
+                db.myCommand.Parameters.Clear();
+                db.myCommand.CommandText = "SELECT SortOrder FROM MovieQueue " +
+                    "WHERE MovieID = @movieID AND CustomerID = @customerID";
+                db.myCommand.Parameters.AddWithValue("@movieID", movieID);
+                db.myCommand.Parameters.AddWithValue("@customerID", customerID);
+                object _sortOrderVal = db.myCommand.ExecuteScalar();
+                int sortOrder = Convert.ToInt32(_sortOrderVal);
+                db.myReader.Close();
+
+                // If copies are available
+                if (numRentedOut < totalCopies)
+                {
+
+                    // If the movie is next in queue
+                    if (sortOrder == 1)
+                    {
+                        // Decrement SortOrder for all other movies in the queue
+                        db.myCommand.Parameters.Clear();
+                        db.myCommand.CommandText = "UPDATE MovieQueue " +
+                            "SET SortOrder = SortOrder - 1 " +
+                            "WHERE CustomerID = @customerID AND MovieID != @movieID";
+                        db.myCommand.Parameters.AddWithValue("@customerID", customerID);
+                        db.myCommand.Parameters.AddWithValue("@movieID", movieID);
+                        db.myCommand.ExecuteNonQuery();
+
+                        // Remove the movie from the queue
+                        string removeQueue = "DELETE FROM MovieQueue " +
+                                "WHERE MovieID = @movieID AND CustomerID = @customerID";
+                        db.myCommand.Parameters.Clear();
+                        db.myCommand.Parameters.AddWithValue("@movieID", movieID);
+                        db.myCommand.Parameters.AddWithValue("@customerID", customerID);
+                        db.delete(removeQueue);
+
+                        // Insert a new rental order
+                        string insertRental = "INSERT INTO RentalOrder (MovieID, CustomerID, EmployeeID, CheckoutDateTime)" +
+                        "VALUES (@movieID, @customerID, @employeeID, GETDATE())";
+                        db.myCommand.Parameters.Clear();
+                        db.myCommand.Parameters.AddWithValue("@movieID", movieID);
+                        db.myCommand.Parameters.AddWithValue("@customerID", customerID);
+                        db.myCommand.Parameters.AddWithValue("@employeeID", employeeID);
+                        db.insert(insertRental);
+
+                        int newRentalID = Convert.ToInt32(db.myCommand.ExecuteScalar());
+                        string newOrderNum = newRentalID.ToString();
+
+                        rentalTransaction.Commit();
+                        MessageBox.Show("Order number: " + newOrderNum + $"\nMovie: {movieName}"
+                            + $"\nMovie successfully rented to {custFirstName} {custLastName}!", "Order Confirmation");
+                        return;
+                    }
+                    else if (sortOrder > 1)
+                    {
+                        // If selected movie is not next in queue
+                        rentalTransaction.Rollback();
+                        MessageBox.Show($"Cannot dispense movie. {movieName} is in place {_sortOrderVal.ToString()} in the queue.", "Movie Unavailable");
+                    }
+
+                    else
+                    {
+                        // If selected movie is available but is not in queue
+                        DialogResult result = MessageBox.Show($"{movieName} is not in {custFirstName} {custLastName}'s queue. " +
+                            $"Would you like to add {movieName} to the queue?",
+                            "Add to Queue",
+                            MessageBoxButtons.YesNo);
+                        if (result == DialogResult.Yes)
+                        {
+                            // Determine new sort order for the queue
+                            db.myCommand.Parameters.Clear();
+                            db.myCommand.CommandText = "SELECT ISNULL(MAX(SortOrder), 0) FROM MovieQueue " +
+                                "WHERE CustomerID = @customerID";
+                            db.myCommand.Parameters.AddWithValue("@customerID", customerID);
+                            int maxQueue = Convert.ToInt32(db.myCommand.ExecuteScalar());
+                            int newSortOrder = maxQueue + 1;
+
+                            // Insert movie into customer's queue
+                            db.myCommand.Parameters.Clear();
+                            string newQueue = "INSERT INTO MovieQueue (MovieID, CustomerID, SortOrder) " +
+                                "VALUES (@movieID, @customerID, @sortOrder)";
+                            db.myCommand.Parameters.AddWithValue("@movieID", movieID);
+                            db.myCommand.Parameters.AddWithValue("@customerID", customerID);
+                            db.myCommand.Parameters.AddWithValue("@sortOrder", newSortOrder);
+                            db.insert(newQueue);
+
+                            rentalTransaction.Commit();
+                            MessageBox.Show($"{movieName} has been added to {custFirstName} {custLastName}'s queue!\n" +
+                                $"Queue: {newSortOrder}", "Movie Added to Queue");
+
+                        }
+                        else
+                        {
+                            rentalTransaction.Rollback();
+                            //MessageBox.Show($"{movieName} was not added to {custFirstName} {custLastName}'s queue.", "Movie Not Added");
+                        }
+                    }
+                    db.myReader.Close();
+                }
+                // If movie is unavailable
+                else
+                {
+                    // If movie is in queue
+                    if (sortOrder > 0)
+                    {
+                        rentalTransaction.Rollback();
+                        MessageBox.Show($"{movieName} is not available and customer is already in the queue. In place {_sortOrderVal.ToString}.", "Movie Unavailable");
+                    }
+                    // If customer is not in the queue
+                    else
+                    {
+                        DialogResult result = MessageBox.Show($"{movieName} is not available. {movieName} is not in {custFirstName} {custLastName}'s queue. " +
+                            $"Would you like to add {movieName} to the queue?",
+                            "Add to Queue",
+                            MessageBoxButtons.YesNo);
+                        if (result == DialogResult.Yes)
+                        {
+                            // Determine new sort order for the queue
+                            db.myCommand.Parameters.Clear();
+                            db.myCommand.CommandText = "SELECT ISNULL(MAX(SortOrder), 0) FROM MovieQueue " +
+                                "WHERE CustomerID = @customerID";
+                            db.myCommand.Parameters.AddWithValue("@customerID", customerID);
+                            int maxQueue = Convert.ToInt32(db.myCommand.ExecuteScalar());
+                            int newSortOrder = maxQueue + 1;
+
+                            // Insert movie into customer's queue
+                            db.myCommand.Parameters.Clear();
+                            string newQueue = "INSERT INTO MovieQueue (MovieID, CustomerID, SortOrder) " +
+                                "VALUES (@movieID, @customerID, @sortOrder)";
+                            db.myCommand.Parameters.AddWithValue("@movieID", movieID);
+                            db.myCommand.Parameters.AddWithValue("@customerID", customerID);
+                            db.myCommand.Parameters.AddWithValue("@sortOrder", newSortOrder);
+                            db.insert(newQueue);
+
+                            rentalTransaction.Commit();
+                            MessageBox.Show($"{movieName} has been added to {custFirstName} {custLastName}'s queue!\n" +
+                                $"Queue: {newSortOrder}", "Movie Added to Queue");
+                        }
+                        else
+                        {
+                            rentalTransaction.Rollback();
+                            //MessageBox.Show($"{movieName} was not added to {custFirstName} {custLastName}'s queue.", "Movie Not Added");
+                        }
+                        
+                    }
+                }
+                db.myReader.Close();
+
+            }
+            catch (Exception ex)
+            {
+                rentalTransaction?.Rollback();
+                MessageBox.Show("Error dispensing movie: " + ex.Message);
+            }
+        }
+      
+
+        private void dgvRentalCustomers_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void dgvRentalMovies_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void rentalUpdateButton_Click(object sender, EventArgs e)
+        {
+            LoadCustomersIntoDataGridView();
+            LoadMoviesIntoDataGridView();
+        }
+
+        private void showQueueBtn_Click(object sender, EventArgs e)
+        {
+            if (dgvRentalCustomers.CurrentRow == null)
+            {
+                MessageBox.Show("Please select a customer.");
+                return;
+            }
+            int customerID = Convert.ToInt32(dgvRentalCustomers.CurrentRow.Cells["CustomerID"].Value);
+            string custFirstName = Convert.ToString(dgvRentalCustomers.CurrentRow.Cells["FirstName"].Value);
+            string custLastName = Convert.ToString(dgvRentalCustomers.CurrentRow.Cells["LastName"].Value);
+
+            try
+            {
+                db.myCommand.Parameters.Clear();
+                db.myCommand.Parameters.AddWithValue("@customerID", customerID);
+                db.query("SELECT movieQueue.MovieID, m.MovieName, movieQueue.SortOrder " +
+                    "FROM MovieQueue movieQueue " +
+                    "JOIN Movie m ON movieQueue.MovieID = m.MovieID " +
+                    "WHERE movieQueue.CustomerID = @customerID " +
+                    "ORDER BY movieQueue.SortOrder ASC");
+
+                //db.myReader = db.myCommand.ExecuteReader();
+
+                if (db.myReader == null || !db.myReader.HasRows)
+                {
+                    MessageBox.Show($"{custFirstName} {custLastName} has no movies in their queue.");
+                    return;
+                }
+                else
+                {
+                    StringBuilder queueList = new StringBuilder();
+                    queueList.AppendLine($"Queue for {custFirstName} {custLastName}\n");
+                    while (db.myReader.Read())
+                    {
+                        string movieName = Convert.ToString(db.myReader["MovieName"]);
+                        int sortOrder = Convert.ToInt32(db.myReader["SortOrder"]);
+                        queueList.AppendLine($"Queue {sortOrder}: {movieName}");
+                    }
+                    MessageBox.Show(queueList.ToString());
+                }
+
+                db.myReader.Close();
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error showing customer's movie queue: " + ex.Message);
+            }
         }
 
         private void dataGridView1_CellContentClick_1(object sender, DataGridViewCellEventArgs e)
@@ -750,26 +1099,25 @@ namespace WinFormsApp1
         {
             try
             {
-                using (db = new Database()) // Ensure proper disposal
+         
+                string insertQuery = "INSERT INTO Movie(MovieName, MovieType, DistributionFee, NumberOfCopies) " +
+                                    "VALUES (@MovieName, @MovieType, @DistributionFee, @NumberOfCopies)";
+                db.myCommand.CommandText = insertQuery;
+                db.myCommand.Parameters.Clear();
+                db.myCommand.Parameters.AddWithValue("@MovieName", txtBoxName.Text);
+                db.myCommand.Parameters.AddWithValue("@MovieType", txtBoxType.Text);
+                db.myCommand.Parameters.AddWithValue("@DistributionFee", txtBoxDFee.Text);
+                db.myCommand.Parameters.AddWithValue("@NumberOfCopies", txtBoxCopies.Text);
+
+
+                db.myCommand.ExecuteNonQuery();
+                MessageBox.Show("Movies added successfully!");
+                LoadMovies();
+                if (db.myConnection.State == ConnectionState.Open)
                 {
-                    string insertQuery = "INSERT INTO Movie(MovieName, MovieType, DistributionFee, NumberOfCopies) " +
-                                     "VALUES (@MovieName, @MovieType, @DistributionFee, @NumberOfCopies)";
-                    db.myCommand.CommandText = insertQuery;
-                    db.myCommand.Parameters.Clear();
-                    db.myCommand.Parameters.AddWithValue("@MovieName", txtBoxName.Text);
-                    db.myCommand.Parameters.AddWithValue("@MovieType", txtBoxType.Text);
-                    db.myCommand.Parameters.AddWithValue("@DistributionFee", txtBoxDFee.Text);
-                    db.myCommand.Parameters.AddWithValue("@NumberOfCopies", txtBoxCopies.Text);
-
-
-                    db.myCommand.ExecuteNonQuery();
-                    MessageBox.Show("Movies added successfully!");
-                    LoadMovies();
-                    if (db.myConnection.State == ConnectionState.Open)
-                    {
-                        db.myConnection.Close();
-                    }
+                    db.myConnection.Close();
                 }
+                
             }
             catch (Exception ex)
             {
@@ -798,26 +1146,25 @@ namespace WinFormsApp1
 
             try
             {
-                using (db = new Database()) // Ensure proper disposal
-                {
-                    int id = Convert.ToInt32(dgvMovies.CurrentRow.Cells["MovieID"].Value);
-                    string updateQuery = "UPDATE Movie SET MovieName = @MovieName, MovieType = @MovieType, DistributionFee = @DistributionFee, NumberOfCopies = @NumberOfCopies WHERE MovieID = @ID";
-                    db.myCommand.CommandText = updateQuery;
-                    db.myCommand.Parameters.Clear();
-                    db.myCommand.Parameters.AddWithValue("@ID", txtBoxMovieID.Text);
-                    db.myCommand.Parameters.AddWithValue("@MovieName", txtBoxName.Text);
-                    db.myCommand.Parameters.AddWithValue("@MovieType", txtBoxType.Text);
-                    db.myCommand.Parameters.AddWithValue("@DistributionFee", txtBoxDFee.Text);
-                    db.myCommand.Parameters.AddWithValue("@NumberOfCopies", txtBoxCopies.Text);
+    
+                int id = Convert.ToInt32(dgvMovies.CurrentRow.Cells["MovieID"].Value);
+                string updateQuery = "UPDATE Movie SET MovieName = @MovieName, MovieType = @MovieType, DistributionFee = @DistributionFee, NumberOfCopies = @NumberOfCopies WHERE MovieID = @ID";
+                db.myCommand.CommandText = updateQuery;
+                db.myCommand.Parameters.Clear();
+                db.myCommand.Parameters.AddWithValue("@ID", txtBoxMovieID.Text);
+                db.myCommand.Parameters.AddWithValue("@MovieName", txtBoxName.Text);
+                db.myCommand.Parameters.AddWithValue("@MovieType", txtBoxType.Text);
+                db.myCommand.Parameters.AddWithValue("@DistributionFee", txtBoxDFee.Text);
+                db.myCommand.Parameters.AddWithValue("@NumberOfCopies", txtBoxCopies.Text);
 
-                    db.myCommand.ExecuteNonQuery();
-                    MessageBox.Show("Movie updated successfully!");
-                    LoadMovies();
-                    if (db.myConnection.State == ConnectionState.Open)
-                    {
-                        db.myConnection.Close();
-                    }
+                db.myCommand.ExecuteNonQuery();
+                MessageBox.Show("Movie updated successfully!");
+                LoadMovies();
+                if (db.myConnection.State == ConnectionState.Open)
+                {
+                    db.myConnection.Close();
                 }
+                
 
             }
             catch (Exception ex)
@@ -832,32 +1179,30 @@ namespace WinFormsApp1
 
             try
             {
-                using (db = new Database()) // Ensure proper disposal
+
+                string replacedTextName = "DeletedMovie3561";
+                string replacedTextType = "Comedy";
+                int replacedTextFee = 0;
+                int id = Convert.ToInt32(dgvMovies.CurrentRow.Cells["MovieID"].Value);
+                string updateQuery = "UPDATE Movie SET MovieName = @MovieName, MovieType = @MovieType, DistributionFee = @DistributionFee, NumberOfCopies = @NumberOfCopies WHERE MovieID = @ID";
+                db.myCommand.CommandText = updateQuery;
+                db.myCommand.Parameters.Clear();
+                db.myCommand.Parameters.AddWithValue("@ID", txtBoxMovieID.Text);
+                db.myCommand.Parameters.AddWithValue("@MovieName", replacedTextName);
+                db.myCommand.Parameters.AddWithValue("@MovieType", replacedTextType);
+                db.myCommand.Parameters.AddWithValue("@DistributionFee", replacedTextFee);
+                db.myCommand.Parameters.AddWithValue("@NumberOfCopies", replacedTextFee);
+
+                db.myCommand.ExecuteNonQuery();
+                MessageBox.Show("Movie deleted successfully!");
+                LoadMovies();
+
+                if (db.myConnection.State == ConnectionState.Open)
                 {
-
-                    string replacedTextName = "DeletedMovie3561";
-                    string replacedTextType = "Comedy";
-                    int replacedTextFee = 0;
-                    int id = Convert.ToInt32(dgvMovies.CurrentRow.Cells["MovieID"].Value);
-                    string updateQuery = "UPDATE Movie SET MovieName = @MovieName, MovieType = @MovieType, DistributionFee = @DistributionFee, NumberOfCopies = @NumberOfCopies WHERE MovieID = @ID";
-                    db.myCommand.CommandText = updateQuery;
-                    db.myCommand.Parameters.Clear();
-                    db.myCommand.Parameters.AddWithValue("@ID", txtBoxMovieID.Text);
-                    db.myCommand.Parameters.AddWithValue("@MovieName", replacedTextName);
-                    db.myCommand.Parameters.AddWithValue("@MovieType", replacedTextType);
-                    db.myCommand.Parameters.AddWithValue("@DistributionFee", replacedTextFee);
-                    db.myCommand.Parameters.AddWithValue("@NumberOfCopies", replacedTextFee);
-
-                    db.myCommand.ExecuteNonQuery();
-                    MessageBox.Show("Movie deleted successfully!");
-                    LoadMovies();
-
-                    if (db.myConnection.State == ConnectionState.Open)
-                    {
-                        db.myConnection.Close();
-                    }
-
+                    db.myConnection.Close();
                 }
+
+                
             }
             catch (Exception ex)
             {
@@ -879,24 +1224,23 @@ namespace WinFormsApp1
         {
             try
             {
-                using (db = new Database()) // Ensure proper disposal
+
+                string insertQuery = "INSERT INTO AppearedIn(MovieID, ActorID) " +
+                                        "VALUES (@MovieID, @ActorID)";
+                db.myCommand.CommandText = insertQuery;
+                db.myCommand.Parameters.Clear();
+                db.myCommand.Parameters.AddWithValue("@MovieID", txtBoxMovieIDActor.Text);
+                db.myCommand.Parameters.AddWithValue("@ActorID", txtBoxActorIDAI.Text);
+
+
+
+                db.myCommand.ExecuteNonQuery();
+                MessageBox.Show("Actor added successfully!");
+                if (db.myConnection.State == ConnectionState.Open)
                 {
-                    string insertQuery = "INSERT INTO AppearedIn(MovieID, ActorID) " +
-                                         "VALUES (@MovieID, @ActorID)";
-                    db.myCommand.CommandText = insertQuery;
-                    db.myCommand.Parameters.Clear();
-                    db.myCommand.Parameters.AddWithValue("@MovieID", txtBoxMovieIDActor.Text);
-                    db.myCommand.Parameters.AddWithValue("@ActorID", txtBoxActorIDAI.Text);
-
-
-
-                    db.myCommand.ExecuteNonQuery();
-                    MessageBox.Show("Actor added successfully!");
-                    if (db.myConnection.State == ConnectionState.Open)
-                    {
-                        db.myConnection.Close();
-                    }
+                    db.myConnection.Close();
                 }
+                
             }
             catch (Exception ex)
             {
