@@ -745,27 +745,25 @@ namespace WinFormsApp1
         {
             try
             {
-                if (db.myConnection.State == ConnectionState.Open)
+                using (db = new Database()) // Ensure proper disposal
                 {
-                    db.myConnection.Close();  // Close the connection if it's open
-                }
-                db.myConnection.Open();
-                string insertQuery = "INSERT INTO Movie(MovieName, MovieType, DistributionFee, NumberOfCopies) " +
+                    string insertQuery = "INSERT INTO Movie(MovieName, MovieType, DistributionFee, NumberOfCopies) " +
                                      "VALUES (@MovieName, @MovieType, @DistributionFee, @NumberOfCopies)";
-                db.myCommand.CommandText = insertQuery;
-                db.myCommand.Parameters.Clear();
-                db.myCommand.Parameters.AddWithValue("@MovieName", txtBoxName.Text);
-                db.myCommand.Parameters.AddWithValue("@MovieType", txtBoxType.Text);
-                db.myCommand.Parameters.AddWithValue("@DistributionFee", txtBoxDFee.Text);
-                db.myCommand.Parameters.AddWithValue("@NumberOfCopies", txtBoxCopies.Text);
+                    db.myCommand.CommandText = insertQuery;
+                    db.myCommand.Parameters.Clear();
+                    db.myCommand.Parameters.AddWithValue("@MovieName", txtBoxName.Text);
+                    db.myCommand.Parameters.AddWithValue("@MovieType", txtBoxType.Text);
+                    db.myCommand.Parameters.AddWithValue("@DistributionFee", txtBoxDFee.Text);
+                    db.myCommand.Parameters.AddWithValue("@NumberOfCopies", txtBoxCopies.Text);
 
 
-                db.myCommand.ExecuteNonQuery();
-                MessageBox.Show("Movies added successfully!");
-                LoadMovies();
-                if (db.myConnection.State == ConnectionState.Open)
-                {
-                    db.myConnection.Close();
+                    db.myCommand.ExecuteNonQuery();
+                    MessageBox.Show("Movies added successfully!");
+                    LoadMovies();
+                    if (db.myConnection.State == ConnectionState.Open)
+                    {
+                        db.myConnection.Close();
+                    }
                 }
             }
             catch (Exception ex)
@@ -795,28 +793,27 @@ namespace WinFormsApp1
 
             try
             {
-                if (db.myConnection.State == ConnectionState.Open)
+                using (db = new Database()) // Ensure proper disposal
                 {
-                    db.myConnection.Close();  // Close the connection if it's open
-                }
-                db.myConnection.Open();
-                int id = Convert.ToInt32(dgvMovies.CurrentRow.Cells["MovieID"].Value);
-                string updateQuery = "UPDATE Movie SET MovieName = @MovieName, MovieType = @MovieType, DistributionFee = @DistributionFee, NumberOfCopies = @NumberOfCopies WHERE MovieID = @ID";
-                db.myCommand.CommandText = updateQuery;
-                db.myCommand.Parameters.Clear();
-                db.myCommand.Parameters.AddWithValue("@ID", txtBoxMovieID.Text);
-                db.myCommand.Parameters.AddWithValue("@MovieName", txtBoxName.Text);
-                db.myCommand.Parameters.AddWithValue("@MovieType", txtBoxType.Text);
-                db.myCommand.Parameters.AddWithValue("@DistributionFee", txtBoxDFee.Text);
-                db.myCommand.Parameters.AddWithValue("@NumberOfCopies", txtBoxCopies.Text);
+                    int id = Convert.ToInt32(dgvMovies.CurrentRow.Cells["MovieID"].Value);
+                    string updateQuery = "UPDATE Movie SET MovieName = @MovieName, MovieType = @MovieType, DistributionFee = @DistributionFee, NumberOfCopies = @NumberOfCopies WHERE MovieID = @ID";
+                    db.myCommand.CommandText = updateQuery;
+                    db.myCommand.Parameters.Clear();
+                    db.myCommand.Parameters.AddWithValue("@ID", txtBoxMovieID.Text);
+                    db.myCommand.Parameters.AddWithValue("@MovieName", txtBoxName.Text);
+                    db.myCommand.Parameters.AddWithValue("@MovieType", txtBoxType.Text);
+                    db.myCommand.Parameters.AddWithValue("@DistributionFee", txtBoxDFee.Text);
+                    db.myCommand.Parameters.AddWithValue("@NumberOfCopies", txtBoxCopies.Text);
 
-                db.myCommand.ExecuteNonQuery();
-                MessageBox.Show("Movie updated successfully!");
-                LoadMovies();
-                if (db.myConnection.State == ConnectionState.Open)
-                {
-                    db.myConnection.Close();
+                    db.myCommand.ExecuteNonQuery();
+                    MessageBox.Show("Movie updated successfully!");
+                    LoadMovies();
+                    if (db.myConnection.State == ConnectionState.Open)
+                    {
+                        db.myConnection.Close();
+                    }
                 }
+
             }
             catch (Exception ex)
             {
@@ -830,30 +827,31 @@ namespace WinFormsApp1
 
             try
             {
-                if (db.myConnection.State == ConnectionState.Open)
+                using (db = new Database()) // Ensure proper disposal
                 {
-                    db.myConnection.Close();  // Close the connection if it's open
-                }
-                db.myConnection.Open();
-                string replacedTextName = "DeletedMovie3561";
-                string replacedTextType = "Comedy";
-                int replacedTextFee = 0;
-                int id = Convert.ToInt32(dgvMovies.CurrentRow.Cells["MovieID"].Value);
-                string updateQuery = "UPDATE Movie SET MovieName = @MovieName, MovieType = @MovieType, DistributionFee = @DistributionFee, NumberOfCopies = @NumberOfCopies WHERE MovieID = @ID";
-                db.myCommand.CommandText = updateQuery;
-                db.myCommand.Parameters.Clear();
-                db.myCommand.Parameters.AddWithValue("@ID", txtBoxMovieID.Text);
-                db.myCommand.Parameters.AddWithValue("@MovieName", replacedTextName);
-                db.myCommand.Parameters.AddWithValue("@MovieType", replacedTextType);
-                db.myCommand.Parameters.AddWithValue("@DistributionFee", replacedTextFee);
-                db.myCommand.Parameters.AddWithValue("@NumberOfCopies", replacedTextFee);
 
-                db.myCommand.ExecuteNonQuery();
-                MessageBox.Show("Movie deleted successfully!");
-                LoadMovies();
-                if (db.myConnection.State == ConnectionState.Open)
-                {
-                    db.myConnection.Close();
+                    string replacedTextName = "DeletedMovie3561";
+                    string replacedTextType = "Comedy";
+                    int replacedTextFee = 0;
+                    int id = Convert.ToInt32(dgvMovies.CurrentRow.Cells["MovieID"].Value);
+                    string updateQuery = "UPDATE Movie SET MovieName = @MovieName, MovieType = @MovieType, DistributionFee = @DistributionFee, NumberOfCopies = @NumberOfCopies WHERE MovieID = @ID";
+                    db.myCommand.CommandText = updateQuery;
+                    db.myCommand.Parameters.Clear();
+                    db.myCommand.Parameters.AddWithValue("@ID", txtBoxMovieID.Text);
+                    db.myCommand.Parameters.AddWithValue("@MovieName", replacedTextName);
+                    db.myCommand.Parameters.AddWithValue("@MovieType", replacedTextType);
+                    db.myCommand.Parameters.AddWithValue("@DistributionFee", replacedTextFee);
+                    db.myCommand.Parameters.AddWithValue("@NumberOfCopies", replacedTextFee);
+
+                    db.myCommand.ExecuteNonQuery();
+                    MessageBox.Show("Movie deleted successfully!");
+                    LoadMovies();
+
+                    if (db.myConnection.State == ConnectionState.Open)
+                    {
+                        db.myConnection.Close();
+                    }
+
                 }
             }
             catch (Exception ex)
