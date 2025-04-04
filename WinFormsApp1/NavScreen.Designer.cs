@@ -31,10 +31,10 @@ namespace WinFormsApp1
         {
             components = new System.ComponentModel.Container();
             Button BtnMovieUpdate;
-            DataGridViewCellStyle dataGridViewCellStyle13 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle14 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle15 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle16 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle5 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle6 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle7 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle8 = new DataGridViewCellStyle();
             tabControl1 = new TabControl();
             Customer = new TabPage();
             lblFirstName = new Label();
@@ -412,14 +412,14 @@ namespace WinFormsApp1
             // dgvActors
             // 
             dgvActors.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle13.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle13.BackColor = SystemColors.Window;
-            dataGridViewCellStyle13.Font = new Font("Segoe UI", 20F);
-            dataGridViewCellStyle13.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle13.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle13.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle13.WrapMode = DataGridViewTriState.False;
-            dgvActors.DefaultCellStyle = dataGridViewCellStyle13;
+            dataGridViewCellStyle5.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = SystemColors.Window;
+            dataGridViewCellStyle5.Font = new Font("Segoe UI", 20F);
+            dataGridViewCellStyle5.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle5.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = DataGridViewTriState.False;
+            dgvActors.DefaultCellStyle = dataGridViewCellStyle5;
             dgvActors.Location = new Point(748, 220);
             dgvActors.Margin = new Padding(3, 2, 3, 2);
             dgvActors.Name = "dgvActors";
@@ -462,9 +462,10 @@ namespace WinFormsApp1
             label8.AutoSize = true;
             label8.Location = new Point(15, 97);
             label8.Name = "label8";
-            label8.Size = new Size(158, 37);
+            label8.Size = new Size(113, 37);
             label8.TabIndex = 17;
-            label8.Text = "Actor Name";
+            label8.Text = "Actor ID";
+            label8.Click += label8_Click;
             // 
             // label7
             // 
@@ -600,14 +601,14 @@ namespace WinFormsApp1
             // dgvMovies
             // 
             dgvMovies.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle14.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle14.BackColor = SystemColors.Window;
-            dataGridViewCellStyle14.Font = new Font("Segoe UI", 20F);
-            dataGridViewCellStyle14.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle14.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle14.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle14.WrapMode = DataGridViewTriState.False;
-            dgvMovies.DefaultCellStyle = dataGridViewCellStyle14;
+            dataGridViewCellStyle6.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = SystemColors.Window;
+            dataGridViewCellStyle6.Font = new Font("Segoe UI", 20F);
+            dataGridViewCellStyle6.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle6.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = DataGridViewTriState.False;
+            dgvMovies.DefaultCellStyle = dataGridViewCellStyle6;
             dgvMovies.Location = new Point(748, 9);
             dgvMovies.Margin = new Padding(3, 2, 3, 2);
             dgvMovies.Name = "dgvMovies";
@@ -669,8 +670,8 @@ namespace WinFormsApp1
             // 
             RepRes.AllowUserToAddRows = false;
             RepRes.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle15.WrapMode = DataGridViewTriState.True;
-            RepRes.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle15;
+            dataGridViewCellStyle7.WrapMode = DataGridViewTriState.True;
+            RepRes.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle7;
             RepRes.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
             RepRes.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             RepRes.BackgroundColor = SystemColors.ButtonHighlight;
@@ -679,8 +680,8 @@ namespace WinFormsApp1
             RepRes.Name = "RepRes";
             RepRes.ReadOnly = true;
             RepRes.RowHeadersWidth = 10;
-            dataGridViewCellStyle16.WrapMode = DataGridViewTriState.True;
-            RepRes.RowsDefaultCellStyle = dataGridViewCellStyle16;
+            dataGridViewCellStyle8.WrapMode = DataGridViewTriState.True;
+            RepRes.RowsDefaultCellStyle = dataGridViewCellStyle8;
             RepRes.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             RepRes.ShowCellToolTips = false;
             RepRes.Size = new Size(678, 282);

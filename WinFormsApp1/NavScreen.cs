@@ -874,25 +874,23 @@ namespace WinFormsApp1
         {
             try
             {
-                if (db.myConnection.State == ConnectionState.Open)
+                using (db = new Database()) // Ensure proper disposal
                 {
-                    db.myConnection.Close();  // Close the connection if it's open
-                }
-                db.myConnection.Open();
-                string insertQuery = "INSERT INTO AppearedIn(MovieID, ActorID) " +
-                                     "VALUES (@MovieID, @ActorID)";
-                db.myCommand.CommandText = insertQuery;
-                db.myCommand.Parameters.Clear();
-                db.myCommand.Parameters.AddWithValue("@MovieID", txtBoxMovieIDActor.Text);
-                db.myCommand.Parameters.AddWithValue("@ActorID", txtBoxActorIDAI.Text);
+                    string insertQuery = "INSERT INTO AppearedIn(MovieID, ActorID) " +
+                                         "VALUES (@MovieID, @ActorID)";
+                    db.myCommand.CommandText = insertQuery;
+                    db.myCommand.Parameters.Clear();
+                    db.myCommand.Parameters.AddWithValue("@MovieID", txtBoxMovieIDActor.Text);
+                    db.myCommand.Parameters.AddWithValue("@ActorID", txtBoxActorIDAI.Text);
 
 
 
-                db.myCommand.ExecuteNonQuery();
-                MessageBox.Show("Actor added successfully!");
-                if (db.myConnection.State == ConnectionState.Open)
-                {
-                    db.myConnection.Close();
+                    db.myCommand.ExecuteNonQuery();
+                    MessageBox.Show("Actor added successfully!");
+                    if (db.myConnection.State == ConnectionState.Open)
+                    {
+                        db.myConnection.Close();
+                    }
                 }
             }
             catch (Exception ex)
@@ -913,6 +911,11 @@ namespace WinFormsApp1
         }
 
         private void txtCity_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label8_Click(object sender, EventArgs e)
         {
 
         }
