@@ -29,12 +29,12 @@ namespace WinFormsApp1
         /// </summary>
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle5 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle6 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle7 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle8 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle9 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle10 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle11 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle12 = new DataGridViewCellStyle();
             tabControl1 = new TabControl();
             Customer = new TabPage();
             Movie = new TabPage();
@@ -78,6 +78,7 @@ namespace WinFormsApp1
             customerID = new DataGridViewTextBoxColumn();
             customerFirstName = new DataGridViewTextBoxColumn();
             customerLastName = new DataGridViewTextBoxColumn();
+            showQueueBtn = new Button();
             tabControl1.SuspendLayout();
             Rental.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvRentalMovies).BeginInit();
@@ -129,6 +130,7 @@ namespace WinFormsApp1
             // Rental
             // 
             Rental.BackColor = Color.Firebrick;
+            Rental.Controls.Add(showQueueBtn);
             Rental.Controls.Add(rentalUpdateButton);
             Rental.Controls.Add(label2);
             Rental.Controls.Add(dgvRentalMovies);
@@ -149,7 +151,7 @@ namespace WinFormsApp1
             // 
             rentalUpdateButton.BackColor = Color.White;
             rentalUpdateButton.ForeColor = SystemColors.ControlText;
-            rentalUpdateButton.Location = new Point(594, 510);
+            rentalUpdateButton.Location = new Point(1125, 510);
             rentalUpdateButton.Name = "rentalUpdateButton";
             rentalUpdateButton.Size = new Size(204, 54);
             rentalUpdateButton.TabIndex = 6;
@@ -174,24 +176,24 @@ namespace WinFormsApp1
             dgvRentalMovies.AllowUserToAddRows = false;
             dgvRentalMovies.AllowUserToDeleteRows = false;
             dgvRentalMovies.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = SystemColors.Control;
-            dataGridViewCellStyle1.Font = new Font("Segoe UI", 14F);
-            dataGridViewCellStyle1.ForeColor = SystemColors.MenuText;
-            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
-            dgvRentalMovies.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle7.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle7.BackColor = SystemColors.Control;
+            dataGridViewCellStyle7.Font = new Font("Segoe UI", 14F);
+            dataGridViewCellStyle7.ForeColor = SystemColors.MenuText;
+            dataGridViewCellStyle7.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle7.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle7.WrapMode = DataGridViewTriState.True;
+            dgvRentalMovies.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
             dgvRentalMovies.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvRentalMovies.Columns.AddRange(new DataGridViewColumn[] { movieIdColumn, movieNameColumn, movieTypeColumn, feeColumn, numCopiesColumn });
-            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = SystemColors.Window;
-            dataGridViewCellStyle2.Font = new Font("Segoe UI", 12F);
-            dataGridViewCellStyle2.ForeColor = SystemColors.ControlLightLight;
-            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
-            dgvRentalMovies.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle8.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle8.BackColor = SystemColors.Window;
+            dataGridViewCellStyle8.Font = new Font("Segoe UI", 12F);
+            dataGridViewCellStyle8.ForeColor = SystemColors.ControlLightLight;
+            dataGridViewCellStyle8.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle8.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle8.WrapMode = DataGridViewTriState.False;
+            dgvRentalMovies.DefaultCellStyle = dataGridViewCellStyle8;
             dgvRentalMovies.Location = new Point(442, 276);
             dgvRentalMovies.MultiSelect = false;
             dgvRentalMovies.Name = "dgvRentalMovies";
@@ -241,7 +243,7 @@ namespace WinFormsApp1
             // 
             dispenseButton.BackColor = SystemColors.Control;
             dispenseButton.ForeColor = SystemColors.ControlText;
-            dispenseButton.Location = new Point(1029, 510);
+            dispenseButton.Location = new Point(870, 510);
             dispenseButton.Name = "dispenseButton";
             dispenseButton.Size = new Size(204, 54);
             dispenseButton.TabIndex = 3;
@@ -266,24 +268,24 @@ namespace WinFormsApp1
             dgvRentalCustomers.AllowUserToAddRows = false;
             dgvRentalCustomers.AllowUserToDeleteRows = false;
             dgvRentalCustomers.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
-            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = SystemColors.Control;
-            dataGridViewCellStyle3.Font = new Font("Segoe UI", 14F);
-            dataGridViewCellStyle3.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
-            dgvRentalCustomers.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle9.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle9.BackColor = SystemColors.Control;
+            dataGridViewCellStyle9.Font = new Font("Segoe UI", 14F);
+            dataGridViewCellStyle9.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle9.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle9.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle9.WrapMode = DataGridViewTriState.True;
+            dgvRentalCustomers.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle9;
             dgvRentalCustomers.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvRentalCustomers.Columns.AddRange(new DataGridViewColumn[] { custIdColumn, ssnColumn, LastNameColumn, firstNameColumn, addressColumn, cityColumn, stateColumn, zipColumn, emailColumn, accountNumColumn, accCreatedColumn, creditNumColumn });
-            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = SystemColors.Window;
-            dataGridViewCellStyle4.Font = new Font("Segoe UI", 12F);
-            dataGridViewCellStyle4.ForeColor = SystemColors.ControlLightLight;
-            dataGridViewCellStyle4.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = DataGridViewTriState.False;
-            dgvRentalCustomers.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle10.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle10.BackColor = SystemColors.Window;
+            dataGridViewCellStyle10.Font = new Font("Segoe UI", 12F);
+            dataGridViewCellStyle10.ForeColor = SystemColors.ControlLightLight;
+            dataGridViewCellStyle10.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle10.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle10.WrapMode = DataGridViewTriState.False;
+            dgvRentalCustomers.DefaultCellStyle = dataGridViewCellStyle10;
             dgvRentalCustomers.Location = new Point(442, 30);
             dgvRentalCustomers.MultiSelect = false;
             dgvRentalCustomers.Name = "dgvRentalCustomers";
@@ -433,8 +435,8 @@ namespace WinFormsApp1
             // 
             RepRes.AllowUserToAddRows = false;
             RepRes.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle5.WrapMode = DataGridViewTriState.True;
-            RepRes.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle11.WrapMode = DataGridViewTriState.True;
+            RepRes.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle11;
             RepRes.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
             RepRes.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             RepRes.BackgroundColor = SystemColors.ButtonHighlight;
@@ -444,8 +446,8 @@ namespace WinFormsApp1
             RepRes.Name = "RepRes";
             RepRes.ReadOnly = true;
             RepRes.RowHeadersWidth = 10;
-            dataGridViewCellStyle6.WrapMode = DataGridViewTriState.True;
-            RepRes.RowsDefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle12.WrapMode = DataGridViewTriState.True;
+            RepRes.RowsDefaultCellStyle = dataGridViewCellStyle12;
             RepRes.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             RepRes.ShowCellToolTips = false;
             RepRes.Size = new Size(775, 376);
@@ -590,6 +592,18 @@ namespace WinFormsApp1
             customerLastName.Name = "customerLastName";
             customerLastName.Width = 125;
             // 
+            // showQueueBtn
+            // 
+            showQueueBtn.BackColor = SystemColors.Control;
+            showQueueBtn.ForeColor = SystemColors.ControlText;
+            showQueueBtn.Location = new Point(594, 510);
+            showQueueBtn.Name = "showQueueBtn";
+            showQueueBtn.Size = new Size(229, 54);
+            showQueueBtn.TabIndex = 7;
+            showQueueBtn.Text = "Show Queue";
+            showQueueBtn.UseVisualStyleBackColor = true;
+            showQueueBtn.Click += showQueueBtn_Click;
+            // 
             // NavScreen
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -660,5 +674,6 @@ namespace WinFormsApp1
         private DataGridViewTextBoxColumn feeColumn;
         private DataGridViewTextBoxColumn numCopiesColumn;
         private Button rentalUpdateButton;
+        private Button showQueueBtn;
     }
 }

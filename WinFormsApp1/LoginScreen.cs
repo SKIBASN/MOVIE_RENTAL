@@ -48,15 +48,12 @@ namespace WinFormsApp1
 
                 db.query("SELECT EmployeeID, Password FROM Employee WHERE Username = @username");
 
-
-
                 if (db.myReader.Read())
                 {
 
                     string storedHash = db.myReader["Password"].ToString();
                     loginSuccessful = Database.VerifyPassword(enteredPassword, storedHash);
 
-                    //if (Database.VerifyPassword(enteredPassword, storedHash))
                     if (loginSuccessful)
                     {
                         status.Text = "Login successful";
@@ -79,8 +76,6 @@ namespace WinFormsApp1
                 }
                     
                 db.myReader.Close();
-
-
             }
             catch (Exception e3)
             {
