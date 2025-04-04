@@ -77,7 +77,7 @@ namespace WinFormsApp1
                          "      AND rental.ReturnDateTime IS NULL)) " +
                      "END AS AvailableCopies " +
                      "FROM Movie movie");
-                   
+
                 dt.Load(myReader);
                 myReader.Close();
             }
@@ -113,13 +113,16 @@ namespace WinFormsApp1
 
         public void insert(string insert_statement)
         {
-            
+            if (myReader != null && !myReader.IsClosed)
+                myReader.Close();
             myCommand.CommandText = insert_statement;
             myCommand.ExecuteNonQuery();
         }
 
         public void delete(string delete_statement)
         {
+            if (myReader != null && !myReader.IsClosed)
+                myReader.Close();
             myCommand.CommandText = delete_statement;
             myCommand.ExecuteNonQuery();
         }
@@ -127,7 +130,7 @@ namespace WinFormsApp1
 
         public void Date_Param_query(string query_string, DateTime param1, DateTime param2)
         {
-            
+            myCommand.Parameters.Clear();
             myCommand.CommandText = query_string;
 
             // Add parameters to the command
@@ -138,7 +141,7 @@ namespace WinFormsApp1
         }
         public void ID_Param_query(string query_string, String param1)
         {
-            
+            myCommand.Parameters.Clear();
             myCommand.CommandText = query_string;
 
             // Add parameters to the command 
@@ -148,7 +151,7 @@ namespace WinFormsApp1
         }
         public bool VID_Param_query(string query_string, String param1)
         {
-            
+            myCommand.Parameters.Clear();
             myCommand.CommandText = query_string;
 
             // Add parameters to the command  
@@ -186,7 +189,6 @@ namespace WinFormsApp1
                 command.Parameters.AddWithValue("@EmailAddress", email);
                 command.Parameters.AddWithValue("@AccountNumber", accountNumber);
                 command.Parameters.AddWithValue("@CreditCardNumber", creditCardNumber);
-
                 command.ExecuteNonQuery();
             }
             catch (Exception ex)

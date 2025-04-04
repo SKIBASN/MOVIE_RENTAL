@@ -20,6 +20,7 @@ using System.Security.Principal;
 using System.Transactions;
 using System.Data.Common;
 using System.Collections;
+using System.Numerics;
 
 namespace WinFormsApp1
 {
@@ -506,7 +507,7 @@ namespace WinFormsApp1
                                         )
                                         SELECT MovieID, MovieName, Numb_of_Rentals 
                                         FROM RankedMovies
-                                        WHERE rnk <= 5
+                                        WHERE rnk <= 3
                                         ORDER BY Numb_of_Rentals DESC;";
 
                         DateTime date1, date2;
@@ -841,7 +842,6 @@ namespace WinFormsApp1
                 db.myCommand.Parameters.AddWithValue("@customerID", customerID);
                 object _sortOrderVal = db.myCommand.ExecuteScalar();
                 int sortOrder = Convert.ToInt32(_sortOrderVal);
-                db.myReader.Close();
 
                 // If copies are available
                 if (numRentedOut < totalCopies)
@@ -850,6 +850,8 @@ namespace WinFormsApp1
                     // If the movie is next in queue
                     if (sortOrder == 1)
                     {
+                        db.myReader?.Close();
+
                         // Decrement SortOrder for all other movies in the queue
                         db.myCommand.Parameters.Clear();
                         db.myCommand.CommandText = "UPDATE MovieQueue " +
@@ -866,22 +868,24 @@ namespace WinFormsApp1
                         db.myCommand.Parameters.AddWithValue("@movieID", movieID);
                         db.myCommand.Parameters.AddWithValue("@customerID", customerID);
                         db.delete(removeQueue);
+                        db.myReader?.Close();
 
                         // Insert a new rental order
                         string insertRental = "INSERT INTO RentalOrder (MovieID, CustomerID, EmployeeID, CheckoutDateTime)" +
-                        "VALUES (@movieID, @customerID, @employeeID, GETDATE())";
+                            "OUTPUT INSERTED.RentalOrderID " +
+                            "VALUES (@movieID, @customerID, @employeeID, GETDATE())";
                         db.myCommand.Parameters.Clear();
+                        db.myCommand.CommandText = insertRental;
                         db.myCommand.Parameters.AddWithValue("@movieID", movieID);
                         db.myCommand.Parameters.AddWithValue("@customerID", customerID);
                         db.myCommand.Parameters.AddWithValue("@employeeID", employeeID);
-                        db.insert(insertRental);
-
                         int newRentalID = Convert.ToInt32(db.myCommand.ExecuteScalar());
                         string newOrderNum = newRentalID.ToString();
 
                         rentalTransaction.Commit();
-                        MessageBox.Show("Order number: " + newOrderNum + $"\nMovie: {movieName}"
+                        MessageBox.Show($"Order number: {newOrderNum}" + $"\nMovie: {movieName}"
                             + $"\nMovie successfully rented to {custFirstName} {custLastName}!", "Order Confirmation");
+                        LoadMoviesIntoDataGridView();
                         return;
                     }
                     else if (sortOrder > 1)
@@ -900,6 +904,8 @@ namespace WinFormsApp1
                             MessageBoxButtons.YesNo);
                         if (result == DialogResult.Yes)
                         {
+                            db.myReader?.Close();
+
                             // Determine new sort order for the queue
                             db.myCommand.Parameters.Clear();
                             db.myCommand.CommandText = "SELECT ISNULL(MAX(SortOrder), 0) FROM MovieQueue " +
@@ -920,12 +926,10 @@ namespace WinFormsApp1
                             rentalTransaction.Commit();
                             MessageBox.Show($"{movieName} has been added to {custFirstName} {custLastName}'s queue!\n" +
                                 $"Queue: {newSortOrder}", "Movie Added to Queue");
-
                         }
                         else
                         {
                             rentalTransaction.Rollback();
-                            //MessageBox.Show($"{movieName} was not added to {custFirstName} {custLastName}'s queue.", "Movie Not Added");
                         }
                     }
                     db.myReader.Close();
@@ -937,7 +941,7 @@ namespace WinFormsApp1
                     if (sortOrder > 0)
                     {
                         rentalTransaction.Rollback();
-                        MessageBox.Show($"{movieName} is not available and customer is already in the queue. In place {_sortOrderVal.ToString}.", "Movie Unavailable");
+                        MessageBox.Show($"{movieName} is not available and customer is already in the queue. In place {_sortOrderVal.ToString()}.", "Movie Unavailable");
                     }
                     // If customer is not in the queue
                     else
@@ -948,6 +952,8 @@ namespace WinFormsApp1
                             MessageBoxButtons.YesNo);
                         if (result == DialogResult.Yes)
                         {
+                            db.myReader?.Close();
+
                             // Determine new sort order for the queue
                             db.myCommand.Parameters.Clear();
                             db.myCommand.CommandText = "SELECT ISNULL(MAX(SortOrder), 0) FROM MovieQueue " +
@@ -972,16 +978,16 @@ namespace WinFormsApp1
                         else
                         {
                             rentalTransaction.Rollback();
-                            //MessageBox.Show($"{movieName} was not added to {custFirstName} {custLastName}'s queue.", "Movie Not Added");
                         }
                         
                     }
                 }
-                db.myReader.Close();
+                db.myReader?.Close();
 
             }
             catch (Exception ex)
             {
+                db.myReader?.Close();
                 rentalTransaction?.Rollback();
                 MessageBox.Show("Error dispensing movie: " + ex.Message);
             }
@@ -1045,12 +1051,16 @@ namespace WinFormsApp1
                     MessageBox.Show(queueList.ToString());
                 }
 
-                db.myReader.Close();
+                //db.myReader.Close();
 
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Error showing customer's movie queue: " + ex.Message);
+            }
+            finally
+            {
+                db.myReader.Close();
             }
         }
 
@@ -1094,9 +1104,42 @@ namespace WinFormsApp1
         {
 
         }
+        // Helper function for Movie screen
+        private bool ValidateMovieInputs()
+        {
+            // Check for empty/null text fields
+            if (string.IsNullOrWhiteSpace(txtBoxName.Text) ||
+                string.IsNullOrWhiteSpace(txtBoxType.Text) ||
+                string.IsNullOrWhiteSpace(txtBoxDFee.Text) ||
+                string.IsNullOrWhiteSpace(txtBoxCopies.Text))
+            {
+                MessageBox.Show("All fields are required.");
+                return false;
+            }
 
+            // Validate numeric fields (DistributionFee and NumberOfCopies)
+            if (!decimal.TryParse(txtBoxDFee.Text, out decimal distributionFee) || distributionFee < 0)
+            {
+                MessageBox.Show("Distribution Fee must be a positive number.");
+                return false;
+            }
+
+            if (!int.TryParse(txtBoxCopies.Text, out int numberOfCopies) || numberOfCopies <= 0)
+            {
+                MessageBox.Show("Number of Copies must be a positive integer.");
+                return false;
+            }
+
+            return true; 
+        }
         private void BtnMovieAdd_Click_1(object sender, EventArgs e)
         {
+            // Check valid input
+            if (!ValidateMovieInputs())
+            {
+                return;
+            }
+
             try
             {
          
@@ -1113,10 +1156,10 @@ namespace WinFormsApp1
                 db.myCommand.ExecuteNonQuery();
                 MessageBox.Show("Movies added successfully!");
                 LoadMovies();
-                if (db.myConnection.State == ConnectionState.Open)
-                {
-                    db.myConnection.Close();
-                }
+                //if (db.myConnection.State == ConnectionState.Open)
+                //{
+                //    db.myConnection.Close();
+                //}
                 
             }
             catch (Exception ex)
@@ -1160,10 +1203,10 @@ namespace WinFormsApp1
                 db.myCommand.ExecuteNonQuery();
                 MessageBox.Show("Movie updated successfully!");
                 LoadMovies();
-                if (db.myConnection.State == ConnectionState.Open)
-                {
-                    db.myConnection.Close();
-                }
+                //if (db.myConnection.State == ConnectionState.Open)
+                //{
+                //    db.myConnection.Close();
+                //}
                 
 
             }
@@ -1179,28 +1222,20 @@ namespace WinFormsApp1
 
             try
             {
-
-                string replacedTextName = "DeletedMovie3561";
-                string replacedTextType = "Comedy";
-                int replacedTextFee = 0;
                 int id = Convert.ToInt32(dgvMovies.CurrentRow.Cells["MovieID"].Value);
-                string updateQuery = "UPDATE Movie SET MovieName = @MovieName, MovieType = @MovieType, DistributionFee = @DistributionFee, NumberOfCopies = @NumberOfCopies WHERE MovieID = @ID";
-                db.myCommand.CommandText = updateQuery;
+                string deleteQuery = "DELETE FROM Movie WHERE MovieID = @ID";
+                db.myCommand.CommandText = deleteQuery;
                 db.myCommand.Parameters.Clear();
-                db.myCommand.Parameters.AddWithValue("@ID", txtBoxMovieID.Text);
-                db.myCommand.Parameters.AddWithValue("@MovieName", replacedTextName);
-                db.myCommand.Parameters.AddWithValue("@MovieType", replacedTextType);
-                db.myCommand.Parameters.AddWithValue("@DistributionFee", replacedTextFee);
-                db.myCommand.Parameters.AddWithValue("@NumberOfCopies", replacedTextFee);
+                db.myCommand.Parameters.AddWithValue("@ID", id);
 
                 db.myCommand.ExecuteNonQuery();
                 MessageBox.Show("Movie deleted successfully!");
                 LoadMovies();
 
-                if (db.myConnection.State == ConnectionState.Open)
-                {
-                    db.myConnection.Close();
-                }
+                //if (db.myConnection.State == ConnectionState.Open)
+                //{
+                //    db.myConnection.Close();
+                //}
 
                 
             }
@@ -1224,22 +1259,32 @@ namespace WinFormsApp1
         {
             try
             {
-
-                string insertQuery = "INSERT INTO AppearedIn(MovieID, ActorID) " +
-                                        "VALUES (@MovieID, @ActorID)";
-                db.myCommand.CommandText = insertQuery;
+                // Check if actor already appears in the movie
                 db.myCommand.Parameters.Clear();
+                db.myCommand.CommandText = "SELECT COUNT(*) FROM AppearedIn " +
+                    "WHERE MovieID = @movieID AND ActorID = @actorID";
                 db.myCommand.Parameters.AddWithValue("@MovieID", txtBoxMovieIDActor.Text);
                 db.myCommand.Parameters.AddWithValue("@ActorID", txtBoxActorIDAI.Text);
 
-
-
-                db.myCommand.ExecuteNonQuery();
-                MessageBox.Show("Actor added successfully!");
-                if (db.myConnection.State == ConnectionState.Open)
+                int count = Convert.ToInt32(db.myCommand.ExecuteScalar());
+                if (count > 0)
                 {
-                    db.myConnection.Close();
+                    MessageBox.Show("This actor is already associated with the selected movie.");
+                    return;
                 }
+                else
+                {
+                    // If actor is not in the movie, add actor
+                    db.myCommand.Parameters.Clear();
+                    string insertQuery = "INSERT INTO AppearedIn(MovieID, ActorID) " +
+                                "VALUES (@MovieID, @ActorID)";
+                    db.myCommand.Parameters.AddWithValue("@movieID", txtBoxMovieIDActor.Text);
+                    db.myCommand.Parameters.AddWithValue("@actorID", txtBoxActorIDAI.Text);
+                    db.myCommand.CommandText = insertQuery;
+                    db.myCommand.ExecuteNonQuery();
+                    MessageBox.Show("Actor added successfully!");
+                }
+                
                 
             }
             catch (Exception ex)
