@@ -41,8 +41,6 @@ namespace WinFormsApp1
 
             try
             {
-                bool loginSuccessful = false;
-
                 db.myCommand.Parameters.Clear();
                 db.myCommand.Parameters.AddWithValue("@username", username);
 
@@ -52,12 +50,13 @@ namespace WinFormsApp1
                 {
 
                     string storedHash = db.myReader["Password"].ToString();
-                    loginSuccessful = Database.VerifyPassword(enteredPassword, storedHash);
+                    bool loginSuccessful = Database.VerifyPassword(enteredPassword, storedHash);
 
                     if (loginSuccessful)
                     {
                         status.Text = "Login successful";
                         int _employeeID = Convert.ToInt32(db.myReader["EmployeeID"]);
+                        db.myReader.Close();
                         NavScreen f2 = new NavScreen(_employeeID, db);
                         f2.Show();
                         this.Hide();
@@ -66,8 +65,8 @@ namespace WinFormsApp1
                     {
                         MessageBox.Show("Invalid username or password.");
                         status.Text = "Username or password is incorrect";
+                        db.myReader.Close();
                     }
-                    db.myReader.Close();
                 }
                 else
                 {
@@ -75,7 +74,6 @@ namespace WinFormsApp1
                     status.Text = "Username or password is incorrect";
                 }
                     
-                db.myReader.Close();
             }
             catch (Exception e3)
             {

@@ -120,7 +120,6 @@ namespace WinFormsApp1
 
         public void delete(string delete_statement)
         {
-            //OpenConnection();
             myCommand.CommandText = delete_statement;
             myCommand.ExecuteNonQuery();
         }
@@ -219,16 +218,10 @@ namespace WinFormsApp1
 
         public void query(String query_string)
         {
-            //OpenConnection();
             if (myReader != null && !myReader.IsClosed)
             {
                 myReader.Close();
             }
-            if (myConnection.State != ConnectionState.Open)
-            {
-                myConnection.Open();
-            }
-
             this.myCommand.CommandText = query_string;
             this.myReader = this.myCommand.ExecuteReader();
         }

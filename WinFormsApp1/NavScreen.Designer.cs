@@ -88,7 +88,7 @@ namespace WinFormsApp1
             dgvMovies = new DataGridView();
             Rental = new TabPage();
             rentalUpdateButton = new Button();
-            label2 = new Label();
+            rentalLabel2 = new Label();
             dgvRentalMovies = new DataGridView();
             movieIdColumn = new DataGridViewTextBoxColumn();
             movieNameColumn = new DataGridViewTextBoxColumn();
@@ -96,7 +96,7 @@ namespace WinFormsApp1
             feeColumn = new DataGridViewTextBoxColumn();
             numCopiesColumn = new DataGridViewTextBoxColumn();
             dispenseButton = new Button();
-            label1 = new Label();
+            rentalLabel1 = new Label();
             dgvRentalCustomers = new DataGridView();
             custIdColumn = new DataGridViewTextBoxColumn();
             ssnColumn = new DataGridViewTextBoxColumn();
@@ -110,7 +110,7 @@ namespace WinFormsApp1
             accountNumColumn = new DataGridViewTextBoxColumn();
             accCreatedColumn = new DataGridViewTextBoxColumn();
             creditNumColumn = new DataGridViewTextBoxColumn();
-            ReportPage = new TabPage();
+            Report = new TabPage();
             ErrorMes = new TextBox();
             RepRes = new DataGridView();
             EnterR = new Button();
@@ -137,11 +137,10 @@ namespace WinFormsApp1
             Movie.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvActors).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dgvMovies).BeginInit();
-            Report.SuspendLayout();
             Rental.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvRentalMovies).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dgvRentalCustomers).BeginInit();
-            ReportPage.SuspendLayout();
+            Report.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)RepRes).BeginInit();
             ((System.ComponentModel.ISupportInitialize)databaseBindingSource).BeginInit();
             SuspendLayout();
@@ -163,7 +162,7 @@ namespace WinFormsApp1
             tabControl1.Controls.Add(Customer);
             tabControl1.Controls.Add(Movie);
             tabControl1.Controls.Add(Rental);
-            tabControl1.Controls.Add(ReportPage);
+            tabControl1.Controls.Add(Report);
             tabControl1.Font = new Font("Segoe UI", 20F);
             tabControl1.Location = new Point(9, 0);
             tabControl1.ItemSize = new Size(151, 50);
@@ -675,10 +674,10 @@ namespace WinFormsApp1
             Rental.BackColor = Color.Firebrick;
             Rental.Controls.Add(showQueueBtn);
             Rental.Controls.Add(rentalUpdateButton);
-            Rental.Controls.Add(label2);
+            Rental.Controls.Add(rentalLabel2);
             Rental.Controls.Add(dgvRentalMovies);
             Rental.Controls.Add(dispenseButton);
-            Rental.Controls.Add(label1);
+            Rental.Controls.Add(rentalLabel1);
             Rental.Controls.Add(dgvRentalCustomers);
             Rental.ForeColor = SystemColors.ControlLightLight;
             Rental.Location = new Point(4, 54);
@@ -701,17 +700,17 @@ namespace WinFormsApp1
             rentalUpdateButton.UseVisualStyleBackColor = false;
             rentalUpdateButton.Click += rentalUpdateButton_Click;
             // 
-            // label2
+            // rentalLabel2
             // 
-            label2.AutoSize = true;
-            label2.Font = new Font("Segoe UI", 19.8000011F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label2.ForeColor = Color.White;
-            label2.Location = new Point(38, 30);
-            label2.Name = "label2";
-            label2.Size = new Size(299, 46);
-            label2.TabIndex = 5;
-            label2.Text = "Select a customer";
-            label2.Click += label2_Click;
+            rentalLabel2.AutoSize = true;
+            rentalLabel2.Font = new Font("Segoe UI", 19.8000011F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            rentalLabel2.ForeColor = Color.White;
+            rentalLabel2.Location = new Point(38, 30);
+            rentalLabel2.Name = "rentalLabel2";
+            rentalLabel2.Size = new Size(299, 46);
+            rentalLabel2.TabIndex = 5;
+            rentalLabel2.Text = "Select a customer";
+            rentalLabel2.Click += label2_Click;
             // 
             // dgvRentalMovies
             // 
@@ -793,17 +792,17 @@ namespace WinFormsApp1
             dispenseButton.UseVisualStyleBackColor = true;
             dispenseButton.Click += dispenseButton_Click;
             // 
-            // label1
+            // rentalLabel1
             // 
-            label1.AutoSize = true;
-            label1.Font = new Font("Segoe UI", 19.8000011F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label1.ForeColor = Color.White;
-            label1.Location = new Point(38, 276);
-            label1.Name = "label1";
-            label1.Size = new Size(248, 46);
-            label1.TabIndex = 2;
-            label1.Text = "Select a movie";
-            label1.Click += label1_Click_1;
+            rentalLabel1.AutoSize = true;
+            rentalLabel1.Font = new Font("Segoe UI", 19.8000011F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            rentalLabel1.ForeColor = Color.White;
+            rentalLabel1.Location = new Point(38, 276);
+            rentalLabel1.Name = "rentalLabel1";
+            rentalLabel1.Size = new Size(248, 46);
+            rentalLabel1.TabIndex = 2;
+            rentalLabel1.Text = "Select a movie";
+            rentalLabel1.Click += label1_Click_1;
             // 
             // dgvRentalCustomers
             // 
@@ -955,32 +954,6 @@ namespace WinFormsApp1
             creditNumColumn.Name = "creditNumColumn";
             creditNumColumn.ReadOnly = true;
             creditNumColumn.Width = 235;
-            // 
-            // ReportPage
-            // 
-            ReportPage.BackColor = Color.Firebrick;
-            ReportPage.Controls.Add(ErrorMes);
-            ReportPage.Controls.Add(RepRes);
-            ReportPage.Controls.Add(EnterR);
-            ReportPage.Controls.Add(SpecifTitle2);
-            ReportPage.Controls.Add(cal2);
-            ReportPage.Controls.Add(DateSelect2);
-            ReportPage.Controls.Add(DateSelect1);
-            ReportPage.Controls.Add(cal1);
-            ReportPage.Controls.Add(PickReportTitle);
-            ReportPage.Controls.Add(SpecifTitle1);
-            ReportPage.Controls.Add(Specif);
-            ReportPage.Controls.Add(ReportSelection);
-            ReportPage.Font = new Font("Segoe UI", 20F);
-            ReportPage.ForeColor = SystemColors.ActiveBorder;
-            ReportPage.Location = new Point(4, 54);
-            ReportPage.Margin = new Padding(0);
-            ReportPage.Name = "ReportPage";
-            ReportPage.Padding = new Padding(3, 4, 3, 4);
-            ReportPage.Size = new Size(1418, 598);
-            ReportPage.TabIndex = 3;
-            ReportPage.Text = "Report";
-            ReportPage.Click += Report_Click;
             // 
             // ErrorMes
             // 
@@ -1221,8 +1194,6 @@ namespace WinFormsApp1
             Rental.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dgvRentalMovies).EndInit();
             ((System.ComponentModel.ISupportInitialize)dgvRentalCustomers).EndInit();
-            ReportPage.ResumeLayout(false);
-            ReportPage.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)RepRes).EndInit();
             ((System.ComponentModel.ISupportInitialize)databaseBindingSource).EndInit();
             ResumeLayout(false);
@@ -1234,7 +1205,7 @@ namespace WinFormsApp1
         private TabPage Customer;
         private TabPage Movie;
         private TabPage Rental;
-        private TabPage ReportPage;
+        private TabPage Report;
 
         /* Controls for Rental page */
         private DataGridView dgvRentalCustomers;
@@ -1304,9 +1275,9 @@ namespace WinFormsApp1
         private Label lblCredit;
         private Label label9;
         private TextBox txtSIN;
-        private Label label1;
+        private Label rentalLabel1;
         private Button dispenseButton;
-        private Label label2;
+        private Label rentalLabel2;
         private DataGridView dgvRentalMovies;
         private DataGridViewTextBoxColumn custIdColumn;
         private DataGridViewTextBoxColumn ssnColumn;
