@@ -1000,6 +1000,7 @@ namespace WinFormsApp1
 
         private void rentalUpdateButton_Click(object sender, EventArgs e)
         {
+            LoadCustomersIntoDataGridView();
             LoadMoviesIntoDataGridView();
         }
 
