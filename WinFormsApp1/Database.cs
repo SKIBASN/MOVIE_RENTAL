@@ -76,7 +76,8 @@ namespace WinFormsApp1
                          "  WHERE rental.MovieID = movie.MovieID " +
                          "      AND rental.ReturnDateTime IS NULL)) " +
                      "END AS AvailableCopies " +
-                     "FROM Movie movie");
+                     "FROM Movie movie " +
+                     "WHERE movie.MovieName != 'DeletedMovie3561' ");
 
                 dt.Load(myReader);
                 myReader.Close();

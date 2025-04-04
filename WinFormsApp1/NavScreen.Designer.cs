@@ -435,7 +435,9 @@ namespace WinFormsApp1
             dgvCustomers.Location = new Point(532, 30);
             dgvCustomers.Margin = new Padding(3, 2, 3, 2);
             dgvCustomers.Name = "dgvCustomers";
+            dgvCustomers.ReadOnly = true;
             dgvCustomers.RowHeadersWidth = 51;
+            dgvCustomers.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvCustomers.Size = new Size(861, 376);
             dgvCustomers.TabIndex = 21;
             dgvCustomers.CellContentClick += dgvCustomers_CellContentClick;
@@ -489,7 +491,9 @@ namespace WinFormsApp1
             dgvActors.Location = new Point(750, 24);
             dgvActors.Margin = new Padding(3, 2, 3, 2);
             dgvActors.Name = "dgvActors";
+            dgvActors.ReadOnly = true;
             dgvActors.RowHeadersWidth = 51;
+            dgvActors.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvActors.Size = new Size(620, 205);
             dgvActors.TabIndex = 21;
             dgvActors.CellContentClick += dgvActors_CellContentClick;
@@ -680,7 +684,9 @@ namespace WinFormsApp1
             dgvMovies.Location = new Point(750, 266);
             dgvMovies.Margin = new Padding(3, 2, 3, 2);
             dgvMovies.Name = "dgvMovies";
+            dgvMovies.ReadOnly = true;
             dgvMovies.RowHeadersWidth = 51;
+            dgvMovies.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvMovies.Size = new Size(620, 306);
             dgvMovies.TabIndex = 1;
             dgvMovies.CellContentClick += dataGridView1_CellContentClick_3;
@@ -1134,7 +1140,7 @@ namespace WinFormsApp1
             // 
             ReportSelection.Font = new Font("Segoe UI", 15F);
             ReportSelection.FormattingEnabled = true;
-            ReportSelection.Items.AddRange(new object[] { "Who are the top 3 customers with the most rentals?", "What are the top 3 movies that have been rented between two specific days?", "What are the 3 top movies a specific employee rented?", "What are the top 3 rented genre between two specific days?", "What are the top 3 rented movies with a specfic actor?" });
+            ReportSelection.Items.AddRange(new object[] { "Who are the top 3 customers with the most rentals?", "What are the top 3 movies that have been rented between two specific days?", "What are the 3 top movies a specific employee rented?", "What are the top 3 rented genre between two specific days?", "What are the top 3 rented movies with a specific actor?" });
             ReportSelection.Location = new Point(251, 40);
             ReportSelection.Margin = new Padding(3, 4, 3, 4);
             ReportSelection.Name = "ReportSelection";

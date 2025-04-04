@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 using System.Data.SqlClient;
-//using Microsoft.VisualBasic.mitApplicationServices;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.IO.Pipes;
@@ -1222,21 +1221,23 @@ namespace WinFormsApp1
 
             try
             {
+                string replacedTextName = "DeletedMovie3561";
+                string replacedTextType = "Comedy";
+                int replacedTextFee = 0;
                 int id = Convert.ToInt32(dgvMovies.CurrentRow.Cells["MovieID"].Value);
-                string deleteQuery = "DELETE FROM Movie WHERE MovieID = @ID";
-                db.myCommand.CommandText = deleteQuery;
+                string updateQuery = "UPDATE Movie SET MovieName = @MovieName, MovieType = @MovieType, DistributionFee = @DistributionFee, NumberOfCopies = @NumberOfCopies WHERE MovieID = @ID";
+                db.myCommand.CommandText = updateQuery;
                 db.myCommand.Parameters.Clear();
+                //db.myCommand.Parameters.AddWithValue("@ID", txtBoxMovieID.Text);
                 db.myCommand.Parameters.AddWithValue("@ID", id);
+                db.myCommand.Parameters.AddWithValue("@MovieName", replacedTextName);
+                db.myCommand.Parameters.AddWithValue("@MovieType", replacedTextType);
+                db.myCommand.Parameters.AddWithValue("@DistributionFee", replacedTextFee);
+                db.myCommand.Parameters.AddWithValue("@NumberOfCopies", replacedTextFee);
 
                 db.myCommand.ExecuteNonQuery();
                 MessageBox.Show("Movie deleted successfully!");
                 LoadMovies();
-
-                //if (db.myConnection.State == ConnectionState.Open)
-                //{
-                //    db.myConnection.Close();
-                //}
-
                 
             }
             catch (Exception ex)
