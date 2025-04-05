@@ -563,6 +563,7 @@ namespace WinFormsApp1
             txtBoxMovieID.Name = "txtBoxMovieID";
             txtBoxMovieID.Size = new Size(271, 52);
             txtBoxMovieID.TabIndex = 14;
+            txtBoxMovieID.Visible = false;
             // 
             // label6
             // 
@@ -572,6 +573,7 @@ namespace WinFormsApp1
             label6.Size = new Size(146, 46);
             label6.TabIndex = 13;
             label6.Text = "MovieID";
+            label6.Visible = false;
             // 
             // BtnMovieDelete
             // 

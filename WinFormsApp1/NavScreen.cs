@@ -225,7 +225,7 @@ namespace WinFormsApp1
                 DataTable table = new DataTable();
                 adapter.Fill(table);
                 var filteredRows = table.AsEnumerable()
-                .Where(row => row.Field<string>("MovieName") != "DeletedMovie3561")
+                .Where(row => row.Field<Decimal>("DistributionFee") != 0)
                 .CopyToDataTable();
                 dgvMovies.DataSource = filteredRows;
                 
@@ -1103,7 +1103,7 @@ namespace WinFormsApp1
         {
 
         }
-        // Helper function for Movie screen
+        // Helper function for Add Button in Movie screen
         private bool ValidateMovieInputs()
         {
             // Check for empty/null text fields
@@ -1155,10 +1155,6 @@ namespace WinFormsApp1
                 db.myCommand.ExecuteNonQuery();
                 MessageBox.Show("Movies added successfully!");
                 LoadMovies();
-                //if (db.myConnection.State == ConnectionState.Open)
-                //{
-                //    db.myConnection.Close();
-                //}
                 
             }
             catch (Exception ex)
@@ -1186,26 +1182,43 @@ namespace WinFormsApp1
         {
             if (dgvMovies.CurrentRow == null) return;
 
+            int movieID = Convert.ToInt32(dgvMovies.CurrentRow.Cells["MovieID"].Value);
+            string movieName = Convert.ToString(dgvMovies.CurrentRow.Cells["MovieName"].Value);
+            string movieType = Convert.ToString(dgvMovies.CurrentRow.Cells["MovieType"].Value);
+            int distFee = Convert.ToInt32(dgvMovies.CurrentRow.Cells["DistributionFee"].Value);
+            int movieCopies = Convert.ToInt32(dgvMovies.CurrentRow.Cells["NumberOfCopies"].Value);
+
             try
             {
-    
+                
                 int id = Convert.ToInt32(dgvMovies.CurrentRow.Cells["MovieID"].Value);
                 string updateQuery = "UPDATE Movie SET MovieName = @MovieName, MovieType = @MovieType, DistributionFee = @DistributionFee, NumberOfCopies = @NumberOfCopies WHERE MovieID = @ID";
                 db.myCommand.CommandText = updateQuery;
                 db.myCommand.Parameters.Clear();
-                db.myCommand.Parameters.AddWithValue("@ID", txtBoxMovieID.Text);
-                db.myCommand.Parameters.AddWithValue("@MovieName", txtBoxName.Text);
-                db.myCommand.Parameters.AddWithValue("@MovieType", txtBoxType.Text);
-                db.myCommand.Parameters.AddWithValue("@DistributionFee", txtBoxDFee.Text);
-                db.myCommand.Parameters.AddWithValue("@NumberOfCopies", txtBoxCopies.Text);
+                db.myCommand.Parameters.AddWithValue("@ID", id);
+                if (string.IsNullOrWhiteSpace(txtBoxName.Text))
+                    db.myCommand.Parameters.AddWithValue("@MovieName", movieName);
+                else
+                    db.myCommand.Parameters.AddWithValue("@MovieName", txtBoxName.Text);
+
+                if (string.IsNullOrWhiteSpace(txtBoxType.Text))
+                    db.myCommand.Parameters.AddWithValue("@MovieType", movieType);
+                else
+                    db.myCommand.Parameters.AddWithValue("@MovieType", txtBoxType.Text);
+
+                if (string.IsNullOrWhiteSpace(txtBoxDFee.Text))
+                    db.myCommand.Parameters.AddWithValue("@DistributionFee", distFee);
+                else
+                    db.myCommand.Parameters.AddWithValue("@DistributionFee", txtBoxDFee.Text);
+
+                if (string.IsNullOrWhiteSpace(txtBoxCopies.Text))
+                    db.myCommand.Parameters.AddWithValue("@NumberOfCopies", movieCopies);
+                else
+                    db.myCommand.Parameters.AddWithValue("@NumberOfCopies", txtBoxCopies.Text);
 
                 db.myCommand.ExecuteNonQuery();
                 MessageBox.Show("Movie updated successfully!");
                 LoadMovies();
-                //if (db.myConnection.State == ConnectionState.Open)
-                //{
-                //    db.myConnection.Close();
-                //}
                 
 
             }
@@ -1221,8 +1234,11 @@ namespace WinFormsApp1
 
             try
             {
-                string replacedTextName = "DeletedMovie3561";
-                string replacedTextType = "Comedy";
+                int movieID = Convert.ToInt32(dgvMovies.CurrentRow.Cells["MovieID"].Value);
+                string movieName = Convert.ToString(dgvMovies.CurrentRow.Cells["MovieName"].Value);
+                string movieType = Convert.ToString(dgvMovies.CurrentRow.Cells["MovieType"].Value);
+                int movieCopies = Convert.ToInt32(dgvMovies.CurrentRow.Cells["NumberOfCopies"].Value);
+
                 int replacedTextFee = 0;
                 int id = Convert.ToInt32(dgvMovies.CurrentRow.Cells["MovieID"].Value);
                 string updateQuery = "UPDATE Movie SET MovieName = @MovieName, MovieType = @MovieType, DistributionFee = @DistributionFee, NumberOfCopies = @NumberOfCopies WHERE MovieID = @ID";
@@ -1230,10 +1246,12 @@ namespace WinFormsApp1
                 db.myCommand.Parameters.Clear();
                 //db.myCommand.Parameters.AddWithValue("@ID", txtBoxMovieID.Text);
                 db.myCommand.Parameters.AddWithValue("@ID", id);
-                db.myCommand.Parameters.AddWithValue("@MovieName", replacedTextName);
-                db.myCommand.Parameters.AddWithValue("@MovieType", replacedTextType);
+                db.myCommand.Parameters.AddWithValue("@movieID", movieID);
+                db.myCommand.Parameters.AddWithValue("@MovieName", movieName);
+                db.myCommand.Parameters.AddWithValue("@MovieType", movieType);
                 db.myCommand.Parameters.AddWithValue("@DistributionFee", replacedTextFee);
-                db.myCommand.Parameters.AddWithValue("@NumberOfCopies", replacedTextFee);
+                db.myCommand.Parameters.AddWithValue("@NumberOfCopies", movieCopies);
+
 
                 db.myCommand.ExecuteNonQuery();
                 MessageBox.Show("Movie deleted successfully!");
