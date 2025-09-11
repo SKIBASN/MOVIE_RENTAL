@@ -1,6 +1,6 @@
-### MovieRentalProject
+# MovieRentalProject
 
-# Team Members
+### Team Members
 Brighton, Samantha, Kaden
 
 ## Introduction
